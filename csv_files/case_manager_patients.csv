@@ -1,0 +1,2 @@
+"table_name","column_name","data_type","ordinal_position","character_maximum_length"
+"stg_case_manager_patients","archived","integer",27,NULL

@@ -1,0 +1,16 @@
+"table_name","column_name","data_type","ordinal_position","character_maximum_length"
+"stg_pmtct_infant_rapid_antibody","visit_date","date",2,NULL
+"stg_pmtct_infant_rapid_antibody","stg_load_time","timestamp without time zone",13,NULL
+"stg_pmtct_infant_rapid_antibody","date_of_test","date",5,NULL
+"stg_pmtct_infant_rapid_antibody","id","bigint",1,NULL
+"stg_pmtct_infant_rapid_antibody","uuid","character varying",7,NULL
+"stg_pmtct_infant_rapid_antibody","visit_id","character varying",8,NULL
+"stg_pmtct_infant_rapid_antibody","anc_number","character varying",9,NULL
+"stg_pmtct_infant_rapid_antibody","result","character varying",10,NULL
+"stg_pmtct_infant_rapid_antibody","unique_uuid","character varying",11,NULL
+"stg_pmtct_infant_rapid_antibody","stg_batch_id","character varying",12,255
+"stg_pmtct_infant_rapid_antibody","stg_file_name","character varying",14,255
+"stg_pmtct_infant_rapid_antibody","stg_datim_id","character varying",15,50
+"stg_pmtct_infant_rapid_antibody","rapid_result","character varying",3,NULL
+"stg_pmtct_infant_rapid_antibody","rapid_test_type","character varying",4,NULL
+"stg_pmtct_infant_rapid_antibody","age_at_test","character varying",6,NULL
