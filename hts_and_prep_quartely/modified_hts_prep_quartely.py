@@ -173,9 +173,24 @@ with DAG("final_hts_prep_quartely", start_date=datetime.datetime(2024, 7, 1), sc
             sql = 'call expanded_hts_prep.proc_prep_current_alt()',
             autocommit = True
         )
-    
-    hts_joined = PostgresOperator(
-        task_id="hts_joined",
+        
+    with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
+        expanded_hts_joined_bio = PostgresOperator(
+            task_id="expanded_hts_joined_bio",
+            postgres_conn_id="lamisplus_conn",
+            sql = 'call expanded_hts_prep.proc_sub_expanded_hts_joined_bio()',
+            autocommit = True
+        )
+        
+        expanded_hts_joined_codeset = PostgresOperator(
+            task_id="expanded_hts_joined_codeset",
+            postgres_conn_id="lamisplus_conn",
+            sql = 'call expanded_hts_prep.proc_sub_expanded_hts_joined_codeset()',
+            autocommit = True
+        )
+        
+    expanded_hts_joined = PostgresOperator(
+        task_id="expanded_hts_joined",
         postgres_conn_id="lamisplus_conn",
         sql = 'call expanded_hts_prep.proc_expanded_hts_joined()',
         autocommit = True
@@ -199,7 +214,7 @@ with DAG("final_hts_prep_quartely", start_date=datetime.datetime(2024, 7, 1), sc
     end = BashOperator(
         task_id="end",
         bash_command="echo end"
-    )
+        )
 
 
-    start >> update_period_table >> upstream_tasks >> hts_joined >> downstream_tasks
+    start >> update_period_table >> upstream_tasks >> midstream_tasks >> expanded_hts_joined >> downstream_tasks

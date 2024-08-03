@@ -3,6 +3,7 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.models import Variable
+from airflow.utils.task_group import TaskGroup
 
 import datetime
 
@@ -25,33 +26,34 @@ with DAG("pmtct_hts_quartely", start_date=datetime.datetime(2024, 7, 15), schedu
         bash_command="echo start"
     )
     
-    cte_hts_client = PostgresOperator(
-        task_id="cte_hts_client",
-        postgres_conn_id="lamisplus_conn",
-        sql = 'call pmtct_hts.proc_hts_client()',
-        autocommit = True
-    )
+    with TaskGroup(group_id='upstream_tasks') as upstream_tasks:        
+        cte_hts_client = PostgresOperator(
+            task_id="cte_hts_client",
+            postgres_conn_id="lamisplus_conn",
+            sql = 'call pmtct_hts.proc_hts_client()',
+            autocommit = True
+        )
 
-    cte_pmtct_anc = PostgresOperator(
-        task_id="cte_pmtct_anc",
-        postgres_conn_id="lamisplus_conn",
-        sql = 'call pmtct_hts.proc_pmtct_anc()',
-        autocommit = True
-    )
+        cte_pmtct_anc = PostgresOperator(
+            task_id="cte_pmtct_anc",
+            postgres_conn_id="lamisplus_conn",
+            sql = 'call pmtct_hts.proc_pmtct_anc()',
+            autocommit = True
+        )
 
-    cte_pmtct_delivery = PostgresOperator(
-        task_id="cte_pmtct_delivery",
-        postgres_conn_id="lamisplus_conn",
-        sql = 'call pmtct_hts.proc_pmtct_delivery()',
-        autocommit = True
-    )
+        cte_pmtct_delivery = PostgresOperator(
+            task_id="cte_pmtct_delivery",
+            postgres_conn_id="lamisplus_conn",
+            sql = 'call pmtct_hts.proc_pmtct_delivery()',
+            autocommit = True
+        )
 
-    cte_result = PostgresOperator(
-        task_id="cte_result",
-        postgres_conn_id="lamisplus_conn",
-        sql = 'call pmtct_hts.proc_result()',
-        autocommit = True
-    )
+        cte_result = PostgresOperator(
+            task_id="cte_result",
+            postgres_conn_id="lamisplus_conn",
+            sql = 'call pmtct_hts.proc_result()',
+            autocommit = True
+        )
     
     cte_pmtct_hts_joined = PostgresOperator(
         task_id="cte_pmtct_hts_joined",
@@ -72,4 +74,4 @@ with DAG("pmtct_hts_quartely", start_date=datetime.datetime(2024, 7, 15), schedu
         bash_command="echo end"
     )
 
-    start >> [cte_hts_client,cte_pmtct_anc,cte_pmtct_delivery, cte_result] >> cte_pmtct_hts_joined >> pmtct_hts >> end
+    start >> upstream_tasks >> cte_pmtct_hts_joined >> pmtct_hts >> end

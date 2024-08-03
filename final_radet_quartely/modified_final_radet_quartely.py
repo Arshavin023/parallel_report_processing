@@ -20,23 +20,22 @@ with DAG("final_radet_quartely",start_date=datetime.datetime(2024, 7, 1),schedul
         task_id="start",
         bash_command="echo start"
     )
-
+    
     update_period_table = PostgresOperator(
         task_id="update_period_table",
         postgres_conn_id="lamisplus_conn",
         sql='call expanded_radet.proc_update_expanded_radet_period_table()',
         autocommit=True
-    )
+        )
     
     with TaskGroup(group_id='upstream_tasks') as upstream_tasks:
         
-        update_period_table = PostgresOperator(
-        task_id="update_period_table",
+        upd_hiv_status_tracker = PostgresOperator(
+        task_id="upd_hiv_status_tracker",
         postgres_conn_id="lamisplus_conn",
-        sql='call expanded_radet.proc_update_expanded_radet_period_table()',
-        autocommit=True
-        )
-      
+        sql = 'call expanded_radet.proc_update_hiv_status_tracker()',
+        autocommit = True)
+    
         cte_ovc = PostgresOperator(
             task_id="cte_ovc",
             postgres_conn_id="lamisplus_conn",
@@ -176,7 +175,28 @@ with DAG("final_radet_quartely",start_date=datetime.datetime(2024, 7, 1),schedul
             sql='call expanded_radet.proc_previous()',
             autocommit=True
         )
+        
+        sub_cte_ipt_c = PostgresOperator(
+        task_id="sub_cte_ipt_c",
+        postgres_conn_id="lamisplus_conn",
+        sql = 'call expanded_radet.proc_sub_ipt_c()',
+        autocommit = True
+        )
 
+        sub_cte_ipt_s = PostgresOperator(
+            task_id="sub_cte_ipt_s",
+            postgres_conn_id="lamisplus_conn",
+            sql = 'call expanded_radet.proc_sub_ipt_s()',
+            autocommit = True
+        )
+
+        sub_cte_ipt_c_cs = PostgresOperator(
+            task_id="sub_cte_ipt_c_cs",
+            postgres_conn_id="lamisplus_conn",
+            sql = 'call expanded_radet.proc_sub_ipt_c_cs()',
+            autocommit = True
+        )
+        
         cte_current_status = PostgresOperator(
             task_id="cte_current_status",
             postgres_conn_id="lamisplus_conn",

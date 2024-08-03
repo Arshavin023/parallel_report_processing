@@ -102,13 +102,7 @@ dtype_mapping = {
 }
 
 
-def transform_ods_df(df, table_name,  dtype=None): 
-    data_type_query = """
-    SELECT table_name, column_name, data_type, ordinal_position, character_maximum_length
-    FROM information_schema.columns
-    WHERE table_name ILIKE '%stg_%'
-    ORDER BY table_name
-    """    
+def transform_ods_df(df, table_name,  dtype=None):  
     if dtype is not None:
         cols = list(dtype.keys())
         for col in cols:
@@ -184,13 +178,15 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
             print(ls_cons)
             df = df.drop_duplicates(subset=ls_cons)
             print(f'Transforming data for {datim_id}: {batch_id}: {file_name}...')
-            df_transformed = transform_ods_df(df, table_name,  dtype=dtype)
-            
-            print(f'Storing ods data for {datim_id}: {batch_id}: {file_name}...')
-            store_ods_df(df_transformed, table_name, constraints, dtype=dtype)
-            stg_engine.execute(f"update stg_monitoring set processed='Y' where table_name = '{staging_table}' and datim_id = '{datim_id}' and batch_id = '{batch_id}' and file_name = '{file_name}'")
-
-
+            try:
+                df_transformed = transform_ods_df(df, table_name,  dtype=dtype)
+                print(f'Storing ods data for {datim_id}: {batch_id}: {file_name}...')
+                store_ods_df(df_transformed, table_name, constraints, dtype=dtype)
+                stg_engine.execute(f"update stg_monitoring set processed='Y' where table_name = '{staging_table}' and datim_id = '{datim_id}' and batch_id = '{batch_id}' and file_name = '{file_name}'")
+            except Exception as e:
+                stg_engine.execute(f"update stg_monitoring set processed='F' where table_name = '{staging_table}' and datim_id = '{datim_id}' and batch_id = '{batch_id}' and file_name = '{file_name}'")
+                pass
+          
 def process_patient_person():  
     table_name = 'patient_person'
     constraints = 'ods_datim_id,uuid'
@@ -330,7 +326,11 @@ def process_prep_eligibility():
              'sti_screening': JSON().with_variant(JSONB, 'postgresql'),
              'drug_use_history': JSON().with_variant(JSONB, 'postgresql'),
              'personal_hiv_risk_assessment': JSON().with_variant(JSONB, 'postgresql'),
-             'sex_partner_risk': JSON().with_variant(JSONB, 'postgresql'),}
+             'sex_partner_risk': JSON().with_variant(JSONB, 'postgresql'),
+             'services_received_by_client': JSON().with_variant(JSONB, 'postgresql'),
+             'assessment_for_pep_indication': JSON().with_variant(JSONB, 'postgresql'),
+             'assessment_for_prep_eligibility': JSON().with_variant(JSONB, 'postgresql'),
+             'assessment_for_acute_hiv_infection': JSON().with_variant(JSONB, 'postgresql'),}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
 
@@ -576,5 +576,3 @@ if __name__ == '__main__':
     process_pmtct_infant_information()
     process_pmtct_infant_mother_art()
     process_pmtct_infant_rapid_antibody()
-    
-    
