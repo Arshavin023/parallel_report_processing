@@ -115,7 +115,7 @@ def transform_ods_df(df, table_name,  dtype=None):
     df_cols = df.columns
     # Use pandas to read SQL query results into a DataFrame
     # df_data_types = pd.read_sql_query(data_type_query, staging_conn) ## query database
-    df_data_types = pd.read_csv('/home/lamisplus/airflow/dags/files/datatypes.csv') 
+    df_data_types = pd.read_csv('/home/alex/airflow/dags/files/datatypes.csv') 
     df_dtype_table = df_data_types[df_data_types['table_name']==table_name][['column_name', 'data_type']]
     arr_dtype_cols = df_dtype_table[(df_dtype_table['data_type']!= 'jsonb') & (df_dtype_table['data_type']!= 'character varying')].values
     dict_dtypes = {}
@@ -154,7 +154,7 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
     ods_table = 'ods_' + table_name
     record_count = 0
     cur = staging_conn.cursor()
-    cur.execute("SELECT datim_id, batch_id, file_name from stg_monitoring where table_name = '{}' and processed = 'N'".format(staging_table))
+    cur.execute("SELECT datim_id, batch_id, file_name from stg_monitoring where table_name = '{}' and processed = 'N' order by load_time desc".format(staging_table))
     ls_to_process = cur.fetchall()
     load_time = datetime.datetime.now()
     ls_to_process.sort(key=lambda i: i[1])

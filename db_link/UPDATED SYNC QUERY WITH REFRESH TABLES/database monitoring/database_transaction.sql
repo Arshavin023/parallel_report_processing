@@ -11,8 +11,11 @@ FROM pg_stat_activity WHERE state = 'active'
 AND query ilike '%call%' order by query_start desc;
 
 -- Terminate TRANSACTION
-select pg_terminate_backend(<pid>);
-select pg_terminate_backend(<pid>);
+select pg_terminate_backend(1396718);
+select pg_terminate_backend(1375042);
+select pg_terminate_backend(1375041);
+select pg_terminate_backend(1375040);
+select pg_terminate_backend(1375039);
 
 --For more detailed information about locks and waits, you might also want to look at the pg_locks view. 
 --You can join it with pg_stat_activity to see which transactions are holding or waiting for locks:

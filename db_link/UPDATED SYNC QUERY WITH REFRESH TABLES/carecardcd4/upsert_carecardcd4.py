@@ -3,6 +3,7 @@ from airflow.operators.bash import BashOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.utils.task_group import TaskGroup
 import datetime
+from airflow.utils.task_group import TaskGroup
 
 default_args = {
     "owner": "airflow",
@@ -13,26 +14,27 @@ default_args = {
     "retry_delay": datetime.timedelta(minutes=5)
 }
 
-with DAG("client_radet_updated",start_date=datetime.datetime(2024, 7, 1),schedule_interval=None,
+with DAG("upsert_carecardcd4",start_date=datetime.datetime(2024, 7, 1),schedule_interval=None,
             default_args=default_args,catchup=True,max_active_runs=1,) as dag:
 
     start = BashOperator(
         task_id="start",
         bash_command="echo start"
-    )
+    ) 
     
-      
-    client_radet = PostgresOperator(
-        task_id="client_radet",
-        postgres_conn_id="lamisplus_conn",
-        sql='call expanded_radet.proc_client_radet()',
-        autocommit=True
-    )
-        
+    with TaskGroup(group_id='upstream_tasks') as upstream_tasks:
+    
+        upsert_carecardcd4 = PostgresOperator(
+            task_id="upsert_carecardcd4",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_carecardcd4()',
+            autocommit=True
+        )
+		
     end = BashOperator(
         task_id="end",
         bash_command="echo end"
     )
 
     # Define the task dependencies
-    start >> client_radet >> end
+    start >> upstream_tasks >> end

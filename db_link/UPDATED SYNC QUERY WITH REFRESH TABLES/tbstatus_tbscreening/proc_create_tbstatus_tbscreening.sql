@@ -1,55 +1,69 @@
+--SELECT dblink_connect('db_link_ods', 'host=localhost user=lamisplus_etl password=QUWeIQvD27BYei1 dbname=lamisplus_ods_dwh');
+--
 -- PROCEDURE: expanded_radet.proc_create_tbstatus_tbscreening()
 
 -- DROP PROCEDURE IF EXISTS expanded_radet.proc_create_tbstatus_tbscreening();
 
-CREATE OR REPLACE PROCEDURE expanded_radet.proc_create_tbstatus_tbscreening(
-	)
+CREATE OR REPLACE PROCEDURE expanded_radet.proc_create_tbstatus_tbscreening()
 LANGUAGE 'plpgsql'
 AS $BODY$
 DECLARE start_time TIMESTAMP;
+DECLARE last_load_end_time TIMESTAMP;
 DECLARE end_time TIMESTAMP;
 DECLARE record_count bigint;
+
 BEGIN
+
+-- Fetch the last load end time
+SELECT MAX(load_end_time) 
+INTO last_load_end_time
+FROM streaming_remote_monitoring
+WHERE table_name = 'tbstatus_tbscreening';
+
+-- Fetch record count from the remote database using dblink
+EXECUTE FORMAT(
+	'SELECT *
+	 FROM dblink(''db_link_ods'',
+	 ''
+	 SELECT count(uuid) 
+	 FROM ods_hiv_observation 
+	 WHERE ods_load_time >= ''%L''			   
+	'') 
+	 AS sm(count bigint)',last_load_end_time) 
+INTO record_count;
+
+DROP TABLE IF EXISTS expanded_radet.tbstatus_tbscreening;
 
 SELECT TIMEOFDAY() INTO start_time;
 
-select * from dblink('db_link_ods',
-'SELECT count(uuid) FROM ods_hiv_observation p
-					 WHERE ods_load_time > (select end_time FROM streaming_remote_monitoring
-											WHERE table_name = ''tbstatus_tbscreening'' 
-											ORDER BY end_time desc LIMIT 1)')
-AS sm(count bigint) INTO record_count;
-
-DROP TABLE IF EXISTS expanded_radet.tbstatus_tbscreening;
-create table expanded_radet.tbstatus_tbscreening AS
-select * from dblink('db_link_ods',
-'SELECT hiv.uuid, hiv.person_uuid, hiv.ods_datim_id , hiv.id, hiv.date_of_observation AS dateOfTbScreened, 
-					 hiv.data->''tbIptScreening''->>''status'' AS tbStatus, 
-		hiv.data->''tbIptScreening''->>''tbScreeningType'' AS tbScreeningType, 
-	hiv.data->''tbIptScreening''->>''outcome'' AS tbStatusOutcome,hiv.archived
-FROM (SELECT id, uuid, type,person_uuid, ods_datim_id, date_of_observation,archived, data
-		FROM ods_hiv_observation WHERE ods_load_time > (select end_time FROM streaming_remote_monitoring
-											WHERE table_name = ''tbstatus_tbscreening''
-											ORDER BY end_time desc LIMIT 1)) hiv
+EXECUTE FORMAT ('CREATE TABLE expanded_radet.tbstatus_tbscreening AS
+SELECT * from dblink(''db_link_ods'',
+''SELECT uuid, person_uuid, ods_datim_id , date_of_observation AS dateOfTbScreened, 
+					 data->''''tbIptScreening''''->>''''status'''' AS tbStatus, 
+		data->''''tbIptScreening''''->>''''tbScreeningType'''' AS tbScreeningType, 
+	data->''''tbIptScreening''''->>''''outcome'''' AS tbStatusOutcome, 
+	archived hiv_observation_archived
+FROM (SELECT id, uuid, type,person_uuid, ods_datim_id, date_of_observation, data,archived 
+		FROM ods_hiv_observation WHERE ods_load_time >= ''%L'') ho
 WHERE type = ''Chronic Care'' and data is not null
-')AS sm(uuid character varying, person_uuid character varying,ods_datim_id character varying,
-		id bigint, dateoftbscreened date,tbstatus text, tbscreeningtype text, 
-		tbstatusoutcome text,archived integer);
+'')AS sm(uuid character varying, person_uuid character varying,ods_datim_id character varying,
+		dateoftbscreened date,tbstatus text, tbscreeningtype text, tbstatusoutcome text, 
+		hiv_observation_archived integer)',	last_load_end_time);
+
+SELECT TIMEOFDAY() INTO end_time;
 
 ALTER TABLE expanded_radet.tbstatus_tbscreening
-ADD CONSTRAINT unq_tbstatus_tbscreening UNIQUE (id, uuid, person_uuid,ods_datim_id);
+ADD CONSTRAINT unq_tbstatus_tbscreening UNIQUE (uuid, person_uuid, ods_datim_id);
 
 CREATE INDEX unq_dateOfTbScreened_tbstatus_tbscreening 
 ON expanded_radet.tbstatus_tbscreening(dateOfTbScreened);
 
-SELECT MAX(ods_load_time)
-FROM ods_hiv_observation
-INTO end_time;
+DELETE FROM expanded_radet.tbstatus_tbscreening
+WHERE hiv_observation_archived=1;
 
-PERFORM dblink('db_link_ods',
-      format('INSERT INTO public.streaming_remote_monitoring(table_name,record_count,start_time,end_time) 
-			 VALUES (''%s'',%L, %L, %L)',
-             'tbstatus_tbscreening', record_count,start_time, end_time));
+INSERT INTO public.streaming_remote_monitoring(table_name,start_time,load_end_time,record_count)
+VALUES('tbstatus_tbscreening',start_time, end_time,record_count);
+
 			 
 END 
 $BODY$;

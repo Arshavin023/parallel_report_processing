@@ -7,41 +7,55 @@ CREATE OR REPLACE PROCEDURE expanded_radet.proc_create_cryptocol_antigen(
 LANGUAGE 'plpgsql'
 AS $BODY$
 DECLARE start_time TIMESTAMP;
+DECLARE last_load_end_time TIMESTAMP;
 DECLARE end_time TIMESTAMP;
 DECLARE record_count bigint;
+
 BEGIN
+
+-- Fetch the last load end time
+SELECT MAX(load_end_time) 
+INTO last_load_end_time
+FROM streaming_remote_monitoring
+WHERE table_name = 'cryptocol_antigen';
+
+-- Fetch record count from the remote database using dblink
+EXECUTE FORMAT(
+	'SELECT *
+	 FROM dblink(''db_link_ods'',
+	 ''
+	 SELECT count(uuid) 
+	 FROM ods_laboratory_test 
+	 WHERE ods_load_time >= ''%L''			   
+	'') 
+	 AS sm(count bigint)',last_load_end_time) 
+INTO record_count;
+
+DROP TABLE IF EXISTS expanded_radet.cryptocol_antigen;
 
 SELECT TIMEOFDAY() INTO start_time;
 
-select * from dblink('db_link_ods',
-'SELECT count(uuid) FROM ods_laboratory_test
-					 WHERE ods_load_time > (select end_time FROM streaming_remote_monitoring
-											WHERE table_name = ''cryptocol_antigen'' 
-											ORDER BY end_time desc LIMIT 1)')
-AS sm(count bigint) INTO record_count;
-
---DROP TABLE IF EXISTS expanded_radet.cryptocol_antigen;
-create table expanded_radet.cryptocol_antigen AS
-select * from dblink('db_link_ods',
-'select DISTINCT ON (lr.patient_uuid, lr.ods_datim_id) lr.patient_uuid as personuuid12,
-lr.ods_datim_id as crypt_ods_datim_id,lt.id, lt.uuid,lt.archived,lt.lab_test_id,
+EXECUTE FORMAT('CREATE TABLE expanded_radet.cryptocol_antigen AS
+SELECT * FROM dblink(''db_link_ods'',
+''SELECT DISTINCT ON (lr.patient_uuid, lr.ods_datim_id) lr.patient_uuid as personuuid12,
+	lr.ods_datim_id as crypt_ods_datim_id, lr.uuid,lr.archived,
 CAST(lr.date_result_reported AS DATE) AS dateOfLastCrytococalAntigen, 
 lr.result_reported AS lastCrytococalAntigen 
 from (SELECT id,uuid,ods_datim_id,archived,lab_test_id
 		FROM ods_laboratory_test
-		WHERE ods_load_time > (select end_time FROM streaming_remote_monitoring
-								WHERE table_name = ''cryptocol_antigen'' 
-								ORDER BY end_time desc LIMIT 1)) lt 
-inner join ods_laboratory_result lr on lr.test_id = lt.id AND lr.ods_datim_id = lt.ods_datim_id
-WHERE lab_test_id IN (52,69,70)
-AND lr.date_result_reported IS NOT NULL 
-AND lr.result_reported is NOT NULL
-')AS sm(personuuid12 character varying,crypt_ods_datim_id character varying,id bigint,
-    uuid character varying,archived integer,lab_test_id integer,dateOfLastCrytococalAntigen date,
-		lastCrytococalAntigen character varying);
+		WHERE ods_load_time >= ''%L'') lt 
+INNER JOIN ods_laboratory_result lr on lr.test_id = lt.id 
+AND lr.ods_datim_id = lt.ods_datim_id
+WHERE lt.lab_test_id IN (52,69,70) AND lr.date_result_reported IS NOT NULL 
+AND lr.result_reported is NOT NULL'')
+AS sm(personuuid12 character varying,crypt_ods_datim_id character varying,
+	   uuid character varying,archived integer, dateOfLastCrytococalAntigen date,
+	lastCrytococalAntigen character varying)',last_load_end_time);
+
+SELECT TIMEOFDAY() INTO end_time;
 
 ALTER TABLE expanded_radet.cryptocol_antigen
-ADD CONSTRAINT unq_uuid_datimid_cryptocol_antigen UNIQUE (id, uuid, personuuid12, crypt_ods_datim_id);
+ADD CONSTRAINT unq_uuid_datimid_cryptocol_antigen UNIQUE (uuid, personuuid12, crypt_ods_datim_id);
 
 CREATE INDEX unq_dateresultreported_cryptocol_antigen 
 ON expanded_radet.cryptocol_antigen(dateOfLastCrytococalAntigen)
@@ -49,14 +63,12 @@ WHERE lab_test_id IN (52,69,70)
 AND dateOfLastCrytococalAntigen IS NOT NULL 
 AND lastCrytococalAntigen is NOT NULL;
 
-SELECT MAX(ods_load_time)
-FROM ods_laboratory_test
-INTO end_time;
+DELETE FROM expanded_radet.pharmacy_details_regimen
+WHERE archived=1;
 
-PERFORM dblink('db_link_ods',
-      format('INSERT INTO public.streaming_remote_monitoring(table_name,record_count,start_time,end_time) 
-			 VALUES (''%s'',%L, %L, %L)',
-             'cryptocol_antigen', record_count,start_time, end_time));
+INSERT INTO public.streaming_remote_monitoring(table_name,start_time,load_end_time,record_count,inserted_count)
+VALUES('cryptocol_antigen',start_time, end_time,record_count, record_count);
+
 			 
 END 
 $BODY$;

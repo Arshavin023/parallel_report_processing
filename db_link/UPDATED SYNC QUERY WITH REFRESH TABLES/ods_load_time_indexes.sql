@@ -22,7 +22,8 @@ CREATE INDEX IF NOT EXISTS brin_idx_ods_laboratory_test_odsloadtime
 ON public.ods_biometric USING brin (ods_load_time);
 CREATE INDEX IF NOT EXISTS brin_idx_ods_hiv_art_pharmacy_odsloadtime 
 ON public.ods_hiv_art_pharmacy USING brin (ods_load_time);
-
+CREATE INDEX IF NOT EXISTS brin_idx_load_end_time_streaming_remote_monitoring
+ON public.streaming_remote_monitoring USING brin (load_end_time);
 SELECT TIMEOFDAY() INTO end_time;
 INSERT INTO public.expanded_radet_monitoring (table_name, start_time,end_time) 
 VALUES ('patient_oda_load_time_index_creation', start_time,end_time);
