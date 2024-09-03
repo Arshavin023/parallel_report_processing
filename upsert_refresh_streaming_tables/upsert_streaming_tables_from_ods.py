@@ -86,13 +86,92 @@ with DAG("upsert_streaming_for_refresh_tables",start_date=datetime.datetime(2024
             sql='call expanded_radet.proc_upsert_cryptocol_antigen()',
             autocommit=True
         )
-    
+        
+        upsert_art_commencement_vitals = PostgresOperator(
+            task_id="upsert_art_commencement_vitals",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_art_commencement_vitals_refresh()',
+            autocommit=True
+        )
+        
+        upsert_hiv_status_tracker = PostgresOperator(
+            task_id="upsert_hiv_status_tracker",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_hiv_status_tracker_refresh()',
+            autocommit=True
+        )
+        
+        upsert_clinic_data_refresh = PostgresOperator(
+            task_id="upsert_clinic_data_refresh",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_clinic_data_refresh()',
+            autocommit=True
+        )
+        
+        upsert_hiv_clinical_enrollment_refresh = PostgresOperator(
+            task_id="upsert_hiv_clinical_enrollment_refresh",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_hiv_clinical_enrollment_refresh()',
+            autocommit=True
+        )
+        
+        upsert_baseappcodeset_refresh = PostgresOperator(
+            task_id="upsert_baseappcodeset_refresh",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_baseappcodeset_refresh()',
+            autocommit=True
+        )
+        
+        upsert_laboratoryorder_hivenrollment_refresh = PostgresOperator(
+            task_id="upsert_laboratoryorder_hivenrollment_refresh",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_laboratoryorder_hivenrollment_refresh()',
+            autocommit=True
+        )
+        
+        upsert_laboratorytest_labtest_sample_results_refresh = PostgresOperator(
+            task_id="upsert_laboratorytest_labtest_sample_results_refresh",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_laboratorytest_labtest_sample_results_refresh()',
+            autocommit=True
+        )
+        
     with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
         
         upsert_arv_pharmacy = PostgresOperator(
             task_id="upsert_arv_pharmacy",
             postgres_conn_id="radet_conn",
             sql='call expanded_radet.proc_upsert_arv_pharmacy()',
+            autocommit=True
+        )
+        
+        upsert_hivclinicalenrollment_baseappcode_refresh = PostgresOperator(
+            task_id="upsert_hivclinicalenrollment_baseappcode_refresh",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_hivclinicalenrollment_baseappcode_refresh()',
+            autocommit=True
+        )
+        
+        upsert_sub_laboratory_details_refresh = PostgresOperator(
+            task_id="upsert_sub_laboratory_details_refresh",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_sub_laboratory_details_refresh()',
+            autocommit=True
+        )
+        
+    with TaskGroup(group_id='downstream_tasks') as downstream_tasks:
+        
+        upsert_sub_tvs_current_clinical_refresh = PostgresOperator(
+            task_id="upsert_sub_tvs_current_clinical_refresh",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_sub_tvs_current_clinical_refresh()',
+            autocommit=True
+        )
+        
+        upsert_laboratory_details_refresh = PostgresOperator(
+            task_id="upsert_laboratory_details_refresh",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_laboratory_details_refresh()',
             autocommit=True
         )
         
@@ -103,4 +182,4 @@ with DAG("upsert_streaming_for_refresh_tables",start_date=datetime.datetime(2024
     )
 
     # Define the task dependencies
-    start >> upstream_tasks >> midstream_tasks >> end
+    start >> upstream_tasks >> midstream_tasks >> downstream_tasks >> end

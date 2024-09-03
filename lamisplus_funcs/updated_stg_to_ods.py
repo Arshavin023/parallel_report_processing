@@ -186,7 +186,7 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
                 pass
     
     end_time = datetime.datetime.now()
-    
+        
     try:
         # Insert into monitoring table
         insert_query = """
@@ -200,6 +200,14 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
     except Exception as e:
         print(f'Log loading details for {ods_table} not inserted into stg_to_ods_monitoring table')
     
+    try:
+        delete_archived_query = f"""DELETE FROM %s WHERE archived=1"""
+        delete_archived_params = (ods_table)
+        dwh_engine.execute(delete_archived_query, delete_archived_params)
+        print(f'archived records deleted from {ods_table} on data warehouse')
+    
+    except Exception as e:
+        print(f'deletion of archived records from {ods_table} failed')
      
 def process_patient_person():  
     table_name = 'patient_person'
