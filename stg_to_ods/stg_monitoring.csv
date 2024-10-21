@@ -1,0 +1,11 @@
+"datim_id","batch_id","file_name","table_name","load_time","json_rec_count","stg_rec_count","processed","stg_deleted","error_message"
+"zPtoIxdY3Mo","20241018112200","patient_person_1_20241018112200_decrypted.json","stg_patient_person","2024-10-18 15:46:56.858657",3000,3000,"N",NULL,NULL
+"zPtoIxdY3Mo","20241018112200","patient_person_2_20241018112200_decrypted.json","stg_patient_person","2024-10-18 15:47:03.023981",3000,3000,"N",NULL,NULL
+"zPtoIxdY3Mo","20241018112200","patient_person_0_20241018112200_decrypted.json","stg_patient_person","2024-10-18 15:47:05.9967",3000,3000,"N",NULL,NULL
+"zPtoIxdY3Mo","20241018112200","patient_person_3_20241018112200_decrypted.json","stg_patient_person","2024-10-18 15:47:18.628408",2411,2411,"N",NULL,NULL
+"zxSXLppge0P","20241018120402","patient_person_1_20241018120402_decrypted.json","stg_patient_person","2024-10-18 15:50:15.316012",2459,2459,"N",NULL,NULL
+"zxSXLppge0P","20241018120402","patient_person_0_20241018120402_decrypted.json","stg_patient_person","2024-10-18 15:50:18.984406",3000,3000,"N",NULL,NULL
+"zcSL0a1oPEw","20241018114911","patient_person_0_20241018114911_decrypted.json","stg_patient_person","2024-10-18 15:33:01.482005",167,167,"N",NULL,NULL
+"AFtz58N0L6c","20241018121304","patient_person_24_20241018121304_decrypted.json","stg_patient_person","2024-10-18 16:07:35.203944",591,591,"N",NULL,NULL
+"AFtz58N0L6c","20241018121304","patient_person_22_20241018121304_decrypted.json","stg_patient_person","2024-10-18 16:07:44.008971",3000,3000,"N",NULL,NULL
+"AFtz58N0L6c","20241018121304","patient_person_21_20241018121304_decrypted.json","stg_patient_person","2024-10-18 16:07:47.345923",2999,2999,"N",NULL,NULL

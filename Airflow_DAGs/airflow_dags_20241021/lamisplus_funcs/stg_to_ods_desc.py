@@ -158,13 +158,13 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
     staging_table = 'stg_' + table_name
     ods_table = 'ods_' + table_name
     record_count = 0
-    cur.execute("""SELECT DISTINCT datim_id, batch_id, file_name 
+    cur.execute("""SELECT datim_id, batch_id, file_name 
                 from stg_monitoring 
                 where table_name = '{}'
                 AND json_rec_count > 0 
                 AND processed = 'N' 
                 AND load_time >= '2024-07-15' 
-                ORDER BY load_time ASC 
+                ORDER BY load_time DESC 
                 LIMIT (SELECT 0.5*COUNT(file_name) 
                         from stg_monitoring where table_name = '{}' 
                         AND json_rec_count > 0 
