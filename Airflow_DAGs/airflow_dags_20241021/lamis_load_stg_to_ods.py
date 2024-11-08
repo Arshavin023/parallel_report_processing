@@ -23,7 +23,7 @@ default_args = {
 }
 
 
-with DAG("lamis_stg_to_ods", start_date=datetime(2024, 1, 26), schedule_interval=timedelta(hours=1),
+with DAG("lamis_stg_to_ods_v2", start_date=datetime(2024, 1, 26), schedule_interval=timedelta(hours=1),
  default_args=default_args, catchup=False, max_active_runs=1) as dag:
 
     start = BashOperator(
@@ -178,6 +178,11 @@ with DAG("lamis_stg_to_ods", start_date=datetime(2024, 1, 26), schedule_interval
     hiv_eac = PythonOperator(
         task_id="hiv_eac",
         python_callable=lamisplus_funcs.process_hiv_eac
+    )
+    
+    hiv_eac_out_come = PythonOperator(
+        task_id="hiv_eac_out_come",
+        python_callable=lamisplus_funcs.process_hiv_eac_out_come
     )
     
     dsd_devolvement = PythonOperator(

@@ -2,7 +2,8 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.utils.task_group import TaskGroup
-import datetime
+from datetime import datetime, timedelta
+from airflow.utils.task_group import TaskGroup
 
 default_args = {
     "owner": "airflow",
@@ -10,37 +11,28 @@ default_args = {
     "email_on_retry": False,
     "email": "admin@localhost.com",
     "retries": 2,
-    "retry_delay": datetime.timedelta(minutes=5)
+    "retry_delay": timedelta(minutes=5)
 }
 
-with DAG("remaining_expanded_radet_weekly",start_date=datetime.datetime(2024, 7, 1),schedule_interval=None,
+with DAG("lamisplus_migrate_old_to_new_ods_biometric",start_date=datetime(2024, 11, 1),schedule_interval=None,
             default_args=default_args,catchup=True,max_active_runs=1,) as dag:
 
     start = BashOperator(
         task_id="start",
         bash_command="echo start"
-    )
+    ) 
     
     with TaskGroup(group_id='upstream_tasks') as upstream_tasks:
-        
-        cte_previous_previous = PostgresOperator(
-            task_id="cte_previous_previous",
+    
+        biometric = PostgresOperator(
+            task_id="biometric",
             postgres_conn_id="lamisplus_conn",
-            sql='call expanded_radet.proc_previous_previous()',
-            autocommit=True
-        )
-        
-        cte_previous = PostgresOperator(
-            task_id="cte_previous",
-            postgres_conn_id="lamisplus_conn",
-            sql='call expanded_radet.proc_previous()',
-            autocommit=True
-        )
-		
+            sql="call public.proc_migrate_old_to_new_ods_biometric('ods_biometric')",
+            autocommit=True)
+       
     end = BashOperator(
         task_id="end",
-        bash_command="echo end"
-    )
+        bash_command="echo end")
 
     # Define the task dependencies
     start >> upstream_tasks >> end

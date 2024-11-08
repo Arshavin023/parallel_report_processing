@@ -6,7 +6,7 @@ import datetime
 from datetime import datetime, timedelta
 import sys
 import os
-from lamisplus_funcs import stg_to_ods as lamisplus_funcs
+from lamisplus_funcs import stg_to_ods_biometric as lamisplus_funcs
 from lamisplus_funcs.airflow_api import trigger_dag
 # sys.path.append('/home/lamisplus/airflow/lamisplus_funcs')
 

@@ -1461,6 +1461,9 @@ prep_clinic,visit_uuid,character varying,25,255
 prep_clinic,months_of_refill,integer,62,NULL
 prep_clinic,date_of_family_planning,date,48,NULL
 prep_eligibility,services_received_by_client,jsonb,30,NULL
+prep_eligibility,assessment_for_pep_indication,jsonb,31,NULL
+prep_eligibility,assessment_for_prep_eligibility,jsonb,32,NULL
+prep_eligibility,assessment_for_acute_hiv_infection,jsonb,34,NULL
 prep_eligibility,score,integer,4,NULL
 prep_eligibility,visit_date,date,5,NULL
 prep_eligibility,hiv_risk,jsonb,6,NULL

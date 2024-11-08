@@ -164,12 +164,7 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
                 AND json_rec_count > 0 
                 AND processed = 'N' 
                 AND load_time >= '2024-07-15' 
-                ORDER BY load_time ASC 
-                LIMIT (SELECT 0.5*COUNT(file_name) 
-                        from stg_monitoring where table_name = '{}' 
-                        AND json_rec_count > 0 
-                        AND processed = 'N' 
-                        AND load_time >= '2024-07-15')""".format(staging_table,staging_table))
+                ORDER BY load_time ASC""".format(staging_table))
     ls_to_process = cur.fetchall()
     load_time = datetime.datetime.now()
     ls_to_process.sort(key=lambda i: i[1])
@@ -481,7 +476,15 @@ def process_hiv_eac():
     table_name = 'hiv_eac'
     constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
-    process_stg_to_ods(table_name, constraints)  
+    process_stg_to_ods(table_name, constraints) 
+
+def process_hiv_eac_out_come():
+    table_name = 'hiv_eac_out_come'
+    constraints = 'ods_datim_id, uuid'
+    #ods_setup_new(table_name, constraints)
+    dtype = {'plan_action': JSON().with_variant(JSONB, 'postgresql')
+                                         }
+    process_stg_to_ods(table_name, constraints)    
     
 def process_dsd_devolvement():
     table_name = 'dsd_devolvement'
@@ -592,6 +595,7 @@ if __name__ == '__main__':
     process_hiv_eac_session()
     process_biometric()
     process_hiv_eac() 
+    process_hiv_eac_out_come()
     process_dsd_devolvement()
     process_laboratory_order()
     process_pmtct_anc()

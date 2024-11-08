@@ -164,6 +164,34 @@ with DAG("lamisplus_upsert_streaming_for_refresh_tables",start_date=datetime.dat
             autocommit=True
         )
         
+        upsert_cte_bio_data = PostgresOperator(
+            task_id="upsert_cte_bio_data",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_upsert_cte_bio_data()',
+            autocommit=True
+        )
+        
+        upsert_sub_current_clinical = PostgresOperator(
+            task_id="upsert_sub_current_clinical",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_upsert_sub_current_clinical()',
+            autocommit=True
+        )
+        
+        upsert_carecardcd4 = PostgresOperator(
+            task_id="upsert_carecardcd4",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_upsert_carecardcd4()',
+            autocommit=True
+        )
+        
+        upsert_hiv_observation_refresh = PostgresOperator(
+            task_id="upsert_hiv_observation_refresh",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_upsert_hiv_observation_refresh()',
+            autocommit=True
+        )
+        
     with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
         
         upsert_arv_pharmacy = PostgresOperator(

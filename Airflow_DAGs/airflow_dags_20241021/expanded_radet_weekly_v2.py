@@ -29,12 +29,6 @@ with DAG("lamisplus_radet_generation_dwh_server_v2",start_date=datetime.datetime
         )
     
     with TaskGroup(group_id='upstream_tasks') as upstream_tasks:
-        
-        upd_hiv_status_tracker = PostgresOperator(
-        task_id="upd_hiv_status_tracker",
-        postgres_conn_id="lamisplus_conn",
-        sql = 'call expanded_radet.proc_update_hiv_status_tracker()',
-        autocommit = True)
     
         cte_ovc = PostgresOperator(
             task_id="cte_ovc",
@@ -134,10 +128,10 @@ with DAG("lamisplus_radet_generation_dwh_server_v2",start_date=datetime.datetime
             autocommit=True
         )
 
-        cte_tbtreatment = PostgresOperator(
-            task_id="cte_tbtreatment",
+        sub_tbtreatment = PostgresOperator(
+            task_id="sub_tbtreatment",
             postgres_conn_id="lamisplus_conn",
-            sql='call expanded_radet.proc_tbtreatment()',
+            sql='call expanded_radet.proc_sub_tbtreatment()',
             autocommit=True
         )
 
@@ -168,26 +162,12 @@ with DAG("lamisplus_radet_generation_dwh_server_v2",start_date=datetime.datetime
             sql='call expanded_radet.proc_cervical_cancer()',
             autocommit=True
         )
-
-        cte_previous_previous = PostgresOperator(
-            task_id="cte_previous_previous",
-            postgres_conn_id="lamisplus_conn",
-            sql='call expanded_radet.proc_previous_previous()',
-            autocommit=True
-        )
-
-        cte_previous = PostgresOperator(
-            task_id="cte_previous",
-            postgres_conn_id="lamisplus_conn",
-            sql='call expanded_radet.proc_previous()',
-            autocommit=True
-        )
         
         sub_cte_ipt_c = PostgresOperator(
-        task_id="sub_cte_ipt_c",
-        postgres_conn_id="lamisplus_conn",
-        sql = 'call expanded_radet.proc_sub_ipt_c()',
-        autocommit = True
+            task_id="sub_cte_ipt_c",
+            postgres_conn_id="lamisplus_conn",
+            sql = 'call expanded_radet.proc_sub_ipt_c()',
+            autocommit = True
         )
 
         sub_cte_ipt_s = PostgresOperator(
@@ -202,6 +182,20 @@ with DAG("lamisplus_radet_generation_dwh_server_v2",start_date=datetime.datetime
             postgres_conn_id="lamisplus_conn",
             sql = 'call expanded_radet.proc_sub_ipt_c_cs()',
             autocommit = True
+        )
+        
+        sub2_iptnew_tptc = PostgresOperator(
+            task_id="sub2_iptnew_tptc",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_sub_iptnew_tptc()',
+            autocommit=True
+        )
+
+        sub_iptnew_pts = PostgresOperator(
+            task_id="sub_iptnew_pts",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_sub_iptnew_pts()',
+            autocommit=True
         )
         
         cte_current_status = PostgresOperator(
@@ -329,6 +323,20 @@ with DAG("lamisplus_radet_generation_dwh_server_v2",start_date=datetime.datetime
             task_id="cte_ipt",
             postgres_conn_id="lamisplus_conn",
             sql='call expanded_radet.proc_ipt()',
+            autocommit=True
+        )
+        
+        cte_iptnew = PostgresOperator(
+            task_id="cte_iptnew",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_iptnew()',
+            autocommit=True
+        )
+        
+        cte_tbtreatment = PostgresOperator(
+            task_id="cte_tbtreatment",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_tbtreatment_updated()',
             autocommit=True
         )
     
