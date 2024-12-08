@@ -73,6 +73,20 @@ with DAG("nomis_report_generation",start_date=datetime.datetime(2024, 10, 15),sc
             autocommit=True
         )
         
+        count_summary = PostgresOperator(
+            task_id="count_summary",
+            postgres_conn_id="nomis_datamart_conn",
+            sql='call public.proc_count_summary()',
+            autocommit=True
+        )
+        
+        vc_enrollment_indicator = PostgresOperator(
+            task_id="vc_enrollment_indicator",
+            postgres_conn_id="nomis_datamart_conn",
+            sql='call public.proc_vc_enrollment_indicator()',
+            autocommit=True
+        )
+        
     with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
         
         bio_data = PostgresOperator(

@@ -1,1651 +1,1516 @@
-table_name,column_name,data_type,ordinal_position,character_maximum_length
-across_locks,created,bigint,3,NULL
-across_locks,updated,bigint,4,NULL
-across_locks,holds,integer,5,NULL
-across_locks,owner_id,character varying,2,150
-across_locks,lock_id,character varying,1,150
-acrossmodules,version,integer,5,NULL
-acrossmodules,created,timestamp without time zone,7,NULL
-acrossmodules,module_id,character varying,1,120
-acrossmodules,installer_id,character varying,2,120
-acrossmodules,module,character varying,3,255
-acrossmodules,installer,character varying,4,255
-acrossmodules,description,character varying,6,500
-base_application_codeset,date_created,timestamp without time zone,7,NULL
-base_application_codeset,date_modified,timestamp without time zone,9,NULL
-base_application_codeset,archived,integer,11,NULL
-base_application_codeset,id,bigint,1,NULL
-base_application_codeset,codeset_group,character varying,2,NULL
-base_application_codeset,display,character varying,3,NULL
-base_application_codeset,language,character varying,4,NULL
-base_application_codeset,version,character varying,5,NULL
-base_application_codeset,code,character varying,6,NULL
-base_application_codeset,created_by,character varying,8,NULL
-base_application_codeset,modified_by,character varying,10,NULL
-base_application_codeset_standard_codeset,application_codeset_id,bigint,2,NULL
-base_application_codeset_standard_codeset,id,bigint,1,NULL
-base_application_codeset_standard_codeset,standard_codeset_id,bigint,3,NULL
-base_application_user,archived,integer,4,NULL
-base_application_user,date_reset,date,6,NULL
-base_application_user,current_organisation_unit_id,bigint,12,NULL
-base_application_user,date_created,timestamp without time zone,17,NULL
-base_application_user,date_modified,timestamp without time zone,19,NULL
-base_application_user,details,jsonb,20,NULL
-base_application_user,id,bigint,1,NULL
-base_application_user,user_name,character varying,2,NULL
-base_application_user,password,character varying,3,NULL
-base_application_user,activation_key,character varying,5,NULL
-base_application_user,reset_key,character varying,7,NULL
-base_application_user,email,character varying,8,255
-base_application_user,gender,character varying,9,255
-base_application_user,designation,character varying,10,NULL
-base_application_user,phone_number,character varying,11,255
-base_application_user,first_name,character varying,13,255
-base_application_user,last_name,character varying,14,255
-base_application_user,target_group,character varying,15,255
-base_application_user,created_by,character varying,16,NULL
-base_application_user,modified_by,character varying,18,NULL
-base_application_user_organisation_unit,application_user_id,bigint,2,NULL
-base_application_user_organisation_unit,organisation_unit_id,bigint,3,NULL
-base_application_user_organisation_unit,date_created,timestamp without time zone,5,NULL
-base_application_user_organisation_unit,date_modified,timestamp without time zone,6,NULL
-base_application_user_organisation_unit,archived,integer,8,NULL
-base_application_user_organisation_unit,id,bigint,1,NULL
-base_application_user_organisation_unit,created_by,character varying,4,255
-base_application_user_organisation_unit,modified_by,character varying,7,255
-base_application_user_role,user_id,bigint,1,NULL
-base_application_user_role,role_id,bigint,2,NULL
-base_authority,module_id,integer,3,NULL
-base_authority,id,character varying,1,50
-base_authority,name,character varying,2,64
-base_form,module_id,integer,4,NULL
-base_form,form,jsonb,6,NULL
-base_form,priority,integer,3,NULL
-base_form,name,character varying,2,16
-base_form,path,character varying,5,128
-base_form,id,character varying,1,36
-base_menu,position,integer,6,NULL
-base_menu,disabled,boolean,12,NULL
-base_menu,module_id,integer,13,NULL
-base_menu,parent_id,integer,14,NULL
-base_menu,archived,integer,15,NULL
-base_menu,id,bigint,1,NULL
-base_menu,name,character varying,2,64
-base_menu,state,character varying,3,256
-base_menu,type,character varying,4,256
-base_menu,level,character varying,5,16
-base_menu,icon,character varying,7,64
-base_menu,code,character varying,8,256
-base_menu,uuid,character varying,9,256
-base_menu,tooltip,character varying,10,256
-base_menu,breadcrumb,character varying,11,256
-base_menu,url,character varying,16,NULL
-base_menu_authorities,menu_id,integer,1,NULL
-base_menu_authorities,archived,integer,3,NULL
-base_menu_authorities,authorities,character varying,2,256
-base_module,build_time,timestamp without time zone,7,NULL
-base_module,active,boolean,10,NULL
-base_module,archived,integer,14,NULL
-base_module,in_error,boolean,11,NULL
-base_module,install_on_boot,boolean,12,NULL
-base_module,priority,integer,13,NULL
-base_module,id,bigint,1,NULL
-base_module,name,character varying,2,64
-base_module,artifact,character varying,3,512
-base_module,umd_location,character varying,4,512
-base_module,module_map,character varying,5,1024
-base_module,version,character varying,6,64
-base_module,base_package,character varying,8,64
-base_module,description,character varying,9,512
-base_module_artifact,module_id,bigint,2,NULL
-base_module_artifact,data,bytea,3,NULL
-base_module_artifact,archived,integer,4,NULL
-base_module_artifact,id,bigint,1,NULL
-base_module_authorities,module_id,integer,1,NULL
-base_module_authorities,authorities,character varying,2,256
-base_module_dependencies,module_id,bigint,2,NULL
-base_module_dependencies,dependency_id,bigint,3,NULL
-base_module_dependencies,id,bigint,1,NULL
-base_module_dependencies,version,character varying,4,8
-base_organisation_unit,organisation_unit_level_id,bigint,4,NULL
-base_organisation_unit,parent_organisation_unit_id,bigint,5,NULL
-base_organisation_unit,archived,integer,6,NULL
-base_organisation_unit,details,jsonb,7,NULL
-base_organisation_unit,date_created,timestamp without time zone,8,NULL
-base_organisation_unit,date_modified,timestamp without time zone,10,NULL
-base_organisation_unit,id,bigint,1,NULL
-base_organisation_unit,name,character varying,2,100
-base_organisation_unit,description,character varying,3,300
-base_organisation_unit,created_by,character varying,9,NULL
-base_organisation_unit,modified_by,character varying,11,NULL
-base_organisation_unit,uuid,character varying,12,NULL
-base_organisation_unit_hierarchy,organisation_unit_id,bigint,2,NULL
-base_organisation_unit_hierarchy,parent_organisation_unit_id,bigint,3,NULL
-base_organisation_unit_hierarchy,organisation_unit_level_id,bigint,4,NULL
-base_organisation_unit_hierarchy,id,bigint,1,NULL
-base_organisation_unit_identifier,organisation_unit_id,bigint,2,NULL
-base_organisation_unit_identifier,id,bigint,1,NULL
-base_organisation_unit_identifier,code,character varying,3,NULL
-base_organisation_unit_identifier,name,character varying,4,NULL
-base_organisation_unit_level,archived,integer,4,NULL
-base_organisation_unit_level,status,integer,5,NULL
-base_organisation_unit_level,date_created,timestamp without time zone,6,NULL
-base_organisation_unit_level,id,bigint,1,NULL
-base_organisation_unit_level,date_modified,timestamp without time zone,8,NULL
-base_organisation_unit_level,parent_organisation_unit_level_id,bigint,11,NULL
-base_organisation_unit_level,name,character varying,2,100
-base_organisation_unit_level,description,character varying,3,300
-base_organisation_unit_level,created_by,character varying,7,NULL
-base_organisation_unit_level,modified_by,character varying,9,NULL
-base_organisation_unit_level,uuid,character varying,10,NULL
-base_permission,date_created,timestamp without time zone,4,NULL
-base_permission,date_modified,timestamp without time zone,6,NULL
-base_permission,archived,integer,8,NULL
-base_permission,id,bigint,1,NULL
-base_permission,description,character varying,2,NULL
-base_permission,name,character varying,3,255
-base_permission,created_by,character varying,5,NULL
-base_permission,modified_by,character varying,7,NULL
-base_permission,module_name,character varying,9,NULL
-base_program,archived,integer,5,NULL
-base_program,date_modified,timestamp without time zone,6,NULL
-base_program,date_created,timestamp without time zone,8,NULL
-base_program,id,bigint,1,NULL
-base_program,name,character varying,2,NULL
-base_program,code,character varying,3,NULL
-base_program,module_id,character varying,4,NULL
-base_program,modified_by,character varying,7,255
-base_program,created_by,character varying,9,NULL
-base_role,date_created,timestamp without time zone,4,NULL
-base_role,date_modified,timestamp without time zone,6,NULL
-base_role,id,bigint,1,NULL
-base_role,archived,integer,8,NULL
-base_role,name,character varying,2,NULL
-base_role,code,character varying,3,NULL
-base_role,created_by,character varying,5,NULL
-base_role,modified_by,character varying,7,NULL
-base_role_menu,role_id,bigint,1,NULL
-base_role_menu,menu_id,bigint,2,NULL
-base_role_permission,role_id,bigint,1,NULL
-base_role_permission,permission_id,bigint,2,NULL
-base_standard_codeset,standard_codeset_source_id,bigint,4,NULL
-base_standard_codeset,archived,integer,5,NULL
-base_standard_codeset,date_created,timestamp without time zone,7,NULL
-base_standard_codeset,date_modified,timestamp without time zone,8,NULL
-base_standard_codeset,id,bigint,1,NULL
-base_standard_codeset,code,character varying,2,NULL
-base_standard_codeset,description,character varying,3,NULL
-base_standard_codeset,created_by,character varying,6,NULL
-base_standard_codeset,modified_by,character varying,9,NULL
-base_standard_codeset_source,archived,integer,4,NULL
-base_standard_codeset_source,date_created,timestamp without time zone,6,NULL
-base_standard_codeset_source,date_modified,timestamp without time zone,7,NULL
-base_standard_codeset_source,id,bigint,1,NULL
-base_standard_codeset_source,name,character varying,2,NULL
-base_standard_codeset_source,description,character varying,3,NULL
-base_standard_codeset_source,created_by,character varying,5,NULL
-base_standard_codeset_source,modified_by,character varying,8,NULL
-base_web_module,provides_for_id,bigint,9,NULL
-base_web_module,module_id,integer,10,NULL
-base_web_module,position,integer,4,NULL
-base_web_module,id,bigint,1,NULL
-base_web_module,name,character varying,2,64
-base_web_module,path,character varying,3,512
-base_web_module,description,character varying,5,512
-base_web_module,title,character varying,6,512
-base_web_module,breadcrumb,character varying,7,512
-base_web_module,type,character varying,8,8
-base_web_module_authorities,web_module_id,integer,1,NULL
-base_web_module_authorities,authorities,character varying,2,256
-biometric,created_date,timestamp without time zone,2,NULL
-biometric,last_modified_date,timestamp without time zone,4,NULL
-biometric,facility_id,bigint,6,NULL
-biometric,template,bytea,8,NULL
-biometric,enrollment_date,date,11,NULL
-biometric,archived,integer,12,NULL
-biometric,iso,boolean,13,NULL
-biometric,extra,jsonb,14,NULL
-biometric,version_iso_20,boolean,17,NULL
-biometric,image_quality,integer,18,NULL
-biometric,recapture,integer,19,NULL
-biometric,count,integer,22,NULL
-biometric,id,character varying,1,255
-biometric,created_by,character varying,3,255
-biometric,last_modified_by,character varying,5,255
-biometric,person_uuid,character varying,7,255
-biometric,biometric_type,character varying,9,255
-biometric,template_type,character varying,10,255
-biometric,device_name,character varying,15,255
-biometric,reason,character varying,16,255
-biometric,recapture_message,character varying,20,NULL
-biometric,hashed,character varying,21,NULL
-biometric,replace_date,date,23,NULL
-biometric_device,active,boolean,6,NULL
-biometric_device,id,bigint,1,NULL
-biometric_device,name,character varying,2,255
-biometric_device,url,character varying,3,255
-biometric_device,port,character varying,4,255
-biometric_device,type,character varying,5,255
-case_manager,facility_id,integer,8,NULL
-case_manager,create_date,timestamp without time zone,9,NULL
-case_manager,archived,integer,13,NULL
-case_manager,active,boolean,14,NULL
-case_manager,date_modified,timestamp without time zone,16,NULL
-case_manager,id,integer,1,NULL
-case_manager,uuid,character varying,2,255
-case_manager,designation,character varying,3,255
-case_manager,first_name,character varying,4,255
-case_manager,last_name,character varying,5,255
-case_manager,sex,character varying,6,255
-case_manager,phone_number,character varying,7,255
-case_manager,address,character varying,10,NULL
-case_manager,created_by,character varying,11,NULL
-case_manager,modified_by,character varying,12,NULL
-case_manager,religion,character varying,15,NULL
-case_manager_patients,archived,integer,27,NULL
-case_manager_patients,id,integer,1,NULL
-case_manager_patients,facility_id,bigint,7,NULL
-case_manager_patients,case_manager_id,integer,14,NULL
-case_manager_patients,create_date,timestamp without time zone,15,NULL
-case_manager_patients,date_assigned,timestamp without time zone,16,NULL
-case_manager_patients,date_created,timestamp without time zone,17,NULL
-case_manager_patients,date_modified,timestamp without time zone,18,NULL
-case_manager_patients,full_name,character varying,2,255
-case_manager_patients,sex,character varying,3,255
-case_manager_patients,current_status,character varying,4,255
-case_manager_patients,hospital_no,character varying,5,255
-case_manager_patients,age,character varying,6,255
-case_manager_patients,biometric_status,character varying,8,255
-case_manager_patients,person_uuid,character varying,9,255
-case_manager_patients,date_of_birth,character varying,10,255
-case_manager_patients,phone_number,character varying,11,255
-case_manager_patients,state,character varying,12,255
-case_manager_patients,lga,character varying,13,255
-case_manager_patients,created_by,character varying,19,NULL
-case_manager_patients,modified_by,character varying,20,NULL
-case_manager_patients,action,character varying,21,NULL
-case_manager_patients,uuid,character varying,22,NULL
-covid_codeset,id,bigint,1,NULL
-covid_codeset,uuid,character varying,2,100
-covid_codeset,name,character varying,3,200
-covid_codeset,category,character varying,4,1000
-covid_encounter,patient_id,integer,3,NULL
-covid_encounter,visit_date,date,4,NULL
-covid_encounter,id,bigint,1,NULL
-covid_encounter,uuid,character varying,2,100
-covid_encounter,category,character varying,5,200
-covid_encounter,location,character varying,6,200
-covid_patient,id,bigint,1,NULL
-covid_patient,gender,integer,7,NULL
-covid_patient,dob,date,8,NULL
-covid_patient,uuid,character varying,2,100
-covid_patient,first_name,character varying,3,100
-covid_patient,mid_name,character varying,4,100
-covid_patient,last_name,character varying,5,100
-covid_patient,participant_id,character varying,6,100
-covid_patient,phone,character varying,9,100
-covid_patient,address,character varying,10,200
-covid_patient,current_status,character varying,11,200
-covid_patient,vaccination_status,character varying,12,200
-covid_question,id,bigint,1,NULL
-covid_question,uuid,character varying,2,100
-covid_question,name,character varying,3,500
-covid_question,category,character varying,4,100
-covid_question,datatype,character varying,5,100
-covid_question_answer,question_id,integer,3,NULL
-covid_question_answer,encounter_id,integer,5,NULL
-covid_question_answer,id,bigint,1,NULL
-covid_question_answer,uuid,character varying,2,100
-covid_question_answer,answer,character varying,4,1000
-covid_question_response,question_id,integer,2,NULL
-covid_question_response,id,bigint,1,NULL
-covid_question_response,uuid,character varying,3,100
-covid_question_response,name,character varying,4,500
-covid_vaccination,patient_id,bigint,3,NULL
-covid_vaccination,facility_id,integer,5,NULL
-covid_vaccination,visit_id,bigint,7,NULL
-covid_vaccination,visit_date,timestamp without time zone,8,NULL
-covid_vaccination,work_in_health_sector,boolean,9,NULL
-covid_vaccination,occupation,integer,10,NULL
-covid_vaccination,known_medical_condition,boolean,11,NULL
-covid_vaccination,date_created,timestamp without time zone,14,NULL
-covid_vaccination,date_modified,timestamp without time zone,16,NULL
-covid_vaccination,archived,integer,18,NULL
-covid_vaccination,id,bigint,1,NULL
-covid_vaccination,uuid,character varying,2,100
-covid_vaccination,patient_uuid,character varying,4,100
-covid_vaccination,facility_uuid,character varying,6,100
-covid_vaccination,medical_condition,character varying,12,600
-covid_vaccination,vaccine_id,character varying,13,100
-covid_vaccination,created_by,character varying,15,100
-covid_vaccination,modified_by,character varying,17,100
-covid_vaccination_dose,id,bigint,1,NULL
-covid_vaccination_dose,patient_id,bigint,3,NULL
-covid_vaccination_dose,facility_id,integer,5,NULL
-covid_vaccination_dose,vaccine,integer,8,NULL
-covid_vaccination_dose,vaccine_date,date,9,NULL
-covid_vaccination_dose,date_created,timestamp without time zone,14,NULL
-covid_vaccination_dose,date_modified,timestamp without time zone,16,NULL
-covid_vaccination_dose,archived,integer,18,NULL
-covid_vaccination_dose,uuid,character varying,2,100
-covid_vaccination_dose,patient_uuid,character varying,4,100
-covid_vaccination_dose,facility_uuid,character varying,6,100
-covid_vaccination_dose,dose_number,character varying,7,100
-covid_vaccination_dose,location,character varying,10,200
-covid_vaccination_dose,vaccination_facility,character varying,11,100
-covid_vaccination_dose,batch_number,character varying,12,100
-covid_vaccination_dose,adverse_effect,character varying,13,500
-covid_vaccination_dose,created_by,character varying,15,100
-covid_vaccination_dose,modified_by,character varying,17,100
-databasechangelog,dateexecuted,timestamp without time zone,4,NULL
-databasechangelog,orderexecuted,integer,5,NULL
-databasechangelog,id,character varying,1,255
-databasechangelog,author,character varying,2,255
-databasechangelog,filename,character varying,3,255
-databasechangelog,exectype,character varying,6,10
-databasechangelog,md5sum,character varying,7,35
-databasechangelog,description,character varying,8,255
-databasechangelog,comments,character varying,9,255
-databasechangelog,tag,character varying,10,255
-databasechangelog,liquibase,character varying,11,20
-databasechangelog,contexts,character varying,12,255
-databasechangelog,labels,character varying,13,255
-databasechangelog,deployment_id,character varying,14,10
-databasechangeloglock,id,integer,1,NULL
-databasechangeloglock,locked,boolean,2,NULL
-databasechangeloglock,lockgranted,timestamp without time zone,3,NULL
-databasechangeloglock,lockedby,character varying,4,255
-dsd_devolvement,id,integer,1,NULL
-dsd_devolvement,person_uuid,character varying,2,255
-dsd_devolvement,facility_id,bigint,3,NULL
-dsd_devolvement,created_date,timestamp without time zone,4,NULL
-dsd_devolvement,created_by,character varying,5,255
-dsd_devolvement,last_modified_date,timestamp without time zone,6,NULL
-dsd_devolvement,last_modified_by,character varying,7,255
-dsd_devolvement,viral_load_test_result,character varying,8,255
-dsd_devolvement,viral_load_test_result_date,date,9,NULL
-dsd_devolvement,dsd_eligible,character varying,10,255
-dsd_devolvement,dsd_accept,character varying,11,255
-dsd_devolvement,dsd_model,character varying,12,255
-dsd_devolvement,score,integer,13,NULL
-dsd_devolvement,dsd_type,character varying,14,255
-dsd_devolvement,comment,character varying,15,255
-dsd_devolvement,completed_by,character varying,16,255
-dsd_devolvement,designation,character varying,17,255
-dsd_devolvement,date_devolved,date,18,NULL
-dsd_devolvement,uuid,character varying,19,255
-dsd_devolvement,archived,integer,20,NULL
-dsd_devolvement,dsd_eligibility_assessment,character varying,21,1000
-dsd_devolvement,client_return_to_site,character varying,22,255
-dsd_devolvement,date_return_to_site,date,23,NULL
-dsd_devolvement,service_provider,character varying,24,255
-dsd_devolvement,service_provided,character varying,25,255
-dsd_devolvement,ods_load_time,timestamp without time zone,27,NULL
-dsd_devolvement,ods_datim_id,character varying,29,255
-etl_facility,id,bigint,1,NULL
-etl_facility,facility_name,character varying,2,100
-etl_facility,lga_name,character varying,3,45
-etl_facility,datim_id,character varying,4,32
-etl_hiv_art_clinical_stage,created_date,timestamp without time zone,1,NULL
-etl_hiv_art_clinical_stage,last_modified_date,timestamp without time zone,3,NULL
-etl_hiv_art_clinical_stage,archived,integer,6,NULL
-etl_hiv_art_clinical_stage,visit_date,date,7,NULL
-etl_hiv_art_clinical_stage,cd_4,double precision,8,NULL
-etl_hiv_art_clinical_stage,cd_4_percentage,double precision,9,NULL
-etl_hiv_art_clinical_stage,is_commencement,boolean,10,NULL
-etl_hiv_art_clinical_stage,next_appointment,date,19,NULL
-etl_hiv_art_clinical_stage,lmp_date,date,20,NULL
-etl_hiv_art_clinical_stage,id,integer,27,NULL
-etl_hiv_art_clinical_stage,regimen_type_id,integer,29,NULL
-etl_hiv_art_clinical_stage,tb_status,integer,32,NULL
-etl_hiv_art_clinical_stage,regimen_id,bigint,28,NULL
-etl_hiv_art_clinical_stage,created_by,character varying,2,100
-etl_hiv_art_clinical_stage,last_modified_by,character varying,4,100
-etl_hiv_art_clinical_stage,uuid,character varying,5,100
-etl_hiv_art_clinical_stage,oi_screened,character varying,11,2000
-etl_hiv_art_clinical_stage,sti_ids,character varying,12,2000
-etl_hiv_art_clinical_stage,sti_treated,character varying,13,2000
-etl_hiv_art_clinical_stage,opportunistic_infections,character varying,14,2000
-etl_hiv_art_clinical_stage,adr_screened,character varying,15,2000
-etl_hiv_art_clinical_stage,adverse_drug_reactions,character varying,16,2000
-etl_hiv_art_clinical_stage,adherence_level,character varying,17,2000
-etl_hiv_art_clinical_stage,adheres,character varying,18,2000
-etl_hiv_art_clinical_stage,functional_status,character varying,21,500
-etl_hiv_art_clinical_stage,clinical_stage,character varying,22,500
-etl_hiv_art_clinical_stage,datim_id,character varying,23,100
-etl_hiv_art_clinical_stage,hiv_enrollment_uuid,character varying,24,255
-etl_hiv_art_clinical_stage,visit_id,character varying,25,255
-etl_hiv_art_clinical_stage,person_uuid,character varying,26,255
-etl_hiv_art_clinical_stage,extra,character varying,30,2000
-etl_hiv_art_clinical_stage,notes,character varying,31,2000
-etl_hiv_enrollment_stage,pregnant,boolean,12,NULL
-etl_hiv_enrollment_stage,id,integer,1,NULL
-etl_hiv_enrollment_stage,date_confirmed_hiv,date,6,NULL
-etl_hiv_enrollment_stage,date_enrolled_pmtct,date,7,NULL
-etl_hiv_enrollment_stage,time_hiv_diagnosis,timestamp without time zone,8,NULL
-etl_hiv_enrollment_stage,date_of_registration,date,9,NULL
-etl_hiv_enrollment_stage,date_started,date,10,NULL
-etl_hiv_enrollment_stage,breastfeeding,boolean,13,NULL
-etl_hiv_enrollment_stage,send_message,boolean,16,NULL
-etl_hiv_enrollment_stage,archived,boolean,17,NULL
-etl_hiv_enrollment_stage,created_date,timestamp without time zone,18,NULL
-etl_hiv_enrollment_stage,last_modified_date,timestamp without time zone,20,NULL
-etl_hiv_enrollment_stage,facility_id,integer,22,NULL
-etl_hiv_enrollment_stage,visit_id,integer,25,NULL
-etl_hiv_enrollment_stage,date_of_lpm,timestamp without time zone,28,NULL
-etl_hiv_enrollment_stage,person_uuid,character varying,2,50
-etl_hiv_enrollment_stage,unique_id,character varying,3,230
-etl_hiv_enrollment_stage,entry_point_id,character varying,4,230
-etl_hiv_enrollment_stage,target_group_id,character varying,5,230
-etl_hiv_enrollment_stage,source_of_referrer_id,character varying,11,230
-etl_hiv_enrollment_stage,status_at_registration_id,character varying,14,230
-etl_hiv_enrollment_stage,enrollment_setting_id,character varying,15,230
-etl_hiv_enrollment_stage,created_by,character varying,19,NULL
-etl_hiv_enrollment_stage,last_modified_by,character varying,21,NULL
-etl_hiv_enrollment_stage,facility_name,character varying,23,230
-etl_hiv_enrollment_stage,lga_name,character varying,24,230
-etl_hiv_enrollment_stage,uuid,character varying,26,50
-etl_hiv_enrollment_stage,ovc_number,character varying,27,230
-etl_hiv_enrollment_stage,pregnancy_status_id,character varying,29,NULL
-etl_hiv_enrollment_stage,tb_status_id,character varying,30,NULL
-etl_hiv_observation,id,integer,1,NULL
-etl_hiv_observation,created_date,timestamp without time zone,10,NULL
-etl_hiv_observation,last_modified_date,timestamp without time zone,11,NULL
-etl_hiv_observation,date_of_observation,date,15,NULL
-etl_hiv_observation,archived,integer,18,NULL
-etl_hiv_observation,facility_id,bigint,19,NULL
-etl_hiv_observation,screening_result,character varying,2,100
-etl_hiv_observation,screen_method,character varying,3,100
-etl_hiv_observation,screen_type,character varying,4,100
-etl_hiv_observation,date_of_screening,character varying,5,100
-etl_hiv_observation,screening_area,character varying,6,100
-etl_hiv_observation,screening_gross,character varying,7,100
-etl_hiv_observation,screening_refferal,character varying,8,100
-etl_hiv_observation,screening_visible,character varying,9,100
-etl_hiv_observation,created_by,character varying,12,100
-etl_hiv_observation,last_modified_by,character varying,13,100
-etl_hiv_observation,type,character varying,14,100
-etl_hiv_observation,person_uuid,character varying,16,100
-etl_hiv_observation,uuid,character varying,17,NULL
-etl_hiv_observation,visit_id,character varying,20,NULL
-etl_patient_stage,patient_id,integer,1,NULL
-etl_patient_stage,person_uuid,character varying,2,36
-etl_patient_stage,gender,character varying,3,7
-etl_patient_stage,marital_status,character varying,4,50
-etl_patient_stage,education,character varying,5,50
-etl_patient_stage,occupation,character varying,6,50
-etl_patient_stage,next_of_kin_relationship,character varying,7,50
-etl_patient_visit_date_nulls,visit_start_date,date,2,NULL
-etl_patient_visit_date_nulls,visit_end_date,date,3,NULL
-etl_patient_visit_date_nulls,person_uuid,character varying,1,36
-etl_patient_visit_date_nulls,uuid,character varying,4,50
-etl_patient_visit_date_nulls,datim_id,character varying,5,32
-etl_patient_visit_stage,visit_start_date,date,2,NULL
-etl_patient_visit_stage,visit_end_date,date,3,NULL
-etl_patient_visit_stage,id,integer,6,NULL
-etl_patient_visit_stage,person_uuid,character varying,1,50
-etl_patient_visit_stage,datim_id,character varying,4,20
-etl_patient_visit_stage,uuid,character varying,5,50
-etl_patient_visit_stage_duplicate,visit_start_date,date,2,NULL
-etl_patient_visit_stage_duplicate,visit_end_date,date,3,NULL
-etl_patient_visit_stage_duplicate,uuid,uuid,4,NULL
-etl_patient_visit_stage_duplicate,person_uuid,character varying,1,36
-etl_patient_visit_stage_duplicate,datim_id,character varying,5,32
-etl_sequence,sequence_count,bigint,1,NULL
-etl_sequence,date_time,timestamp without time zone,3,NULL
-etl_sequence,table_name,character varying,2,NULL
-etl_triage_vital_sign_stage,facility_id,bigint,2,NULL
-etl_triage_vital_sign_stage,created_date,timestamp without time zone,3,NULL
-etl_triage_vital_sign_stage,last_modified_date,timestamp without time zone,4,NULL
-etl_triage_vital_sign_stage,archived,integer,6,NULL
-etl_triage_vital_sign_stage,body_weight,double precision,7,NULL
-etl_triage_vital_sign_stage,diastolic,double precision,8,NULL
-etl_triage_vital_sign_stage,systolic,double precision,9,NULL
-etl_triage_vital_sign_stage,height,double precision,10,NULL
-etl_triage_vital_sign_stage,id,integer,13,NULL
-etl_triage_vital_sign_stage,capture_date,timestamp without time zone,14,NULL
-etl_triage_vital_sign_stage,person_uuid,character varying,1,36
-etl_triage_vital_sign_stage,uuid,character varying,5,50
-etl_triage_vital_sign_stage,datim_id,character varying,11,32
-etl_triage_vital_sign_stage,visit_id,character varying,12,50
-hiv_art_clinical,created_date,timestamp without time zone,2,NULL
-hiv_art_clinical,last_modified_date,timestamp without time zone,4,NULL
-hiv_art_clinical,facility_id,bigint,6,NULL
-hiv_art_clinical,visit_date,date,7,NULL
-hiv_art_clinical,cd_4,bigint,8,NULL
-hiv_art_clinical,cd_4_percentage,bigint,9,NULL
-hiv_art_clinical,is_commencement,boolean,10,NULL
-hiv_art_clinical,functional_status_id,bigint,11,NULL
-hiv_art_clinical,clinical_stage_id,bigint,12,NULL
-hiv_art_clinical,regimen_id,bigint,16,NULL
-hiv_art_clinical,regimen_type_id,bigint,17,NULL
-hiv_art_clinical,art_status_id,bigint,18,NULL
-hiv_art_clinical,archived,integer,19,NULL
-hiv_art_clinical,who_staging_id,bigint,21,NULL
-hiv_art_clinical,opportunistic_infections,jsonb,28,NULL
-hiv_art_clinical,adverse_drug_reactions,jsonb,30,NULL
-hiv_art_clinical,adheres,jsonb,32,NULL
-hiv_art_clinical,next_appointment,date,33,NULL
-hiv_art_clinical,lmp_date,date,34,NULL
-hiv_art_clinical,tb_screen,jsonb,35,NULL
-hiv_art_clinical,is_viral_load_at_start_of_art,boolean,36,NULL
-hiv_art_clinical,viral_load_at_start_of_art,double precision,37,NULL
-hiv_art_clinical,date_of_viral_load_at_start_of_art,date,38,NULL
-hiv_art_clinical,arvdrugs_regimen,jsonb,48,NULL
-hiv_art_clinical,viral_load_order,jsonb,49,NULL
-hiv_art_clinical,cd4_flow_cytometry,integer,52,NULL
-hiv_art_clinical,extra,jsonb,53,NULL
-hiv_art_clinical,id,bigint,1,NULL
-hiv_art_clinical,created_by,character varying,3,255
-hiv_art_clinical,last_modified_by,character varying,5,255
-hiv_art_clinical,clinical_note,character varying,13,255
-hiv_art_clinical,uuid,character varying,14,255
-hiv_art_clinical,hiv_enrollment_uuid,character varying,15,255
-hiv_art_clinical,vital_sign_uuid,character varying,20,255
-hiv_art_clinical,person_uuid,character varying,22,255
-hiv_art_clinical,visit_id,character varying,23,255
-hiv_art_clinical,oi_screened,character varying,24,255
-hiv_art_clinical,sti_ids,character varying,25,255
-hiv_art_clinical,pregnancy_status,character varying,26,255
-hiv_art_clinical,sti_treated,character varying,27,255
-hiv_art_clinical,adr_screened,character varying,29,255
-hiv_art_clinical,adherence_level,character varying,31,255
-hiv_art_clinical,cryptococcal_screening_status,character varying,39,255
-hiv_art_clinical,cervical_cancer_screening_status,character varying,40,255
-hiv_art_clinical,cervical_cancer_treatment_provided,character varying,41,255
-hiv_art_clinical,hepatitis_screening_result,character varying,42,255
-hiv_art_clinical,family_planing,character varying,43,255
-hiv_art_clinical,on_family_planing,character varying,44,255
-hiv_art_clinical,level_of_adherence,character varying,45,255
-hiv_art_clinical,tb_status,character varying,46,255
-hiv_art_clinical,tb_prevention,character varying,47,255
-hiv_art_clinical,cd4_count,character varying,50,255
-hiv_art_clinical,cd4_semi_quantitative,character varying,51,255
-hiv_art_clinical,cd4_type,character varying,54,100
-hiv_art_pharmacy,created_date,timestamp without time zone,2,NULL
-hiv_art_pharmacy,last_modified_date,timestamp without time zone,4,NULL
-hiv_art_pharmacy,facility_id,bigint,6,NULL
-hiv_art_pharmacy,visit_date,date,9,NULL
-hiv_art_pharmacy,ard_screened,boolean,10,NULL
-hiv_art_pharmacy,prescription_error,boolean,11,NULL
-hiv_art_pharmacy,adherence,boolean,12,NULL
-hiv_art_pharmacy,next_appointment,date,15,NULL
-hiv_art_pharmacy,extra,jsonb,16,NULL
-hiv_art_pharmacy,adverse_drug_reactions,jsonb,17,NULL
-hiv_art_pharmacy,is_devolve,boolean,18,NULL
-hiv_art_pharmacy,refill_period,integer,19,NULL
-hiv_art_pharmacy,archived,integer,25,NULL
-hiv_art_pharmacy,ipt,jsonb,27,NULL
-hiv_art_pharmacy,id,bigint,1,NULL
-hiv_art_pharmacy,created_by,character varying,3,255
-hiv_art_pharmacy,last_modified_by,character varying,5,255
-hiv_art_pharmacy,visit_id,character varying,7,255
-hiv_art_pharmacy,person_uuid,character varying,8,255
-hiv_art_pharmacy,mmd_type,character varying,13,255
-hiv_art_pharmacy,uuid,character varying,14,255
-hiv_art_pharmacy,dsd_model_type,character varying,20,255
-hiv_art_pharmacy,refill,character varying,21,255
-hiv_art_pharmacy,refill_type,character varying,22,255
-hiv_art_pharmacy,delivery_point,character varying,23,255
-hiv_art_pharmacy,dsd_model,character varying,24,255
-hiv_art_pharmacy,ipt_type,character varying,26,255
-hiv_art_pharmacy,visit_type,character varying,28,100
-hiv_art_pharmacy_regimens,art_pharmacy_id,bigint,2,NULL
-hiv_art_pharmacy_regimens,regimens_id,bigint,3,NULL
-hiv_art_pharmacy_regimens,id,bigint,1,NULL
-hiv_drug,pack_size,integer,5,NULL
-hiv_drug,morning,integer,7,NULL
-hiv_drug,afternoon,integer,8,NULL
-hiv_drug,evening,integer,9,NULL
-hiv_drug,item_id,bigint,10,NULL
-hiv_drug,id,bigint,1,NULL
-hiv_drug,abbrev,character varying,2,45
-hiv_drug,name,character varying,3,100
-hiv_drug,strength,character varying,4,45
-hiv_drug,doseform,character varying,6,45
-hiv_eac,created_date,timestamp without time zone,2,NULL
-hiv_eac,last_modified_date,timestamp without time zone,4,NULL
-hiv_eac,facility_id,bigint,6,NULL
-hiv_eac,last_viral_load,double precision,9,NULL
-hiv_eac,date_of_last_viral_load,date,10,NULL
-hiv_eac,id,bigint,1,NULL
-hiv_eac,archived,integer,13,NULL
-hiv_eac,test_result_id,bigint,14,NULL
-hiv_eac,created_by,character varying,3,255
-hiv_eac,last_modified_by,character varying,5,255
-hiv_eac,person_uuid,character varying,7,255
-hiv_eac,visit_id,character varying,8,255
-hiv_eac,uuid,character varying,11,255
-hiv_eac,status,character varying,12,255
-hiv_eac,test_group,character varying,15,255
-hiv_eac,test_name,character varying,16,255
-hiv_eac,lab_number,character varying,17,255
-hiv_eac,reason_to_stop_eac,character varying,18,255
-hiv_eac_out_come,created_date,timestamp without time zone,2,NULL
-hiv_eac_out_come,last_modified_date,timestamp without time zone,4,NULL
-hiv_eac_out_come,facility_id,bigint,6,NULL
-hiv_eac_out_come,repeat_viral_loader,double precision,10,NULL
-hiv_eac_out_come,plan_action,jsonb,13,NULL
-hiv_eac_out_come,archived,integer,17,NULL
-hiv_eac_out_come,id,bigint,1,NULL
-hiv_eac_out_come,created_by,character varying,3,255
-hiv_eac_out_come,last_modified_by,character varying,5,255
-hiv_eac_out_come,eac_id,character varying,7,255
-hiv_eac_out_come,person_uuid,character varying,8,255
-hiv_eac_out_come,visit_id,character varying,9,255
-hiv_eac_out_come,outcome,character varying,11,255
-hiv_eac_out_come,plan,character varying,12,255
-hiv_eac_out_come,current_regimen,character varying,14,255
-hiv_eac_out_come,switch_regimen,character varying,15,255
-hiv_eac_out_come,substitute_regimen,character varying,16,255
-hiv_eac_out_come,uuid,character varying,18,255
-hiv_eac_session,created_date,timestamp without time zone,2,NULL
-hiv_eac_session,last_modified_date,timestamp without time zone,4,NULL
-hiv_eac_session,facility_id,bigint,6,NULL
-hiv_eac_session,barriers,jsonb,10,NULL
-hiv_eac_session,intervention,jsonb,11,NULL
-hiv_eac_session,follow_up_date,date,15,NULL
-hiv_eac_session,eac_session_date,date,16,NULL
-hiv_eac_session,archived,integer,21,NULL
-hiv_eac_session,id,bigint,1,NULL
-hiv_eac_session,created_by,character varying,3,255
-hiv_eac_session,last_modified_by,character varying,5,255
-hiv_eac_session,eac_id,character varying,7,255
-hiv_eac_session,person_uuid,character varying,8,255
-hiv_eac_session,visit_id,character varying,9,255
-hiv_eac_session,barriers_others,character varying,12,255
-hiv_eac_session,intervention_others,character varying,13,255
-hiv_eac_session,comment,character varying,14,255
-hiv_eac_session,referral,character varying,17,255
-hiv_eac_session,adherence,character varying,18,255
-hiv_eac_session,uuid,character varying,19,255
-hiv_eac_session,status,character varying,20,255
-hiv_enrollment,created_date,timestamp without time zone,2,NULL
-hiv_enrollment,last_modified_date,timestamp without time zone,4,NULL
-hiv_enrollment,facility_id,bigint,6,NULL
-hiv_enrollment,entry_point_id,bigint,8,NULL
-hiv_enrollment,target_group_id,bigint,9,NULL
-hiv_enrollment,date_confirmed_hiv,date,10,NULL
-hiv_enrollment,date_enrolled_pmtct,date,11,NULL
-hiv_enrollment,source_of_referrer_id,bigint,12,NULL
-hiv_enrollment,time_hiv_diagnosis,timestamp with time zone,13,NULL
-hiv_enrollment,pregnant,boolean,14,NULL
-hiv_enrollment,breastfeeding,boolean,15,NULL
-hiv_enrollment,date_of_registration,date,16,NULL
-hiv_enrollment,status_at_registration_id,bigint,17,NULL
-hiv_enrollment,enrollment_setting_id,bigint,18,NULL
-hiv_enrollment,date_started,date,19,NULL
-hiv_enrollment,send_message,boolean,20,NULL
-hiv_enrollment,archived,integer,24,NULL
-hiv_enrollment,date_referred_to_ovcpartner,date,31,NULL
-hiv_enrollment,date_referred_from_ovcpartner,date,32,NULL
-hiv_enrollment,date_of_lpm,date,33,NULL
-hiv_enrollment,pregnancy_status_id,bigint,34,NULL
-hiv_enrollment,tb_status_id,bigint,35,NULL
-hiv_enrollment,id,bigint,1,NULL
-hiv_enrollment,created_by,character varying,3,255
-hiv_enrollment,last_modified_by,character varying,5,255
-hiv_enrollment,unique_id,character varying,7,255
-hiv_enrollment,person_uuid,character varying,21,255
-hiv_enrollment,visit_id,character varying,22,255
-hiv_enrollment,uuid,character varying,23,255
-hiv_enrollment,facility_name,character varying,25,255
-hiv_enrollment,ovc_number,character varying,26,255
-hiv_enrollment,house_hold_number,character varying,27,255
-hiv_enrollment,care_entry_point_other,character varying,28,255
-hiv_enrollment,referred_to_ovcpartner,character varying,29,255
-hiv_enrollment,referred_from_ovcpartner,character varying,30,255
-hiv_enrollment,lip_name,character varying,36,100
-hiv_observation,created_date,timestamp without time zone,2,NULL
-hiv_observation,last_modified_date,timestamp without time zone,4,NULL
-hiv_observation,facility_id,bigint,6,NULL
-hiv_observation,date_of_observation,date,7,NULL
-hiv_observation,data,jsonb,12,NULL
-hiv_observation,archived,integer,13,NULL
-hiv_observation,id,bigint,1,NULL
-hiv_observation,created_by,character varying,3,255
-hiv_observation,last_modified_by,character varying,5,255
-hiv_observation,person_uuid,character varying,8,255
-hiv_observation,visit_id,character varying,9,255
-hiv_observation,type,character varying,10,255
-hiv_observation,uuid,character varying,11,255
-hiv_ovc_linkage,id,uuid,1,NULL
-hiv_ovc_linkage,created_date,timestamp without time zone,2,NULL
-hiv_ovc_linkage,last_modified_date,timestamp without time zone,4,NULL
-hiv_ovc_linkage,facility_id,bigint,6,NULL
-hiv_ovc_linkage,birth_date,date,11,NULL
-hiv_ovc_linkage,share_contact_with_ovc,integer,17,NULL
-hiv_ovc_linkage,drug_refill_notification,integer,19,NULL
-hiv_ovc_linkage,offer_date,date,23,NULL
-hiv_ovc_linkage,enrollment_date,date,24,NULL
-hiv_ovc_linkage,enrolled_in_ovc_program,integer,27,NULL
-hiv_ovc_linkage,archived,integer,28,NULL
-hiv_ovc_linkage,created_by,character varying,3,255
-hiv_ovc_linkage,last_modified_by,character varying,5,255
-hiv_ovc_linkage,art_number,character varying,7,255
-hiv_ovc_linkage,last_name,character varying,8,255
-hiv_ovc_linkage,other_name,character varying,9,255
-hiv_ovc_linkage,gender,character varying,10,255
-hiv_ovc_linkage,facility_name,character varying,12,255
-hiv_ovc_linkage,datim_code,character varying,13,255
-hiv_ovc_linkage,state_of_residence,character varying,14,255
-hiv_ovc_linkage,lga_of_residence,character varying,15,255
-hiv_ovc_linkage,entry_point,character varying,16,255
-hiv_ovc_linkage,reason_for_decline,character varying,18,255
-hiv_ovc_linkage,phone_number,character varying,20,255
-hiv_ovc_linkage,caregiver_surname,character varying,21,255
-hiv_ovc_linkage,caregiver_other_name,character varying,22,255
-hiv_ovc_linkage,ovc_unique_id,character varying,25,255
-hiv_ovc_linkage,household_unique_id,character varying,26,255
-hiv_ovc_linkage,cbo_name,character varying,29,255
-hiv_ovc_linkage,facility_staff_name,character varying,30,255
-hiv_ovc_linkage,status,character varying,31,255
-hiv_patient_tracker,created_date,timestamp without time zone,2,NULL
-hiv_patient_tracker,last_modified_date,timestamp without time zone,4,NULL
-hiv_patient_tracker,facility_id,bigint,6,NULL
-hiv_patient_tracker,archived,integer,19,NULL
-hiv_patient_tracker,attempts,jsonb,21,NULL
-hiv_patient_tracker,date_last_appointment,date,23,NULL
-hiv_patient_tracker,date_return_to_care,date,24,NULL
-hiv_patient_tracker,date_of_discontinuation,date,25,NULL
-hiv_patient_tracker,date_missed_appointment,date,26,NULL
-hiv_patient_tracker,date_of_observation,date,29,NULL
-hiv_patient_tracker,id,bigint,1,NULL
-hiv_patient_tracker,created_by,character varying,3,255
-hiv_patient_tracker,last_modified_by,character varying,5,255
-hiv_patient_tracker,dsd_status,character varying,7,255
-hiv_patient_tracker,dsd_model,character varying,8,255
-hiv_patient_tracker,reason_for_tracking,character varying,9,255
-hiv_patient_tracker,care_in_facility_discountinued,character varying,10,255
-hiv_patient_tracker,reason_for_discountinuation,character varying,11,255
-hiv_patient_tracker,cause_of_death,character varying,12,255
-hiv_patient_tracker,reason_for_loss_to_follow_up,character varying,13,255
-hiv_patient_tracker,referred_for,character varying,14,255
-hiv_patient_tracker,referred_for_others,character varying,15,255
-hiv_patient_tracker,reason_for_tracking_others,character varying,16,255
-hiv_patient_tracker,cause_of_death_others,character varying,17,255
-hiv_patient_tracker,reason_for_loss_to_follow_up_others,character varying,18,255
-hiv_patient_tracker,uuid,character varying,20,255
-hiv_patient_tracker,duration_onart,character varying,22,255
-hiv_patient_tracker,person_uuid,character varying,27,255
-hiv_patient_tracker,status_uuid,character varying,28,255
-hiv_patient_tracker,biometric_status,character varying,30,100
-hiv_regimen,regimen_type_id,bigint,4,NULL
-hiv_regimen,id,bigint,1,NULL
-hiv_regimen,active,boolean,5,NULL
-hiv_regimen,priority,integer,6,NULL
-hiv_regimen,description,character varying,2,100
-hiv_regimen,composition,character varying,3,100
-hiv_regimen_drug,regimen_id,bigint,2,NULL
-hiv_regimen_drug,drug_id,bigint,3,NULL
-hiv_regimen_drug,id,bigint,1,NULL
-hiv_regimen_resolver,regimensys,character varying,1,255
-hiv_regimen_resolver,regimen,character varying,2,255
-hiv_regimen_type,id,bigint,1,NULL
-hiv_regimen_type,description,character varying,2,100
-hiv_status_tracker,created_date,timestamp without time zone,2,NULL
-hiv_status_tracker,last_modified_date,timestamp without time zone,4,NULL
-hiv_status_tracker,facility_id,bigint,6,NULL
-hiv_status_tracker,status_date,date,8,NULL
-hiv_status_tracker,track_date,date,12,NULL
-hiv_status_tracker,agreed_date,date,13,NULL
-hiv_status_tracker,auto,boolean,16,NULL
-hiv_status_tracker,archived,integer,18,NULL
-hiv_status_tracker,id,bigint,1,NULL
-hiv_status_tracker,created_by,character varying,3,255
-hiv_status_tracker,last_modified_by,character varying,5,255
-hiv_status_tracker,hiv_status,character varying,7,255
-hiv_status_tracker,person_id,character varying,9,255
-hiv_status_tracker,visit_id,character varying,10,255
-hiv_status_tracker,tracking_outcome,character varying,11,255
-hiv_status_tracker,reason_for_interruption,character varying,14,255
-hiv_status_tracker,cause_of_death,character varying,15,255
-hiv_status_tracker,uuid,character varying,17,255
-hiv_status_tracker,va_cause_of_death,character varying,19,255
-hiv_status_tracker,va_cause_of_death_type,character varying,20,255
-hiv_status_tracker,biometric_status,character varying,21,100
-hts_client,date_visit,date,4,NULL
-hts_client,referred_from,bigint,5,NULL
-hts_client,first_time_visit,boolean,11,NULL
-hts_client,num_children,integer,12,NULL
-hts_client,num_wives,integer,13,NULL
-hts_client,type_counseling,bigint,14,NULL
-hts_client,index_client,boolean,15,NULL
-hts_client,prep_offered,boolean,16,NULL
-hts_client,prep_accepted,boolean,17,NULL
-hts_client,previously_tested,boolean,18,NULL
-hts_client,extra,jsonb,19,NULL
-hts_client,pregnant,bigint,20,NULL
-hts_client,breast_feeding,boolean,21,NULL
-hts_client,relation_with_index_client,bigint,22,NULL
-hts_client,test1,jsonb,23,NULL
-hts_client,confirmatory_test,jsonb,24,NULL
-hts_client,tie_breaker_test,jsonb,25,NULL
-hts_client,test2,jsonb,26,NULL
-hts_client,confirmatory_test2,jsonb,27,NULL
-hts_client,tie_breaker_test2,jsonb,28,NULL
-hts_client,knowledge_assessment,jsonb,30,NULL
-hts_client,risk_assessment,jsonb,31,NULL
-hts_client,tb_screening,jsonb,32,NULL
-hts_client,sti_screening,jsonb,33,NULL
-hts_client,facility_id,bigint,34,NULL
-hts_client,hepatitis_testing,jsonb,37,NULL
-hts_client,recency,jsonb,38,NULL
-hts_client,syphilis_testing,jsonb,39,NULL
-hts_client,index_notification_services_elicitation,jsonb,40,NULL
-hts_client,post_test_counseling,jsonb,41,NULL
-hts_client,sex_partner_risk_assessment,jsonb,42,NULL
-hts_client,others,jsonb,43,NULL
-hts_client,cd4,jsonb,44,NULL
-hts_client,date_created,timestamp without time zone,45,NULL
-hts_client,date_modified,timestamp without time zone,47,NULL
-hts_client,archived,integer,49,NULL
-hts_client,id,bigint,1,NULL
-hts_client,hiv_test_result2,character varying,29,NULL
-hts_client,captured_by,character varying,35,NULL
-hts_client,uuid,character varying,36,NULL
-hts_client,created_by,character varying,46,NULL
-hts_client,modified_by,character varying,48,NULL
-hts_client,index_client_code,character varying,50,NULL
-hts_client,risk_stratification_code,character varying,51,NULL
-hts_client,target_group,character varying,2,100
-hts_client,client_code,character varying,3,100
-hts_client,person_uuid,character varying,6,NULL
-hts_client,testing_setting,character varying,7,100
-hts_client,prep_given,character varying,8,NULL
-hts_client,other_drugs,character varying,9,NULL
-hts_client,hiv_test_result,character varying,10,NULL
-hts_index_elicitation,dob,date,3,NULL
-hts_index_elicitation,is_date_of_birth_estimated,boolean,4,NULL
-hts_index_elicitation,sex,bigint,5,NULL
-hts_index_elicitation,physical_hurt,bigint,13,NULL
-hts_index_elicitation,threaten_to_hurt,bigint,14,NULL
-hts_index_elicitation,notification_method,bigint,15,NULL
-hts_index_elicitation,partner_tested_positive,bigint,16,NULL
-hts_index_elicitation,sexually_uncomfortable,bigint,17,NULL
-hts_index_elicitation,currently_live_with_partner,boolean,18,NULL
-hts_index_elicitation,relationship_with_index_client,bigint,19,NULL
-hts_index_elicitation,date_partner_came_for_testing,date,20,NULL
-hts_index_elicitation,facility_id,bigint,21,NULL
-hts_index_elicitation,date_created,timestamp without time zone,23,NULL
-hts_index_elicitation,date_modified,timestamp without time zone,25,NULL
-hts_index_elicitation,archived,integer,27,NULL
-hts_index_elicitation,extra,jsonb,28,NULL
-hts_index_elicitation,id,bigint,1,NULL
-hts_index_elicitation,uuid,character varying,2,NULL
-hts_index_elicitation,address,character varying,6,NULL
-hts_index_elicitation,last_name,character varying,7,NULL
-hts_index_elicitation,first_name,character varying,8,NULL
-hts_index_elicitation,middle_name,character varying,9,NULL
-hts_index_elicitation,phone_number,character varying,10,NULL
-hts_index_elicitation,alt_phone_number,character varying,11,NULL
-hts_index_elicitation,hang_out_spots,character varying,12,NULL
-hts_index_elicitation,hts_client_uuid,character varying,22,NULL
-hts_index_elicitation,created_by,character varying,24,NULL
-hts_index_elicitation,modified_by,character varying,26,NULL
-hts_index_elicitation,offered_ins,character varying,29,NULL
-hts_index_elicitation,accepted_ins,character varying,30,NULL
-hts_risk_stratification,visit_date,date,10,NULL
-hts_risk_stratification,dob,date,11,NULL
-hts_risk_stratification,date_created,timestamp without time zone,12,NULL
-hts_risk_stratification,date_modified,timestamp without time zone,14,NULL
-hts_risk_stratification,archived,integer,16,NULL
-hts_risk_stratification,facility_id,bigint,17,NULL
-hts_risk_stratification,risk_assessment,jsonb,18,NULL
-hts_risk_stratification,id,bigint,1,NULL
-hts_risk_stratification,code,character varying,2,NULL
-hts_risk_stratification,person_uuid,character varying,3,NULL
-hts_risk_stratification,age,character varying,4,NULL
-hts_risk_stratification,testing_setting,character varying,5,NULL
-hts_risk_stratification,modality,character varying,6,NULL
-hts_risk_stratification,target_group,character varying,7,NULL
-hts_risk_stratification,entry_point,character varying,8,NULL
-hts_risk_stratification,community_entry_point,character varying,9,NULL
-hts_risk_stratification,created_by,character varying,13,NULL
-hts_risk_stratification,modified_by,character varying,15,NULL
-laboratory_labtest,labtestgroup_id,integer,5,NULL
-laboratory_labtest,date_created,timestamp without time zone,7,NULL
-laboratory_labtest,date_modified,timestamp without time zone,9,NULL
-laboratory_labtest,archived,integer,10,NULL
-laboratory_labtest,id,bigint,1,NULL
-laboratory_labtest,uuid,character varying,2,100
-laboratory_labtest,lab_test_name,character varying,3,500
-laboratory_labtest,unit,character varying,4,500
-laboratory_labtest,created_by,character varying,6,100
-laboratory_labtest,modified_by,character varying,8,100
-laboratory_labtestgroup,date_created,timestamp without time zone,5,NULL
-laboratory_labtestgroup,date_modified,timestamp without time zone,7,NULL
-laboratory_labtestgroup,archived,integer,8,NULL
-laboratory_labtestgroup,id,bigint,1,NULL
-laboratory_labtestgroup,uuid,character varying,2,100
-laboratory_labtestgroup,group_name,character varying,3,500
-laboratory_labtestgroup,created_by,character varying,4,100
-laboratory_labtestgroup,modified_by,character varying,6,100
-laboratory_number,id,bigint,1,NULL
-laboratory_number,date_created,timestamp without time zone,6,NULL
-laboratory_number,date_modified,timestamp without time zone,8,NULL
-laboratory_number,archived,integer,9,NULL
-laboratory_number,uuid,character varying,2,100
-laboratory_number,lab_name,character varying,3,100
-laboratory_number,lab_number,character varying,4,100
-laboratory_number,created_by,character varying,5,100
-laboratory_number,modified_by,character varying,7,100
-laboratory_order,patient_id,integer,3,NULL
-laboratory_order,visit_id,integer,4,NULL
-laboratory_order,order_date,timestamp without time zone,5,NULL
-laboratory_order,facility_id,integer,7,NULL
-laboratory_order,create_date,timestamp without time zone,8,NULL
-laboratory_order,date_created,timestamp without time zone,11,NULL
-laboratory_order,date_modified,timestamp without time zone,13,NULL
-laboratory_order,archived,integer,14,NULL
-laboratory_order,id,bigint,1,NULL
-laboratory_order,uuid,character varying,2,100
-laboratory_order,patient_uuid,character varying,6,100
-laboratory_order,userid,character varying,9,100
-laboratory_order,created_by,character varying,10,100
-laboratory_order,modified_by,character varying,12,100
-laboratory_order,id,bigint,1,NULL
-laboratory_order,uuid,character varying,2,NULL
-laboratory_order,patient_id,integer,3,NULL
-laboratory_order,visit_id,integer,4,NULL
-laboratory_order,order_date,timestamp without time zone,5,NULL
-laboratory_order,patient_uuid,character varying,6,NULL
-laboratory_order,facility_id,integer,7,NULL
-laboratory_order,create_date,timestamp without time zone,8,NULL
-laboratory_order,userid,character varying,9,NULL
-laboratory_order,created_by,character varying,10,NULL
-laboratory_order,date_created,timestamp without time zone,11,NULL
-laboratory_order,modified_by,character varying,12,NULL
-laboratory_order,date_modified,timestamp without time zone,13,NULL
-laboratory_order,archived,integer,14,NULL
-laboratory_order,ods_load_time,timestamp without time zone,15,NULL
-laboratory_order,ods_datim_id,character varying,16,255
-laboratory_order,ordered_date,date,17,NULL
-laboratory_order,lab_order_indication,character varying,18,255
-laboratory_result,date_assayed,timestamp without time zone,3,NULL
-laboratory_result,date_result_reported,timestamp without time zone,4,NULL
-laboratory_result,facility_id,integer,9,NULL
-laboratory_result,patient_id,integer,10,NULL
-laboratory_result,date_sample_received_at_pcr_lab,date,12,NULL
-laboratory_result,test_id,integer,13,NULL
-laboratory_result,date_checked,timestamp without time zone,14,NULL
-laboratory_result,date_result_received,timestamp without time zone,16,NULL
-laboratory_result,date_created,timestamp without time zone,18,NULL
-laboratory_result,date_modified,timestamp without time zone,20,NULL
-laboratory_result,archived,integer,21,NULL
-laboratory_result,date_approved,timestamp without time zone,24,NULL
-laboratory_result,id,bigint,1,NULL
-laboratory_result,uuid,character varying,2,100
-laboratory_result,result_reported,character varying,5,500
-laboratory_result,result_report,character varying,6,500
-laboratory_result,result_reported_by,character varying,7,100
-laboratory_result,patient_uuid,character varying,8,100
-laboratory_result,pcr_lab_sample_number,character varying,11,100
-laboratory_result,checked_by,character varying,15,100
-laboratory_result,created_by,character varying,17,100
-laboratory_result,modified_by,character varying,19,100
-laboratory_result,assayed_by,character varying,22,100
-laboratory_result,approved_by,character varying,23,100
-laboratory_result,result_received_by,character varying,25,100
-laboratory_result,pcr_lab_name,character varying,26,100
-laboratory_sample,sample_type_id,integer,4,NULL
-laboratory_sample,sample_collection_mode,integer,5,NULL
-laboratory_sample,date_sample_collected,timestamp without time zone,6,NULL
-laboratory_sample,date_sample_verified,timestamp without time zone,9,NULL
-laboratory_sample,facility_id,integer,14,NULL
-laboratory_sample,patient_id,integer,15,NULL
-laboratory_sample,test_id,integer,16,NULL
-laboratory_sample,date_sample_logged_remotely,timestamp without time zone,17,NULL
-laboratory_sample,sample_logged_remotely,integer,18,NULL
-laboratory_sample,date_created,timestamp without time zone,20,NULL
-laboratory_sample,date_modified,timestamp without time zone,22,NULL
-laboratory_sample,archived,integer,23,NULL
-laboratory_sample,id,bigint,1,NULL
-laboratory_sample,uuid,character varying,2,100
-laboratory_sample,sample_number,character varying,3,100
-laboratory_sample,comment_sample_collected,character varying,7,500
-laboratory_sample,sample_collected_by,character varying,8,100
-laboratory_sample,comment_sample_verified,character varying,10,500
-laboratory_sample,sample_verified_by,character varying,11,100
-laboratory_sample,sample_accepted,character varying,12,10
-laboratory_sample,patient_uuid,character varying,13,100
-laboratory_sample,created_by,character varying,19,100
-laboratory_sample,modified_by,character varying,21,100
-laboratory_sample_type,date_created,timestamp without time zone,5,NULL
-laboratory_sample_type,date_modified,timestamp without time zone,7,NULL
-laboratory_sample_type,archived,integer,8,NULL
-laboratory_sample_type,id,bigint,1,NULL
-laboratory_sample_type,uuid,character varying,2,100
-laboratory_sample_type,sample_type_name,character varying,3,500
-laboratory_sample_type,created_by,character varying,4,100
-laboratory_sample_type,modified_by,character varying,6,100
-laboratory_sampletype_labtest_link,sample_type_id,integer,3,NULL
-laboratory_sampletype_labtest_link,labtest_id,integer,4,NULL
-laboratory_sampletype_labtest_link,date_created,timestamp without time zone,6,NULL
-laboratory_sampletype_labtest_link,date_modified,timestamp without time zone,8,NULL
-laboratory_sampletype_labtest_link,archived,integer,9,NULL
-laboratory_sampletype_labtest_link,id,bigint,1,NULL
-laboratory_sampletype_labtest_link,uuid,character varying,2,100
-laboratory_sampletype_labtest_link,created_by,character varying,5,100
-laboratory_sampletype_labtest_link,modified_by,character varying,7,100
-laboratory_test,patient_id,integer,3,NULL
-laboratory_test,lab_test_id,integer,4,NULL
-laboratory_test,lab_test_group_id,integer,7,NULL
-laboratory_test,order_priority,integer,8,NULL
-laboratory_test,lab_test_order_status,integer,10,NULL
-laboratory_test,viral_load_indication,integer,11,NULL
-laboratory_test,facility_id,integer,13,NULL
-laboratory_test,lab_order_id,integer,14,NULL
-laboratory_test,date_created,timestamp without time zone,16,NULL
-laboratory_test,date_modified,timestamp without time zone,18,NULL
-laboratory_test,archived,integer,19,NULL
-laboratory_test,id,bigint,1,NULL
-laboratory_test,uuid,character varying,2,100
-laboratory_test,description,character varying,5,300
-laboratory_test,lab_number,character varying,6,300
-laboratory_test,unit_measurement,character varying,9,300
-laboratory_test,patient_uuid,character varying,12,100
-laboratory_test,created_by,character varying,15,100
-laboratory_test,modified_by,character varying,17,100
-lims_config,id,bigint,1,NULL
-lims_config,uuid,character varying,2,100
-lims_config,config_name,character varying,3,100
-lims_config,config_email,character varying,4,100
-lims_config,config_password,character varying,5,100
-lims_config,server_url,character varying,6,100
-lims_config,create_date,character varying,7,100
-lims_config,test_facility_name,character varying,8,100
-lims_config,test_facility_datim_code,character varying,9,100
-lims_manifest,create_date,timestamp without time zone,14,NULL
-lims_manifest,facility_id,integer,16,NULL
-lims_manifest,id,bigint,1,NULL
-lims_manifest,uuid,character varying,2,100
-lims_manifest,manifest_id,character varying,3,100
-lims_manifest,sending_facility_id,character varying,4,100
-lims_manifest,sending_facility_name,character varying,5,100
-lims_manifest,receiving_lab_id,character varying,6,100
-lims_manifest,receiving_lab_name,character varying,7,100
-lims_manifest,date_scheduled_for_pickup,character varying,8,100
-lims_manifest,temperature_at_pickup,character varying,9,100
-lims_manifest,sample_packaged_by,character varying,10,100
-lims_manifest,courier_rider_name,character varying,11,100
-lims_manifest,courier_contact,character varying,12,100
-lims_manifest,manifest_status,character varying,13,100
-lims_manifest,current_status,character varying,15,100
-lims_manifest,facility_uuid,character varying,17,100
-lims_pcr_lab,id,bigint,1,NULL
-lims_pcr_lab,name,character varying,2,100
-lims_pcr_lab,lab_no,character varying,3,100
-lims_result,id,bigint,1,NULL
-lims_result,manifest_record_id,bigint,14,NULL
-lims_result,uuid,character varying,2,100
-lims_result,sample_id,character varying,3,100
-lims_result,pcr_lab_sample_number,character varying,4,100
-lims_result,visit_date,character varying,5,100
-lims_result,date_sample_received_at_pcr_lab,character varying,6,100
-lims_result,result_date,character varying,7,100
-lims_result,test_result,character varying,8,100
-lims_result,assay_date,character varying,9,100
-lims_result,approval_date,character varying,10,100
-lims_result,date_result_dispatched,character varying,11,100
-lims_result,sample_status,character varying,12,100
-lims_result,sample_testable,character varying,13,100
-lims_result,transfer_status,character varying,15,100
-lims_result,tested_by,character varying,16,100
-lims_result,approved_by,character varying,17,100
-lims_result,date_transferred_out,character varying,18,100
-lims_result,reason_not_tested,character varying,19,100
-lims_result,other_rejection_reason,character varying,20,100
-lims_result,sending_pcr_lab_id,character varying,21,100
-lims_result,sending_pcr_lab_name,character varying,22,100
-lims_result,secondary_pcr_lab_id,character varying,23,255
-lims_result,secondary_pcr_lab_name,character varying,24,255
-lims_result,rejection_reason,character varying,25,255
-lims_sample,patient_id,jsonb,5,NULL
-lims_sample,manifest_record_id,bigint,26,NULL
-lims_sample,id,bigint,1,NULL
-lims_sample,uuid,character varying,2,100
-lims_sample,sample_id,character varying,3,100
-lims_sample,pid,character varying,4,100
-lims_sample,sample_type,character varying,6,100
-lims_sample,sample_ordered_by,character varying,7,100
-lims_sample,sample_order_date,character varying,8,100
-lims_sample,sample_collected_by,character varying,9,100
-lims_sample,sample_collection_date,character varying,10,100
-lims_sample,sample_collection_time,character varying,11,100
-lims_sample,date_sample_sent,character varying,12,100
-lims_sample,indication_vl_test,character varying,13,100
-lims_sample,first_name,character varying,14,100
-lims_sample,surname,character varying,15,100
-lims_sample,sex,character varying,16,100
-lims_sample,age,character varying,17,100
-lims_sample,date_of_birth,character varying,18,100
-lims_sample,pregnant_breast_feeding_status,character varying,19,100
-lims_sample,art_commencement_date,character varying,20,100
-lims_sample,drug_regimen,character varying,21,100
-lims_sample,sending_facility_id,character varying,22,100
-lims_sample,sending_facility_name,character varying,23,100
-lims_sample,priority,character varying,24,100
-lims_sample,priority_reason,character varying,25,100
-ndr_code_set,code_set_nm,character varying,1,64
-ndr_code_set,code,character varying,2,64
-ndr_code_set,code_description,character varying,3,64
-ndr_code_set,alt_description,character varying,4,64
-ndr_code_set,sys_description,character varying,5,64
-ndr_facility,id,uuid,1,NULL
-ndr_facility,facility_local_id,bigint,3,NULL
-ndr_facility,name,character varying,2,128
-ndr_facility,datim_id,character varying,4,32
-ndr_message_log,last_updated,timestamp without time zone,4,NULL
-ndr_message_log,id,integer,1,NULL
-ndr_message_log,identifier,character varying,2,64
-ndr_message_log,file,character varying,3,128
-ndr_message_log,file_type,character varying,5,255
-ndr_messages,facility_id,bigint,3,NULL
-ndr_messages,is_pushed,boolean,4,NULL
-ndr_messages,message_date,date,5,NULL
-ndr_messages,id,bigint,1,NULL
-ndr_messages,de_message,character varying,2,NULL
-ndr_messages,identifier,character varying,6,100
-ndr_pusher,code,integer,2,NULL
-ndr_pusher,facility_id,bigint,6,NULL
-ndr_pusher,is_authenticated,boolean,7,NULL
-ndr_pusher,push_date,date,8,NULL
-ndr_pusher,id,integer,1,NULL
-ndr_pusher,batch_number,character varying,3,100
-ndr_pusher,de_message,character varying,4,NULL
-ndr_pusher,message,character varying,5,250
-ndr_pusher_config,facility_id,bigint,2,NULL
-ndr_pusher_config,id,integer,1,NULL
-ndr_pusher_config,username,character varying,3,100
-ndr_pusher_config,password,character varying,4,100
-ndr_xml_status,id,integer,1,NULL
-ndr_xml_status,facility_id,bigint,2,NULL
-ndr_xml_status,files,integer,3,NULL
-ndr_xml_status,last_modified,timestamp without time zone,5,NULL
-ndr_xml_status,percentage_pushed,integer,7,NULL
-ndr_xml_status,completely_pushed,boolean,8,NULL
-ndr_xml_status,error,jsonb,9,NULL
-ndr_xml_status,file_name,character varying,4,255
-ndr_xml_status,push_identifier,character varying,6,255
-ndrdata,demorgraphic,jsonb,2,NULL
-ndrdata,commencement,jsonb,3,NULL
-ndrdata,care_cards,jsonb,4,NULL
-ndrdata,labs,jsonb,5,NULL
-ndrdata,pharmacies,jsonb,6,NULL
-ndrdata,date_modified,date,7,NULL
-ndrdata,patient_id,character varying,1,255
-patient_check_post_service,facility_id,bigint,2,NULL
-patient_check_post_service,id,bigint,1,NULL
-patient_check_post_service,module_service_code,character varying,3,255
-patient_check_post_service,module_service_name,character varying,4,255
-patient_check_post_service,encounter_type,character varying,5,255
-patient_encounter,created_date,timestamp without time zone,2,NULL
-patient_encounter,last_modified_date,timestamp without time zone,4,NULL
-patient_encounter,facility_id,bigint,6,NULL
-patient_encounter,encounter_date,timestamp without time zone,7,NULL
-patient_encounter,archived,integer,13,NULL
-patient_encounter,id,bigint,1,NULL
-patient_encounter,created_by,character varying,3,255
-patient_encounter,last_modified_by,character varying,5,255
-patient_encounter,person_uuid,character varying,8,255
-patient_encounter,uuid,character varying,9,255
-patient_encounter,visit_id,character varying,10,255
-patient_encounter,service_code,character varying,11,255
-patient_encounter,status,character varying,12,255
-patient_person,created_date,timestamp without time zone,2,NULL
-patient_person,last_modified_date,timestamp without time zone,4,NULL
-patient_person,active,boolean,6,NULL
-patient_person,contact_point,jsonb,7,NULL
-patient_person,address,jsonb,8,NULL
-patient_person,gender,jsonb,9,NULL
-patient_person,identifier,jsonb,10,NULL
-patient_person,deceased,boolean,11,NULL
-patient_person,deceased_date_time,timestamp without time zone,12,NULL
-patient_person,marital_status,jsonb,13,NULL
-patient_person,employment_status,jsonb,14,NULL
-patient_person,education,jsonb,15,NULL
-patient_person,organization,jsonb,16,NULL
-patient_person,contact,jsonb,17,NULL
-patient_person,date_of_birth,date,18,NULL
-patient_person,date_of_registration,date,19,NULL
-patient_person,archived,integer,20,NULL
-patient_person,facility_id,bigint,21,NULL
-patient_person,is_date_of_birth_estimated,boolean,30,NULL
-patient_person,case_manager_id,bigint,32,NULL
-patient_person,id,bigint,1,NULL
-patient_person,created_by,character varying,3,255
-patient_person,last_modified_by,character varying,5,255
-patient_person,uuid,character varying,22,255
-patient_person,nin_number,character varying,23,255
-patient_person,emr_id,character varying,24,255
-patient_person,first_name,character varying,25,255
-patient_person,sex,character varying,26,255
-patient_person,surname,character varying,27,255
-patient_person,other_name,character varying,28,255
-patient_person,hospital_number,character varying,29,255
-patient_person,full_name,character varying,31,255
-patient_visit,created_date,timestamp without time zone,2,NULL
-patient_visit,last_modified_date,timestamp without time zone,4,NULL
-patient_visit,facility_id,bigint,6,NULL
-patient_visit,visit_start_date,timestamp without time zone,8,NULL
-patient_visit,visit_end_date,timestamp without time zone,9,NULL
-patient_visit,archived,integer,11,NULL
-patient_visit,id,bigint,1,NULL
-patient_visit,uuid,character varying,10,255
-patient_visit,created_by,character varying,3,255
-patient_visit,last_modified_by,character varying,5,255
-patient_visit,person_uuid,character varying,7,255
-pmtct_anc,created_date,timestamp without time zone,4,NULL
-pmtct_anc,facility_id,bigint,5,NULL
-pmtct_anc,last_modified_date,timestamp without time zone,8,NULL
-pmtct_anc,lmp,date,10,NULL
-pmtct_anc,gaweeks,integer,11,NULL
-pmtct_anc,gravida,integer,12,NULL
-pmtct_anc,parity,integer,13,NULL
-pmtct_anc,archived,bigint,14,NULL
-pmtct_anc,pmtct_hts_info,jsonb,19,NULL
-pmtct_anc,partner_notification,jsonb,20,NULL
-pmtct_anc,first_anc_date,date,22,NULL
-pmtct_anc,expected_delivery_date,date,23,NULL
-pmtct_anc,last_visit_date,date,24,NULL
-pmtct_anc,next_appointment_date,date,25,NULL
-pmtct_anc,default_days,integer,26,NULL
-pmtct_anc,partner_information,jsonb,29,NULL
-pmtct_anc,id,bigint,1,NULL
-pmtct_anc,anc_no,character varying,2,255
-pmtct_anc,created_by,character varying,3,255
-pmtct_anc,hospital_number,character varying,6,255
-pmtct_anc,last_modified_by,character varying,7,255
-pmtct_anc,uuid,character varying,9,255
-pmtct_anc,tested_syphilis,character varying,15,255
-pmtct_anc,test_result_syphilis,character varying,16,255
-pmtct_anc,treated_syphilis,character varying,17,255
-pmtct_anc,referred_syphilis_treatment,character varying,18,255
-pmtct_anc,person_uuid,character varying,21,255
-pmtct_anc,hiv_diognosic_time,character varying,27,100
-pmtct_anc,status,character varying,28,100
-pmtct_anc,static_hiv_status,character varying,30,255
-pmtct_anc,source_of_referral,character varying,31,255
-pmtct_delivery,created_date,timestamp without time zone,4,NULL
-pmtct_delivery,facility_id,bigint,5,NULL
-pmtct_delivery,last_modified_date,timestamp without time zone,8,NULL
-pmtct_delivery,date_of_delivery,date,10,NULL
-pmtct_delivery,gaweeks,bigint,12,NULL
-pmtct_delivery,number_of_infants_alive,bigint,28,NULL
-pmtct_delivery,number_of_infants_dead,bigint,29,NULL
-pmtct_delivery,id,bigint,1,NULL
-pmtct_delivery,anc_no,character varying,2,255
-pmtct_delivery,created_by,character varying,3,255
-pmtct_delivery,hospital_number,character varying,6,255
-pmtct_delivery,last_modified_by,character varying,7,255
-pmtct_delivery,uuid,character varying,9,255
-pmtct_delivery,booking_status,character varying,11,255
-pmtct_delivery,rom_delivery_interval,character varying,13,255
-pmtct_delivery,mode_of_delivery,character varying,14,255
-pmtct_delivery,episiotomy,character varying,15,255
-pmtct_delivery,vaginal_tear,character varying,16,255
-pmtct_delivery,feeding_decision,character varying,17,255
-pmtct_delivery,maternal_outcome,character varying,18,255
-pmtct_delivery,child_status,character varying,19,255
-pmtct_delivery,hiv_exposed_infant_given_hb_within24hrs,character varying,20,255
-pmtct_delivery,child_given_arv_within72,character varying,21,255
-pmtct_delivery,delivery_time,character varying,22,255
-pmtct_delivery,on_art,character varying,23,255
-pmtct_delivery,art_started_ld_ward,character varying,24,255
-pmtct_delivery,hbstatus,character varying,25,255
-pmtct_delivery,hcstatus,character varying,26,255
-pmtct_delivery,referal_source,character varying,27,255
-pmtct_delivery,person_uuid,character varying,30,NULL
-pmtct_enrollment,created_date,timestamp without time zone,4,NULL
-pmtct_enrollment,facility_id,bigint,5,NULL
-pmtct_enrollment,last_modified_date,timestamp without time zone,8,NULL
-pmtct_enrollment,pmtct_enrollment_date,date,10,NULL
-pmtct_enrollment,gaweeks,integer,11,NULL
-pmtct_enrollment,gravida,integer,12,NULL
-pmtct_enrollment,art_start_date,date,13,NULL
-pmtct_enrollment,archived,bigint,19,NULL
-pmtct_enrollment,lmp,date,21,NULL
-pmtct_enrollment,id,bigint,1,NULL
-pmtct_enrollment,regimen_type_id,bigint,23,NULL
-pmtct_enrollment,anc_no,character varying,2,255
-pmtct_enrollment,created_by,character varying,3,255
-pmtct_enrollment,hospital_number,character varying,6,255
-pmtct_enrollment,last_modified_by,character varying,7,255
-pmtct_enrollment,uuid,character varying,9,255
-pmtct_enrollment,art_start_time,character varying,14,255
-pmtct_enrollment,tb_status,character varying,15,255
-pmtct_enrollment,entry_point,character varying,16,NULL
-pmtct_enrollment,person_uuid,character varying,17,NULL
-pmtct_enrollment,pmtct_type,character varying,18,255
-pmtct_enrollment,hiv_status,character varying,20,255
-pmtct_infant_arv,visit_date,date,2,NULL
-pmtct_infant_arv,id,bigint,1,NULL
-pmtct_infant_arv,infant_hospital_number,character varying,3,NULL
-pmtct_infant_arv,anc_number,character varying,4,NULL
-pmtct_infant_arv,age_at_ctx,character varying,5,NULL
-pmtct_infant_arv,infant_arv_type,character varying,6,NULL
-pmtct_infant_arv,infant_arv_time,character varying,7,NULL
-pmtct_infant_arv,arv_delivery_point,character varying,8,NULL
-pmtct_infant_arv,uuid,character varying,9,NULL
-pmtct_infant_information,body_weight,double precision,21,NULL
-pmtct_infant_information,created_date,timestamp without time zone,4,NULL
-pmtct_infant_information,facility_id,bigint,5,NULL
-pmtct_infant_information,last_modified_date,timestamp without time zone,8,NULL
-pmtct_infant_information,date_of_delivery,date,10,NULL
-pmtct_infant_information,id,bigint,1,NULL
-pmtct_infant_information,last_visit_date,date,17,NULL
-pmtct_infant_information,next_appointment_date,date,18,NULL
-pmtct_infant_information,default_days,integer,19,NULL
-pmtct_infant_information,anc_no,character varying,2,255
-pmtct_infant_information,created_by,character varying,3,255
-pmtct_infant_information,hospital_number,character varying,6,255
-pmtct_infant_information,last_modified_by,character varying,7,255
-pmtct_infant_information,uuid,character varying,9,255
-pmtct_infant_information,first_name,character varying,11,255
-pmtct_infant_information,middle_name,character varying,12,255
-pmtct_infant_information,surname,character varying,13,255
-pmtct_infant_information,sex,character varying,14,255
-pmtct_infant_information,nin,character varying,15,255
-pmtct_infant_information,infant_outcome_at18_months,character varying,16,255
-pmtct_infant_information,mother_person_uuid,character varying,20,NULL
-pmtct_infant_mother_art,visit_date,date,2,NULL
-pmtct_infant_mother_art,regimen_type_id,bigint,5,NULL
-pmtct_infant_mother_art,regimen_id,bigint,6,NULL
-pmtct_infant_mother_art,id,bigint,1,NULL
-pmtct_infant_mother_art,anc_number,character varying,3,NULL
-pmtct_infant_mother_art,mother_art_initiation_time,character varying,4,NULL
-pmtct_infant_mother_art,uuid,character varying,7,NULL
-pmtct_infant_rapid_antibody,age_at_test,character varying,6,NULL
-pmtct_infant_rapid_antibody,anc_number,character varying,9,NULL
-pmtct_infant_rapid_antibody,date_of_test,date,5,NULL
-pmtct_infant_rapid_antibody,id,bigint,1,NULL
-pmtct_infant_rapid_antibody,rapid_result,character varying,3,NULL
-pmtct_infant_rapid_antibody,rapid_test_type,character varying,4,NULL
-pmtct_infant_rapid_antibody,result,character varying,10,NULL
-pmtct_infant_rapid_antibody,unique_uuid,character varying,11,NULL
-pmtct_infant_rapid_antibody,uuid,character varying,7,NULL
-pmtct_infant_rapid_antibody,visit_date,date,2,NULL
-pmtct_infant_rapid_antibody,visit_id,character varying,8,NULL
-pmtct_infant_pcr,visit_date,date,2,NULL
-pmtct_infant_pcr,age_at_test,bigint,5,NULL
-pmtct_infant_pcr,date_sample_collected,date,7,NULL
-pmtct_infant_pcr,date_sample_sent,date,8,NULL
-pmtct_infant_pcr,date_result_received_at_facility,date,9,NULL
-pmtct_infant_pcr,date_result_received_by_caregiver,date,10,NULL
-pmtct_infant_pcr,id,bigint,1,NULL
-pmtct_infant_pcr,infant_hospital_number,character varying,3,NULL
-pmtct_infant_pcr,anc_number,character varying,4,NULL
-pmtct_infant_pcr,test_type,character varying,6,NULL
-pmtct_infant_pcr,results,character varying,11,NULL
-pmtct_infant_pcr,uuid,character varying,12,NULL
-pmtct_infant_visit,visit_date,date,2,NULL
-pmtct_infant_visit,body_weight,bigint,5,NULL
-pmtct_infant_visit,id,bigint,1,NULL
-pmtct_infant_visit,infant_hospital_number,character varying,3,NULL
-pmtct_infant_visit,anc_number,character varying,4,NULL
-pmtct_infant_visit,visit_status,character varying,6,NULL
-pmtct_infant_visit,ctx_status,character varying,7,NULL
-pmtct_infant_visit,breast_feeding,character varying,8,NULL
-pmtct_infant_visit,uuid,character varying,9,NULL
-pmtct_infant_visit,mother_person_uuid,character varying,10,NULL
-pmtct_mother_visitation,date_of_delivery,date,22,NULL
-pmtct_mother_visitation,date_of_visit,date,5,NULL
-pmtct_mother_visitation,date_of_viral_load,date,8,NULL
-pmtct_mother_visitation,ga_of_viral_load,smallint,9,NULL
-pmtct_mother_visitation,result_of_viral_load,smallint,10,NULL
-pmtct_mother_visitation,date_of_maternal_outcome,date,14,NULL
-pmtct_mother_visitation,next_appointment_date,date,17,NULL
-pmtct_mother_visitation,id,bigint,1,NULL
-pmtct_mother_visitation,anc_no,character varying,2,255
-pmtct_mother_visitation,person_uuid,character varying,3,255
-pmtct_mother_visitation,hospital_number,character varying,4,255
-pmtct_mother_visitation,fp_counseling,character varying,6,255
-pmtct_mother_visitation,fp_method,character varying,7,255
-pmtct_mother_visitation,dsd_option,character varying,11,255
-pmtct_mother_visitation,dsd_model,character varying,12,255
-pmtct_mother_visitation,maternal_outcome,character varying,13,255
-pmtct_mother_visitation,visit_status,character varying,15,255
-pmtct_mother_visitation,transfer_to,character varying,16,255
-pmtct_mother_visitation,uuid,character varying,18,255
-pmtct_mother_visitation,entry_point,character varying,19,255
-pmtct_mother_visitation,dsd,character varying,20,255
-pmtct_mother_visitation,time_of_viral_load,character varying,21,255
-prep_clinic,weight,double precision,2,NULL
-prep_clinic,height,double precision,3,NULL
-prep_clinic,pulse,double precision,4,NULL
-prep_clinic,temperature,double precision,5,NULL
-prep_clinic,respiratory_rate,double precision,6,NULL
-prep_clinic,systolic,double precision,7,NULL
-prep_clinic,diastolic,double precision,8,NULL
-prep_clinic,sti_screening,boolean,10,NULL
-prep_clinic,date_prep_start,date,11,NULL
-prep_clinic,date_prep_given,date,12,NULL
-prep_clinic,encounter_date,date,16,NULL
-prep_clinic,is_commencement,boolean,17,NULL
-prep_clinic,regimen_id,bigint,20,NULL
-prep_clinic,regimen_type_id,bigint,21,NULL
-prep_clinic,duration,integer,22,NULL
-prep_clinic,next_appointment,date,26,NULL
-prep_clinic,why,boolean,27,NULL
-prep_clinic,dateprepgiven,date,28,NULL
-prep_clinic,urinalysis,jsonb,29,NULL
-prep_clinic,hepatitis,jsonb,30,NULL
-prep_clinic,syphilis,jsonb,31,NULL
-prep_clinic,other_tests_done,jsonb,32,NULL
-prep_clinic,syndromic_sti_screening,jsonb,33,NULL
-prep_clinic,date_initial_adherence_counseling,date,34,NULL
-prep_clinic,date_referred,date,35,NULL
-prep_clinic,referred,boolean,36,NULL
-prep_clinic,facility_id,bigint,39,NULL
-prep_clinic,extra,jsonb,40,NULL
-prep_clinic,date_created,timestamp without time zone,44,NULL
-prep_clinic,date_modified,timestamp without time zone,46,NULL
-prep_clinic,archived,integer,47,NULL
-prep_clinic,id,bigint,1,NULL
-prep_clinic,urinalysis_result,character varying,37,NULL
-prep_clinic,pregnant,character varying,38,NULL
-prep_clinic,risk_reduction_services,character varying,41,NULL
-prep_clinic,noted_side_effects,character varying,42,NULL
-prep_clinic,created_by,character varying,43,255
-prep_clinic,modified_by,character varying,45,255
-prep_clinic,adherence_level,character varying,9,255
-prep_clinic,prep_given,character varying,13,255
-prep_clinic,other_drugs,character varying,14,255
-prep_clinic,hiv_test_result,character varying,15,255
-prep_clinic,prep_enrollment_uuid,character varying,18,255
-prep_clinic,uuid,character varying,19,255
-prep_clinic,vital_sign_uuid,character varying,23,255
-prep_clinic,person_uuid,character varying,24,255
-prep_clinic,visit_uuid,character varying,25,255
-prep_clinic,months_of_refill,integer,62,NULL
-prep_clinic,date_of_family_planning,date,48,NULL
-prep_eligibility,services_received_by_client,jsonb,30,NULL
-prep_eligibility,assessment_for_pep_indication,jsonb,31,NULL
-prep_eligibility,assessment_for_prep_eligibility,jsonb,32,NULL
-prep_eligibility,assessment_for_acute_hiv_infection,jsonb,34,NULL
-prep_eligibility,score,integer,4,NULL
-prep_eligibility,visit_date,date,5,NULL
-prep_eligibility,hiv_risk,jsonb,6,NULL
-prep_eligibility,sti_screening,jsonb,7,NULL
-prep_eligibility,drug_use_history,jsonb,8,NULL
-prep_eligibility,personal_hiv_risk_assessment,jsonb,9,NULL
-prep_eligibility,sex_partner_risk,jsonb,10,NULL
-prep_eligibility,first_time_visit,boolean,14,NULL
-prep_eligibility,num_wives,integer,16,NULL
-prep_eligibility,extra,jsonb,18,NULL
-prep_eligibility,facility_id,bigint,19,NULL
-prep_eligibility,archived,integer,20,NULL
-prep_eligibility,date_created,timestamp without time zone,22,NULL
-prep_eligibility,date_modified,timestamp without time zone,24,NULL
-prep_eligibility,id,bigint,1,NULL
-prep_eligibility,uuid,character varying,2,255
-prep_eligibility,unique_id,character varying,3,NULL
-prep_eligibility,person_uuid,character varying,11,255
-prep_eligibility,sex_partner,character varying,12,255
-prep_eligibility,counseling_type,character varying,13,255
-prep_eligibility,num_children_less_than_five,character varying,15,255
-prep_eligibility,target_group,character varying,17,255
-prep_eligibility,created_by,character varying,21,255
-prep_eligibility,modified_by,character varying,23,255
-prep_enrollment,date_started,date,5,NULL
-prep_enrollment,extra,jsonb,8,NULL
-prep_enrollment,facility_id,bigint,9,NULL
-prep_enrollment,date_enrolled,date,12,NULL
-prep_enrollment,date_referred,date,13,NULL
-prep_enrollment,date_last_hiv_negative_test,date,20,NULL
-prep_enrollment,archived,integer,21,NULL
-prep_enrollment,date_created,timestamp without time zone,23,NULL
-prep_enrollment,date_modified,timestamp without time zone,25,NULL
-prep_enrollment,id,bigint,1,NULL
-prep_enrollment,unique_id,character varying,2,255
-prep_enrollment,target_group,character varying,3,255
-prep_enrollment,uuid,character varying,4,255
-prep_enrollment,person_uuid,character varying,6,255
-prep_enrollment,visit_uuid,character varying,7,255
-prep_enrollment,prep_eligibility_uuid,character varying,10,NULL
-prep_enrollment,status,character varying,11,NULL
-prep_enrollment,risk_type,character varying,14,NULL
-prep_enrollment,supporter_phone,character varying,15,NULL
-prep_enrollment,supporter_name,character varying,16,NULL
-prep_enrollment,supporter_relationship_type,character varying,17,NULL
-prep_enrollment,anc_unique_art_no,character varying,18,NULL
-prep_enrollment,hiv_testing_point,character varying,19,NULL
-prep_enrollment,created_by,character varying,22,255
-prep_enrollment,modified_by,character varying,24,255
-prep_interruption,interruption_date,date,6,NULL
-prep_interruption,date_client_died,date,7,NULL
-prep_interruption,date_client_referred_out,date,10,NULL
-prep_interruption,extra,jsonb,13,NULL
-prep_interruption,facility_id,bigint,14,NULL
-prep_interruption,archived,integer,15,NULL
-prep_interruption,date_created,timestamp without time zone,17,NULL
-prep_interruption,date_sero_converted,date,19,NULL
-prep_interruption,date_restart_placed_back_medication,date,20,NULL
-prep_interruption,link_to_art,boolean,21,NULL
-prep_interruption,encounter_date,date,22,NULL
-prep_interruption,date_modified,timestamp without time zone,23,NULL
-prep_interruption,id,bigint,1,NULL
-prep_interruption,created_by,character varying,16,255
-prep_interruption,modified_by,character varying,18,255
-prep_interruption,reason_stopped,character varying,24,NULL
-prep_interruption,reason_stopped_others,character varying,25,NULL
-prep_interruption,uuid,character varying,2,255
-prep_interruption,person_uuid,character varying,3,255
-prep_interruption,prep_enrollment_uuid,character varying,4,255
-prep_interruption,interruption_type,character varying,5,255
-prep_interruption,cause_of_death,character varying,8,255
-prep_interruption,source_of_death_info,character varying,9,255
-prep_interruption,facility_referred_to,character varying,11,255
-prep_interruption,interruption_reason,character varying,12,255
-prep_regimen,archived,integer,5,NULL
-prep_regimen,id,bigint,1,NULL
-prep_regimen,regimen,character varying,2,NULL
-prep_regimen,composition,character varying,3,NULL
-prep_regimen,description,character varying,4,NULL
-prep_regimen,code,character varying,6,NULL
-quick_sync_history,id,bigint,1,NULL
-quick_sync_history,date_created,timestamp without time zone,5,NULL
-quick_sync_history,file_size,integer,6,NULL
-quick_sync_history,filename,character varying,2,255
-quick_sync_history,table_name,character varying,3,255
-quick_sync_history,facility_name,character varying,4,255
-quick_sync_history,status,character varying,7,255
-remote_access_token,application_user_id,bigint,6,NULL
-remote_access_token,organisation_unit_id,bigint,7,NULL
-remote_access_token,remote_id,bigint,8,NULL
-remote_access_token,status,bigint,12,NULL
-remote_access_token,id,bigint,1,NULL
-remote_access_token,password,character varying,2,255
-remote_access_token,token,character varying,3,10485760
-remote_access_token,url,character varying,4,255
-remote_access_token,username,character varying,5,255
-remote_access_token,pr_key,character varying,9,10485760
-remote_access_token,pub_key,character varying,10,10485760
-remote_access_token,any_pub_key,character varying,11,10485760
-remote_key,id,bigint,1,NULL
-remote_key,key,character varying,2,NULL
-remote_key,uuid,character varying,3,NULL
-report,details,jsonb,2,NULL
-report,id,bigint,1,NULL
-sync_config,id,uuid,1,NULL
-sync_config,release_date,timestamp without time zone,4,NULL
-sync_config,upload_date,timestamp without time zone,5,NULL
-sync_config,active,boolean,6,NULL
-sync_config,name,character varying,2,255
-sync_config,version,character varying,3,255
-sync_config_module,id,uuid,1,NULL
-sync_config_module,config_id,uuid,4,NULL
-sync_config_module,module_name,character varying,2,255
-sync_config_module,version,character varying,3,255
-sync_config_table,id,uuid,1,NULL
-sync_config_table,config_module_id,uuid,5,NULL
-sync_config_table,has_facility_id,boolean,6,NULL
-sync_config_table,table_name,character varying,2,255
-sync_config_table,exclude_columns,character varying,3,4000
-sync_config_table,update_column,character varying,4,255
-sync_facility_app_key,id,uuid,1,NULL
-sync_facility_app_key,facility_id,integer,2,NULL
-sync_facility_app_key,app_key,character varying,3,2000
-sync_history,date_last_sync,timestamp without time zone,2,NULL
-sync_history,organisation_unit_id,bigint,3,NULL
-sync_history,processed,integer,5,NULL
-sync_history,sync_queue_id,bigint,6,NULL
-sync_history,remote_access_token_id,bigint,7,NULL
-sync_history,upload_size,integer,8,NULL
-sync_history,processed_size,integer,9,NULL
-sync_history,error_log,jsonb,10,NULL
-sync_history,id,bigint,1,NULL
-sync_history,table_name,character varying,4,255
-sync_history,file_path,character varying,11,NULL
-sync_queue,date_created,timestamp without time zone,2,NULL
-sync_queue,organisation_unit_id,bigint,4,NULL
-sync_queue,processed,integer,5,NULL
-sync_queue,upload_size,integer,7,NULL
-sync_queue,processed_size,integer,8,NULL
-sync_queue,received_size,integer,9,NULL
-sync_queue,id,bigint,1,NULL
-sync_queue,file_name,character varying,3,255
-sync_queue,table_name,character varying,6,255
-sync_queue,created_by,character varying,10,NULL
-triage_post_service,facility_id,bigint,2,NULL
-triage_post_service,id,bigint,1,NULL
-triage_post_service,module_service_code,character varying,3,255
-triage_post_service,module_service_name,character varying,4,255
-triage_post_service,encounter_type,character varying,5,255
-triage_vital_sign,created_date,timestamp without time zone,2,NULL
-triage_vital_sign,last_modified_date,timestamp without time zone,4,NULL
-triage_vital_sign,facility_id,bigint,6,NULL
-triage_vital_sign,body_weight,double precision,7,NULL
-triage_vital_sign,diastolic,double precision,8,NULL
-triage_vital_sign,capture_date,timestamp without time zone,9,NULL
-triage_vital_sign,height,double precision,10,NULL
-triage_vital_sign,temperature,double precision,11,NULL
-triage_vital_sign,pulse,double precision,12,NULL
-triage_vital_sign,respiratory_rate,double precision,13,NULL
-triage_vital_sign,systolic,double precision,16,NULL
-triage_vital_sign,archived,integer,17,NULL
-triage_vital_sign,id,bigint,1,NULL
-triage_vital_sign,created_by,character varying,3,255
-triage_vital_sign,last_modified_by,character varying,5,255
-triage_vital_sign,person_uuid,character varying,14,255
-triage_vital_sign,visit_id,character varying,15,255
-triage_vital_sign,uuid,character varying,18,255
-triage_vital_sign_duplicates,id,integer,1,NULL
-triage_vital_sign_duplicates,facility_id,integer,3,NULL
-triage_vital_sign_duplicates,created_date,timestamp without time zone,4,NULL
-triage_vital_sign_duplicates,last_modified_date,timestamp without time zone,5,NULL
-triage_vital_sign_duplicates,archived,integer,10,NULL
-triage_vital_sign_duplicates,body_weight,double precision,11,NULL
-triage_vital_sign_duplicates,diastolic,double precision,12,NULL
-triage_vital_sign_duplicates,systolic,double precision,13,NULL
-triage_vital_sign_duplicates,height,double precision,14,NULL
-triage_vital_sign_duplicates,temperature,double precision,15,NULL
-triage_vital_sign_duplicates,pulse,double precision,16,NULL
-triage_vital_sign_duplicates,respiratory_rate,double precision,17,NULL
-triage_vital_sign_duplicates,capture_date,timestamp without time zone,18,NULL
-triage_vital_sign_duplicates,person_uuid,character varying,2,230
-triage_vital_sign_duplicates,last_modified_by,character varying,7,239
-triage_vital_sign_duplicates,uuid,character varying,8,NULL
-triage_vital_sign_duplicates,visit_id,character varying,9,50
-triage_vital_sign_duplicates,created_by,character varying,6,230
+"table_name","column_name","data_type","ordinal_position","character_maximum_length"
+"base_application_codeset","language","character varying",4,NULL
+"base_application_codeset","version","character varying",5,NULL
+"base_application_codeset","ods_datim_id","character varying",13,255
+"base_application_codeset","code","character varying",6,NULL
+"base_application_codeset","date_created","timestamp without time zone",7,NULL
+"base_application_codeset","created_by","character varying",8,NULL
+"base_application_codeset","date_modified","timestamp without time zone",9,NULL
+"base_application_codeset","modified_by","character varying",10,NULL
+"base_application_codeset","archived","integer",11,NULL
+"base_application_codeset","ods_load_time","timestamp without time zone",12,NULL
+"base_application_codeset","id","bigint",1,NULL
+"base_application_codeset","codeset_group","character varying",2,NULL
+"base_application_codeset","display","character varying",3,NULL
+"base_organisation_unit","modified_by","character varying",11,NULL
+"base_organisation_unit","name","character varying",2,NULL
+"base_organisation_unit","description","character varying",3,NULL
+"base_organisation_unit","organisation_unit_level_id","bigint",4,NULL
+"base_organisation_unit","parent_organisation_unit_id","bigint",5,NULL
+"base_organisation_unit","archived","integer",6,NULL
+"base_organisation_unit","details","jsonb",7,NULL
+"base_organisation_unit","date_created","timestamp without time zone",8,NULL
+"base_organisation_unit","created_by","character varying",9,NULL
+"base_organisation_unit","date_modified","timestamp without time zone",10,NULL
+"base_organisation_unit","uuid","character varying",12,NULL
+"base_organisation_unit","ods_load_time","timestamp without time zone",13,NULL
+"base_organisation_unit","ods_datim_id","character varying",14,255
+"base_organisation_unit","id","bigint",1,NULL
+"base_organisation_unit_hierarchy","ods_datim_id","character varying",6,255
+"base_organisation_unit_hierarchy","ods_load_time","timestamp without time zone",5,NULL
+"base_organisation_unit_hierarchy","organisation_unit_level_id","bigint",4,NULL
+"base_organisation_unit_hierarchy","parent_organisation_unit_id","bigint",3,NULL
+"base_organisation_unit_hierarchy","organisation_unit_id","bigint",2,NULL
+"base_organisation_unit_hierarchy","id","bigint",1,NULL
+"base_organisation_unit_identifier","id","bigint",1,NULL
+"base_organisation_unit_identifier","ods_datim_id","character varying",6,255
+"base_organisation_unit_identifier","ods_load_time","timestamp without time zone",5,NULL
+"base_organisation_unit_identifier","name","character varying",4,NULL
+"base_organisation_unit_identifier","code","character varying",3,NULL
+"base_organisation_unit_identifier","organisation_unit_id","bigint",2,NULL
+"base_organisation_unit_level","ods_datim_id","character varying",13,255
+"base_organisation_unit_level","name","character varying",2,NULL
+"base_organisation_unit_level","description","character varying",3,NULL
+"base_organisation_unit_level","archived","integer",4,NULL
+"base_organisation_unit_level","status","integer",5,NULL
+"base_organisation_unit_level","date_created","timestamp without time zone",6,NULL
+"base_organisation_unit_level","created_by","character varying",7,NULL
+"base_organisation_unit_level","date_modified","timestamp without time zone",8,NULL
+"base_organisation_unit_level","modified_by","character varying",9,NULL
+"base_organisation_unit_level","id","bigint",1,NULL
+"base_organisation_unit_level","uuid","character varying",10,NULL
+"base_organisation_unit_level","parent_organisation_unit_level_id","bigint",11,NULL
+"base_organisation_unit_level","ods_load_time","timestamp without time zone",12,NULL
+"biometric","id","character varying",1,NULL
+"biometric","created_by","character varying",3,NULL
+"biometric","last_modified_date","timestamp without time zone",4,NULL
+"biometric","last_modified_by","character varying",5,NULL
+"biometric","facility_id","bigint",6,NULL
+"biometric","person_uuid","character varying",7,NULL
+"biometric","template","text",8,NULL
+"biometric","biometric_type","character varying",9,NULL
+"biometric","template_type","character varying",10,NULL
+"biometric","enrollment_date","date",11,NULL
+"biometric","archived","integer",12,NULL
+"biometric","iso","boolean",13,NULL
+"biometric","extra","jsonb",14,NULL
+"biometric","device_name","character varying",15,NULL
+"biometric","reason","character varying",16,NULL
+"biometric","version_iso_20","boolean",17,NULL
+"biometric","image_quality","integer",18,NULL
+"biometric","recapture","integer",19,NULL
+"biometric","recapture_message","character varying",20,NULL
+"biometric","hashed","character varying",21,NULL
+"biometric","count","integer",22,NULL
+"biometric","ods_load_time","timestamp without time zone",23,NULL
+"biometric","ods_datim_id","character varying",24,255
+"biometric","replace_date","date",25,NULL
+"biometric","created_date","timestamp without time zone",2,NULL
+"case_manager","last_name","character varying",5,NULL
+"case_manager","username","character varying",21,NULL
+"case_manager","user_id","character varying",20,NULL
+"case_manager","password","character varying",19,NULL
+"case_manager","ods_datim_id","character varying",18,255
+"case_manager","ods_load_time","timestamp without time zone",17,NULL
+"case_manager","date_modified","timestamp without time zone",16,NULL
+"case_manager","religion","character varying",15,NULL
+"case_manager","active","boolean",14,NULL
+"case_manager","archived","integer",13,NULL
+"case_manager","modified_by","character varying",12,NULL
+"case_manager","created_by","character varying",11,NULL
+"case_manager","address","character varying",10,NULL
+"case_manager","create_date","timestamp without time zone",9,NULL
+"case_manager","facility_id","integer",8,NULL
+"case_manager","phone_number","character varying",7,NULL
+"case_manager","sex","character varying",6,NULL
+"case_manager","first_name","character varying",4,NULL
+"case_manager","designation","character varying",3,NULL
+"case_manager","uuid","character varying",2,NULL
+"case_manager","id","integer",1,NULL
+"case_manager_patients","full_name","character varying",2,NULL
+"case_manager_patients","id","integer",1,NULL
+"case_manager_patients","facility_id","bigint",7,NULL
+"case_manager_patients","age","character varying",6,NULL
+"case_manager_patients","hospital_no","character varying",5,NULL
+"case_manager_patients","case_manager_id","integer",14,NULL
+"case_manager_patients","create_date","timestamp without time zone",15,NULL
+"case_manager_patients","date_assigned","timestamp without time zone",16,NULL
+"case_manager_patients","date_created","timestamp without time zone",17,NULL
+"case_manager_patients","date_modified","timestamp without time zone",18,NULL
+"case_manager_patients","created_by","character varying",19,NULL
+"case_manager_patients","modified_by","character varying",20,NULL
+"case_manager_patients","action","character varying",21,NULL
+"case_manager_patients","uuid","character varying",22,NULL
+"case_manager_patients","ods_load_time","timestamp without time zone",23,NULL
+"case_manager_patients","ods_datim_id","character varying",24,255
+"case_manager_patients","archived","integer",25,NULL
+"case_manager_patients","lga","character varying",13,NULL
+"case_manager_patients","state","character varying",12,NULL
+"case_manager_patients","phone_number","character varying",11,NULL
+"case_manager_patients","date_of_birth","character varying",10,NULL
+"case_manager_patients","person_uuid","character varying",9,NULL
+"case_manager_patients","biometric_status","character varying",8,NULL
+"case_manager_patients","current_status","character varying",4,NULL
+"case_manager_patients","sex","character varying",3,NULL
+"deduplication","ods_load_time","timestamp without time zone",1,NULL
+"deduplication","ods_datim_id","character varying",2,255
+"dsd_devolvement","source","character varying",34,NULL
+"dsd_devolvement","id","integer",1,NULL
+"dsd_devolvement","person_uuid","character varying",2,255
+"dsd_devolvement","facility_id","bigint",3,NULL
+"dsd_devolvement","created_date","timestamp without time zone",4,NULL
+"dsd_devolvement","created_by","character varying",5,1000
+"dsd_devolvement","last_modified_date","timestamp without time zone",6,NULL
+"dsd_devolvement","last_modified_by","character varying",7,1000
+"dsd_devolvement","viral_load_test_result","character varying",8,1000
+"dsd_devolvement","viral_load_test_result_date","date",9,NULL
+"dsd_devolvement","dsd_eligible","character varying",10,1000
+"dsd_devolvement","dsd_accept","character varying",11,1000
+"dsd_devolvement","dsd_model","character varying",12,1000
+"dsd_devolvement","score","integer",13,NULL
+"dsd_devolvement","dsd_type","character varying",14,255
+"dsd_devolvement","comment","character varying",15,1000
+"dsd_devolvement","completed_by","character varying",16,255
+"dsd_devolvement","designation","character varying",17,1000
+"dsd_devolvement","date_devolved","date",18,NULL
+"dsd_devolvement","uuid","character varying",19,255
+"dsd_devolvement","archived","integer",20,NULL
+"dsd_devolvement","dsd_eligibility_assessment","character varying",21,1000
+"dsd_devolvement","client_return_to_site","character varying",22,1000
+"dsd_devolvement","date_return_to_site","date",23,NULL
+"dsd_devolvement","service_provider","character varying",24,255
+"dsd_devolvement","service_provided","character varying",25,1000
+"dsd_devolvement","ods_load_time","timestamp without time zone",26,NULL
+"dsd_devolvement","ods_datim_id","character varying",27,255
+"dsd_devolvement","outlet_name","character varying",28,NULL
+"dsd_devolvement","dsd_outlet_lga","character varying",29,NULL
+"dsd_devolvement","latitude","character varying",30,NULL
+"dsd_devolvement","longitude","character varying",31,NULL
+"dsd_devolvement","dsd_outlet","character varying",32,NULL
+"dsd_devolvement","dsd_outlet_state","character varying",33,NULL
+"hiv_art_clinical","reason","text",57,NULL
+"hiv_art_clinical","id","bigint",1,NULL
+"hiv_art_clinical","created_date","timestamp without time zone",2,NULL
+"hiv_art_clinical","created_by","character varying",3,NULL
+"hiv_art_clinical","last_modified_date","timestamp without time zone",4,NULL
+"hiv_art_clinical","last_modified_by","character varying",5,NULL
+"hiv_art_clinical","facility_id","bigint",6,NULL
+"hiv_art_clinical","visit_date","date",7,NULL
+"hiv_art_clinical","cd_4","bigint",8,NULL
+"hiv_art_clinical","cd_4_percentage","bigint",9,NULL
+"hiv_art_clinical","is_commencement","boolean",10,NULL
+"hiv_art_clinical","functional_status_id","bigint",11,NULL
+"hiv_art_clinical","clinical_stage_id","bigint",12,NULL
+"hiv_art_clinical","clinical_note","character varying",13,NULL
+"hiv_art_clinical","uuid","character varying",14,NULL
+"hiv_art_clinical","hiv_enrollment_uuid","character varying",15,NULL
+"hiv_art_clinical","regimen_id","bigint",16,NULL
+"hiv_art_clinical","regimen_type_id","bigint",17,NULL
+"hiv_art_clinical","art_status_id","bigint",18,NULL
+"hiv_art_clinical","archived","integer",19,NULL
+"hiv_art_clinical","vital_sign_uuid","character varying",20,NULL
+"hiv_art_clinical","who_staging_id","bigint",21,NULL
+"hiv_art_clinical","person_uuid","character varying",22,NULL
+"hiv_art_clinical","visit_id","character varying",23,NULL
+"hiv_art_clinical","oi_screened","character varying",24,NULL
+"hiv_art_clinical","sti_ids","character varying",25,NULL
+"hiv_art_clinical","pregnancy_status","character varying",26,NULL
+"hiv_art_clinical","sti_treated","character varying",27,NULL
+"hiv_art_clinical","opportunistic_infections","jsonb",28,NULL
+"hiv_art_clinical","adr_screened","character varying",29,NULL
+"hiv_art_clinical","adverse_drug_reactions","jsonb",30,NULL
+"hiv_art_clinical","adherence_level","character varying",31,NULL
+"hiv_art_clinical","adheres","jsonb",32,NULL
+"hiv_art_clinical","next_appointment","date",33,NULL
+"hiv_art_clinical","lmp_date","date",34,NULL
+"hiv_art_clinical","tb_screen","jsonb",35,NULL
+"hiv_art_clinical","is_viral_load_at_start_of_art","boolean",36,NULL
+"hiv_art_clinical","viral_load_at_start_of_art","double precision",37,NULL
+"hiv_art_clinical","date_of_viral_load_at_start_of_art","date",38,NULL
+"hiv_art_clinical","cryptococcal_screening_status","character varying",39,NULL
+"hiv_art_clinical","cervical_cancer_screening_status","character varying",40,NULL
+"hiv_art_clinical","cervical_cancer_treatment_provided","character varying",41,NULL
+"hiv_art_clinical","hepatitis_screening_result","character varying",42,NULL
+"hiv_art_clinical","family_planing","character varying",43,NULL
+"hiv_art_clinical","on_family_planing","character varying",44,NULL
+"hiv_art_clinical","level_of_adherence","character varying",45,NULL
+"hiv_art_clinical","tb_status","character varying",46,NULL
+"hiv_art_clinical","tb_prevention","character varying",47,NULL
+"hiv_art_clinical","arvdrugs_regimen","jsonb",48,NULL
+"hiv_art_clinical","viral_load_order","jsonb",49,NULL
+"hiv_art_clinical","cd4_count","character varying",50,NULL
+"hiv_art_clinical","cd4_semi_quantitative","character varying",51,NULL
+"hiv_art_clinical","cd4_flow_cytometry","integer",52,NULL
+"hiv_art_clinical","extra","jsonb",53,NULL
+"hiv_art_clinical","cd4_type","character varying",54,NULL
+"hiv_art_clinical","ods_load_time","timestamp without time zone",55,NULL
+"hiv_art_clinical","ods_datim_id","character varying",56,255
+"hiv_art_clinical","who","character varying",58,NULL
+"hiv_art_pharmacy","latitude","character varying",31,NULL
+"hiv_art_pharmacy","dsd_model_type","character varying",20,NULL
+"hiv_art_pharmacy","refill","character varying",21,NULL
+"hiv_art_pharmacy","refill_type","character varying",22,NULL
+"hiv_art_pharmacy","delivery_point","character varying",23,NULL
+"hiv_art_pharmacy","dsd_model","character varying",24,NULL
+"hiv_art_pharmacy","archived","integer",25,NULL
+"hiv_art_pharmacy","ipt_type","character varying",26,NULL
+"hiv_art_pharmacy","ipt","jsonb",27,NULL
+"hiv_art_pharmacy","visit_type","character varying",28,NULL
+"hiv_art_pharmacy","ods_load_time","timestamp without time zone",29,NULL
+"hiv_art_pharmacy","ods_datim_id","character varying",30,255
+"hiv_art_pharmacy","refill_period","integer",19,NULL
+"hiv_art_pharmacy","longitude","character varying",32,NULL
+"hiv_art_pharmacy","source","character varying",33,NULL
+"hiv_art_pharmacy","id","bigint",1,NULL
+"hiv_art_pharmacy","person_uuid","character varying",8,NULL
+"hiv_art_pharmacy","visit_id","character varying",7,NULL
+"hiv_art_pharmacy","facility_id","bigint",6,NULL
+"hiv_art_pharmacy","last_modified_by","character varying",5,NULL
+"hiv_art_pharmacy","last_modified_date","timestamp without time zone",4,NULL
+"hiv_art_pharmacy","created_by","character varying",3,NULL
+"hiv_art_pharmacy","created_date","timestamp without time zone",2,NULL
+"hiv_art_pharmacy","visit_date","date",9,NULL
+"hiv_art_pharmacy","ard_screened","boolean",10,NULL
+"hiv_art_pharmacy","prescription_error","boolean",11,NULL
+"hiv_art_pharmacy","adherence","boolean",12,NULL
+"hiv_art_pharmacy","mmd_type","character varying",13,NULL
+"hiv_art_pharmacy","uuid","character varying",14,NULL
+"hiv_art_pharmacy","next_appointment","date",15,NULL
+"hiv_art_pharmacy","extra","jsonb",16,NULL
+"hiv_art_pharmacy","adverse_drug_reactions","jsonb",17,NULL
+"hiv_art_pharmacy","is_devolve","boolean",18,NULL
+"hiv_art_pharmacy_regimens","art_pharmacy_id","bigint",2,NULL
+"hiv_art_pharmacy_regimens","regimens_id","bigint",3,NULL
+"hiv_art_pharmacy_regimens","ods_load_time","timestamp without time zone",4,NULL
+"hiv_art_pharmacy_regimens","ods_datim_id","character varying",5,255
+"hiv_art_pharmacy_regimens","id","bigint",1,NULL
+"hiv_drug","evening","integer",9,NULL
+"hiv_drug","ods_datim_id","character varying",12,255
+"hiv_drug","ods_load_time","timestamp without time zone",11,NULL
+"hiv_drug","item_id","bigint",10,NULL
+"hiv_drug","afternoon","integer",8,NULL
+"hiv_drug","morning","integer",7,NULL
+"hiv_drug","doseform","character varying",6,NULL
+"hiv_drug","pack_size","integer",5,NULL
+"hiv_drug","strength","character varying",4,NULL
+"hiv_drug","name","character varying",3,NULL
+"hiv_drug","abbrev","character varying",2,NULL
+"hiv_drug","id","bigint",1,NULL
+"hiv_eac","reason_to_stop_eac","character varying",18,NULL
+"hiv_eac","test_result_id","bigint",14,NULL
+"hiv_eac","id","bigint",1,NULL
+"hiv_eac","status","character varying",12,NULL
+"hiv_eac","uuid","character varying",11,NULL
+"hiv_eac","date_of_last_viral_load","date",10,NULL
+"hiv_eac","last_viral_load","double precision",9,NULL
+"hiv_eac","lab_number","character varying",17,NULL
+"hiv_eac","test_name","character varying",16,NULL
+"hiv_eac","test_group","character varying",15,NULL
+"hiv_eac","ods_load_time","timestamp without time zone",19,NULL
+"hiv_eac","visit_id","character varying",8,NULL
+"hiv_eac","ods_datim_id","character varying",20,255
+"hiv_eac","person_uuid","character varying",7,NULL
+"hiv_eac","facility_id","bigint",6,NULL
+"hiv_eac","last_modified_by","character varying",5,NULL
+"hiv_eac","last_modified_date","timestamp without time zone",4,NULL
+"hiv_eac","created_by","character varying",3,NULL
+"hiv_eac","created_date","timestamp without time zone",2,NULL
+"hiv_eac","archived","integer",13,NULL
+"hiv_eac_out_come","last_modified_date","timestamp without time zone",4,NULL
+"hiv_eac_out_come","outcome","character varying",11,NULL
+"hiv_eac_out_come","plan","character varying",12,NULL
+"hiv_eac_out_come","plan_action","jsonb",13,NULL
+"hiv_eac_out_come","current_regimen","character varying",14,NULL
+"hiv_eac_out_come","switch_regimen","character varying",15,NULL
+"hiv_eac_out_come","substitute_regimen","character varying",16,NULL
+"hiv_eac_out_come","archived","integer",17,NULL
+"hiv_eac_out_come","uuid","character varying",18,NULL
+"hiv_eac_out_come","ods_load_time","timestamp without time zone",19,NULL
+"hiv_eac_out_come","ods_datim_id","character varying",20,255
+"hiv_eac_out_come","facility_id","bigint",6,NULL
+"hiv_eac_out_come","eac_id","character varying",7,NULL
+"hiv_eac_out_come","person_uuid","character varying",8,NULL
+"hiv_eac_out_come","visit_id","character varying",9,NULL
+"hiv_eac_out_come","repeat_viral_loader","double precision",10,NULL
+"hiv_eac_out_come","last_modified_by","character varying",5,NULL
+"hiv_eac_out_come","created_by","character varying",3,NULL
+"hiv_eac_out_come","created_date","timestamp without time zone",2,NULL
+"hiv_eac_out_come","id","bigint",1,NULL
+"hiv_eac_session","person_uuid","character varying",8,NULL
+"hiv_eac_session","eac_id","character varying",7,NULL
+"hiv_eac_session","facility_id","bigint",6,NULL
+"hiv_eac_session","ods_datim_id","character varying",23,255
+"hiv_eac_session","id","bigint",1,NULL
+"hiv_eac_session","created_date","timestamp without time zone",2,NULL
+"hiv_eac_session","created_by","character varying",3,NULL
+"hiv_eac_session","last_modified_date","timestamp without time zone",4,NULL
+"hiv_eac_session","last_modified_by","character varying",5,NULL
+"hiv_eac_session","eac_session_date","date",16,NULL
+"hiv_eac_session","status","character varying",20,NULL
+"hiv_eac_session","referral","character varying",17,NULL
+"hiv_eac_session","adherence","character varying",18,NULL
+"hiv_eac_session","uuid","character varying",19,NULL
+"hiv_eac_session","ods_load_time","timestamp without time zone",22,NULL
+"hiv_eac_session","archived","integer",21,NULL
+"hiv_eac_session","intervention_others","character varying",13,NULL
+"hiv_eac_session","comment","character varying",14,NULL
+"hiv_eac_session","follow_up_date","date",15,NULL
+"hiv_eac_session","barriers_others","character varying",12,NULL
+"hiv_eac_session","intervention","jsonb",11,NULL
+"hiv_eac_session","barriers","jsonb",10,NULL
+"hiv_eac_session","visit_id","character varying",9,NULL
+"hiv_enrollment","date_of_lpm","date",33,NULL
+"hiv_enrollment","date_referred_to_ovcpartner","date",31,NULL
+"hiv_enrollment","referred_from_ovcpartner","character varying",30,NULL
+"hiv_enrollment","referred_to_ovcpartner","character varying",29,NULL
+"hiv_enrollment","care_entry_point_other","character varying",28,NULL
+"hiv_enrollment","house_hold_number","character varying",27,NULL
+"hiv_enrollment","ovc_number","character varying",26,NULL
+"hiv_enrollment","facility_name","character varying",25,NULL
+"hiv_enrollment","archived","integer",24,NULL
+"hiv_enrollment","uuid","character varying",23,NULL
+"hiv_enrollment","visit_id","character varying",22,NULL
+"hiv_enrollment","person_uuid","character varying",21,NULL
+"hiv_enrollment","send_message","boolean",20,NULL
+"hiv_enrollment","date_started","date",19,NULL
+"hiv_enrollment","enrollment_setting_id","bigint",18,NULL
+"hiv_enrollment","status_at_registration_id","bigint",17,NULL
+"hiv_enrollment","date_of_registration","date",16,NULL
+"hiv_enrollment","breastfeeding","boolean",15,NULL
+"hiv_enrollment","pregnant","boolean",14,NULL
+"hiv_enrollment","time_hiv_diagnosis","timestamp with time zone",13,NULL
+"hiv_enrollment","source_of_referrer_id","bigint",12,NULL
+"hiv_enrollment","date_enrolled_pmtct","date",11,NULL
+"hiv_enrollment","date_confirmed_hiv","date",10,NULL
+"hiv_enrollment","target_group_id","bigint",9,NULL
+"hiv_enrollment","entry_point_id","bigint",8,NULL
+"hiv_enrollment","unique_id","character varying",7,NULL
+"hiv_enrollment","facility_id","bigint",6,NULL
+"hiv_enrollment","last_modified_by","character varying",5,NULL
+"hiv_enrollment","last_modified_date","timestamp without time zone",4,NULL
+"hiv_enrollment","created_by","character varying",3,NULL
+"hiv_enrollment","created_date","timestamp without time zone",2,NULL
+"hiv_enrollment","id","bigint",1,NULL
+"hiv_enrollment","pregnancy_status_id","bigint",34,NULL
+"hiv_enrollment","tb_status_id","bigint",35,NULL
+"hiv_enrollment","lip_name","character varying",36,NULL
+"hiv_enrollment","ods_load_time","timestamp without time zone",37,NULL
+"hiv_enrollment","ods_datim_id","character varying",38,255
+"hiv_enrollment","latitude","character varying",39,NULL
+"hiv_enrollment","longitude","character varying",40,NULL
+"hiv_enrollment","source","character varying",41,NULL
+"hiv_enrollment","date_referred_from_ovcpartner","date",32,NULL
+"hiv_observation","date_of_observation","date",7,NULL
+"hiv_observation","facility_id","bigint",6,NULL
+"hiv_observation","created_by","character varying",3,NULL
+"hiv_observation","created_date","timestamp without time zone",2,NULL
+"hiv_observation","id","bigint",1,NULL
+"hiv_observation","last_modified_by","character varying",5,NULL
+"hiv_observation","last_modified_date","timestamp without time zone",4,NULL
+"hiv_observation","person_uuid","character varying",8,NULL
+"hiv_observation","visit_id","character varying",9,NULL
+"hiv_observation","type","character varying",10,NULL
+"hiv_observation","uuid","character varying",11,NULL
+"hiv_observation","data","jsonb",12,NULL
+"hiv_observation","archived","integer",13,NULL
+"hiv_observation","ods_load_time","timestamp without time zone",14,NULL
+"hiv_observation","ods_datim_id","character varying",15,255
+"hiv_observation","latitude","character varying",16,NULL
+"hiv_observation","longitude","character varying",17,NULL
+"hiv_observation","source","character varying",18,NULL
+"hiv_ovc_linkage","enrolled_in_ovc_program","integer",27,NULL
+"hiv_ovc_linkage","archived","integer",28,NULL
+"hiv_ovc_linkage","cbo_name","character varying",29,NULL
+"hiv_ovc_linkage","facility_staff_name","character varying",30,NULL
+"hiv_ovc_linkage","status","character varying",31,NULL
+"hiv_ovc_linkage","ods_load_time","timestamp without time zone",32,NULL
+"hiv_ovc_linkage","ods_datim_id","character varying",33,255
+"hiv_ovc_linkage","id","uuid",1,NULL
+"hiv_ovc_linkage","created_date","timestamp without time zone",2,NULL
+"hiv_ovc_linkage","created_by","character varying",3,NULL
+"hiv_ovc_linkage","last_modified_date","timestamp without time zone",4,NULL
+"hiv_ovc_linkage","last_modified_by","character varying",5,NULL
+"hiv_ovc_linkage","facility_id","bigint",6,NULL
+"hiv_ovc_linkage","art_number","character varying",7,NULL
+"hiv_ovc_linkage","other_name","character varying",9,NULL
+"hiv_ovc_linkage","last_name","character varying",8,NULL
+"hiv_ovc_linkage","gender","character varying",10,NULL
+"hiv_ovc_linkage","birth_date","date",11,NULL
+"hiv_ovc_linkage","facility_name","character varying",12,NULL
+"hiv_ovc_linkage","datim_code","character varying",13,NULL
+"hiv_ovc_linkage","state_of_residence","character varying",14,NULL
+"hiv_ovc_linkage","lga_of_residence","character varying",15,NULL
+"hiv_ovc_linkage","entry_point","character varying",16,NULL
+"hiv_ovc_linkage","share_contact_with_ovc","integer",17,NULL
+"hiv_ovc_linkage","reason_for_decline","character varying",18,NULL
+"hiv_ovc_linkage","drug_refill_notification","integer",19,NULL
+"hiv_ovc_linkage","phone_number","character varying",20,NULL
+"hiv_ovc_linkage","caregiver_surname","character varying",21,NULL
+"hiv_ovc_linkage","caregiver_other_name","character varying",22,NULL
+"hiv_ovc_linkage","offer_date","date",23,NULL
+"hiv_ovc_linkage","enrollment_date","date",24,NULL
+"hiv_ovc_linkage","ovc_unique_id","character varying",25,NULL
+"hiv_ovc_linkage","household_unique_id","character varying",26,NULL
+"hiv_patient_tracker","date_of_discontinuation","date",25,NULL
+"hiv_patient_tracker","ods_datim_id","character varying",32,255
+"hiv_patient_tracker","ods_load_time","timestamp without time zone",31,NULL
+"hiv_patient_tracker","biometric_status","character varying",30,NULL
+"hiv_patient_tracker","date_of_observation","date",29,NULL
+"hiv_patient_tracker","status_uuid","character varying",28,NULL
+"hiv_patient_tracker","person_uuid","character varying",27,NULL
+"hiv_patient_tracker","id","bigint",1,NULL
+"hiv_patient_tracker","created_date","timestamp without time zone",2,NULL
+"hiv_patient_tracker","created_by","character varying",3,NULL
+"hiv_patient_tracker","last_modified_date","timestamp without time zone",4,NULL
+"hiv_patient_tracker","last_modified_by","character varying",5,NULL
+"hiv_patient_tracker","facility_id","bigint",6,NULL
+"hiv_patient_tracker","dsd_status","character varying",7,NULL
+"hiv_patient_tracker","dsd_model","character varying",8,NULL
+"hiv_patient_tracker","reason_for_tracking","character varying",9,NULL
+"hiv_patient_tracker","care_in_facility_discountinued","character varying",10,NULL
+"hiv_patient_tracker","reason_for_discountinuation","character varying",11,NULL
+"hiv_patient_tracker","cause_of_death","character varying",12,NULL
+"hiv_patient_tracker","reason_for_loss_to_follow_up","character varying",13,NULL
+"hiv_patient_tracker","referred_for","character varying",14,NULL
+"hiv_patient_tracker","referred_for_others","character varying",15,NULL
+"hiv_patient_tracker","reason_for_tracking_others","character varying",16,NULL
+"hiv_patient_tracker","cause_of_death_others","character varying",17,NULL
+"hiv_patient_tracker","reason_for_loss_to_follow_up_others","character varying",18,NULL
+"hiv_patient_tracker","archived","integer",19,NULL
+"hiv_patient_tracker","uuid","character varying",20,NULL
+"hiv_patient_tracker","attempts","jsonb",21,NULL
+"hiv_patient_tracker","duration_onart","character varying",22,NULL
+"hiv_patient_tracker","date_last_appointment","date",23,NULL
+"hiv_patient_tracker","date_return_to_care","date",24,NULL
+"hiv_patient_tracker","date_missed_appointment","date",26,NULL
+"hiv_regimen","description","character varying",2,NULL
+"hiv_regimen","composition","character varying",3,NULL
+"hiv_regimen","regimen_type_id","bigint",4,NULL
+"hiv_regimen","active","boolean",5,NULL
+"hiv_regimen","priority","integer",6,NULL
+"hiv_regimen","ods_load_time","timestamp without time zone",7,NULL
+"hiv_regimen","ods_datim_id","character varying",8,255
+"hiv_regimen","uuid","character varying",9,NULL
+"hiv_regimen","id","bigint",1,NULL
+"hiv_regimen_drug","regimen_id","bigint",2,NULL
+"hiv_regimen_drug","id","bigint",1,NULL
+"hiv_regimen_drug","drug_id","bigint",3,NULL
+"hiv_regimen_drug","ods_load_time","timestamp without time zone",4,NULL
+"hiv_regimen_drug","ods_datim_id","character varying",5,255
+"hiv_regimen_resolver","ods_load_time","timestamp without time zone",3,NULL
+"hiv_regimen_resolver","ods_datim_id","character varying",4,255
+"hiv_regimen_resolver","regimensys","character varying",1,NULL
+"hiv_regimen_resolver","regimen","character varying",2,NULL
+"hiv_regimen_type","id","bigint",1,NULL
+"hiv_regimen_type","description","character varying",2,NULL
+"hiv_regimen_type","ods_load_time","timestamp without time zone",3,NULL
+"hiv_regimen_type","ods_datim_id","character varying",4,255
+"hiv_status_tracker","track_date","date",12,NULL
+"hiv_status_tracker","tracking_outcome","character varying",11,NULL
+"hiv_status_tracker","visit_id","character varying",10,NULL
+"hiv_status_tracker","person_id","character varying",9,NULL
+"hiv_status_tracker","status_date","date",8,NULL
+"hiv_status_tracker","hiv_status","character varying",7,NULL
+"hiv_status_tracker","facility_id","bigint",6,NULL
+"hiv_status_tracker","last_modified_by","character varying",5,NULL
+"hiv_status_tracker","last_modified_date","timestamp without time zone",4,NULL
+"hiv_status_tracker","created_by","character varying",3,NULL
+"hiv_status_tracker","created_date","timestamp without time zone",2,NULL
+"hiv_status_tracker","id","bigint",1,NULL
+"hiv_status_tracker","ods_datim_id","character varying",23,255
+"hiv_status_tracker","ods_load_time","timestamp without time zone",22,NULL
+"hiv_status_tracker","biometric_status","character varying",21,NULL
+"hiv_status_tracker","va_cause_of_death_type","character varying",20,NULL
+"hiv_status_tracker","va_cause_of_death","character varying",19,NULL
+"hiv_status_tracker","archived","integer",18,NULL
+"hiv_status_tracker","auto","boolean",16,NULL
+"hiv_status_tracker","uuid","character varying",17,NULL
+"hiv_status_tracker","cause_of_death","character varying",15,NULL
+"hiv_status_tracker","reason_for_interruption","character varying",14,NULL
+"hiv_status_tracker","agreed_date","date",13,NULL
+"hiv_status_tracker","last_modified_date","timestamp without time zone",4,NULL
+"hiv_status_tracker","id","bigint",1,NULL
+"hiv_status_tracker","created_date","timestamp without time zone",2,NULL
+"hiv_status_tracker","created_by","character varying",3,NULL
+"hiv_status_tracker","reason_for_interruption","character varying",14,NULL
+"hiv_status_tracker","agreed_date","date",13,NULL
+"hiv_status_tracker","ods_datim_id","character varying",23,255
+"hiv_status_tracker","ods_load_time","timestamp without time zone",22,NULL
+"hiv_status_tracker","track_date","date",12,NULL
+"hiv_status_tracker","biometric_status","character varying",21,NULL
+"hiv_status_tracker","tracking_outcome","character varying",11,NULL
+"hiv_status_tracker","va_cause_of_death_type","character varying",20,NULL
+"hiv_status_tracker","va_cause_of_death","character varying",19,NULL
+"hiv_status_tracker","archived","integer",18,NULL
+"hiv_status_tracker","uuid","character varying",17,NULL
+"hiv_status_tracker","auto","boolean",16,NULL
+"hiv_status_tracker","cause_of_death","character varying",15,NULL
+"hiv_status_tracker","visit_id","character varying",10,NULL
+"hiv_status_tracker","status_date","date",8,NULL
+"hiv_status_tracker","person_id","character varying",9,NULL
+"hiv_status_tracker","hiv_status","character varying",7,NULL
+"hiv_status_tracker","facility_id","bigint",6,NULL
+"hiv_status_tracker","last_modified_by","character varying",5,NULL
+"hts_client","latitude","character varying",62,NULL
+"hts_client","ods_load_time","timestamp without time zone",52,NULL
+"hts_client","ods_datim_id","character varying",53,255
+"hts_client","source","character varying",54,255
+"hts_client","accepted_pns","character varying",55,NULL
+"hts_client","referred_for_sti","character varying",56,NULL
+"hts_client","risk_stratification_code","character varying",51,NULL
+"hts_client","longitude","character varying",61,NULL
+"hts_client","family_index","character varying",60,NULL
+"hts_client","partner_notification_service","character varying",59,NULL
+"hts_client","comment","character varying",58,NULL
+"hts_client","offered_pns","character varying",57,NULL
+"hts_client","other_drugs","character varying",9,NULL
+"hts_client","id","bigint",1,NULL
+"hts_client","target_group","character varying",2,NULL
+"hts_client","client_code","character varying",3,NULL
+"hts_client","date_visit","date",4,NULL
+"hts_client","referred_from","bigint",5,NULL
+"hts_client","person_uuid","character varying",6,NULL
+"hts_client","testing_setting","character varying",7,NULL
+"hts_client","prep_given","character varying",8,NULL
+"hts_client","hiv_test_result","character varying",10,NULL
+"hts_client","first_time_visit","boolean",11,NULL
+"hts_client","num_children","integer",12,NULL
+"hts_client","num_wives","integer",13,NULL
+"hts_client","type_counseling","bigint",14,NULL
+"hts_client","index_client","boolean",15,NULL
+"hts_client","prep_offered","boolean",16,NULL
+"hts_client","prep_accepted","boolean",17,NULL
+"hts_client","previously_tested","boolean",18,NULL
+"hts_client","extra","jsonb",19,NULL
+"hts_client","pregnant","bigint",20,NULL
+"hts_client","breast_feeding","boolean",21,NULL
+"hts_client","relation_with_index_client","bigint",22,NULL
+"hts_client","test1","jsonb",23,NULL
+"hts_client","confirmatory_test","jsonb",24,NULL
+"hts_client","tie_breaker_test","jsonb",25,NULL
+"hts_client","test2","jsonb",26,NULL
+"hts_client","confirmatory_test2","jsonb",27,NULL
+"hts_client","tie_breaker_test2","jsonb",28,NULL
+"hts_client","hiv_test_result2","character varying",29,NULL
+"hts_client","knowledge_assessment","jsonb",30,NULL
+"hts_client","risk_assessment","jsonb",31,NULL
+"hts_client","tb_screening","jsonb",32,NULL
+"hts_client","sti_screening","jsonb",33,NULL
+"hts_client","facility_id","bigint",34,NULL
+"hts_client","captured_by","character varying",35,NULL
+"hts_client","uuid","character varying",36,NULL
+"hts_client","hepatitis_testing","jsonb",37,NULL
+"hts_client","recency","jsonb",38,NULL
+"hts_client","syphilis_testing","jsonb",39,NULL
+"hts_client","index_notification_services_elicitation","jsonb",40,NULL
+"hts_client","post_test_counseling","jsonb",41,NULL
+"hts_client","sex_partner_risk_assessment","jsonb",42,NULL
+"hts_client","others","jsonb",43,NULL
+"hts_client","cd4","jsonb",44,NULL
+"hts_client","date_created","timestamp without time zone",45,NULL
+"hts_client","created_by","character varying",46,NULL
+"hts_client","date_modified","timestamp without time zone",47,NULL
+"hts_client","modified_by","character varying",48,NULL
+"hts_client","archived","integer",49,NULL
+"hts_client","index_client_code","character varying",50,NULL
+"hts_index_elicitation","created_by","character varying",24,NULL
+"hts_index_elicitation","date_modified","timestamp without time zone",25,NULL
+"hts_index_elicitation","modified_by","character varying",26,NULL
+"hts_index_elicitation","archived","integer",27,NULL
+"hts_index_elicitation","extra","jsonb",28,NULL
+"hts_index_elicitation","offered_ins","character varying",29,NULL
+"hts_index_elicitation","accepted_ins","character varying",30,NULL
+"hts_index_elicitation","ods_datim_id","character varying",32,255
+"hts_index_elicitation","ods_load_time","timestamp without time zone",31,NULL
+"hts_index_elicitation","source","character varying",33,255
+"hts_index_elicitation","latitude","character varying",34,NULL
+"hts_index_elicitation","longitude","character varying",35,NULL
+"hts_index_elicitation","id","bigint",1,NULL
+"hts_index_elicitation","uuid","character varying",2,NULL
+"hts_index_elicitation","dob","date",3,NULL
+"hts_index_elicitation","is_date_of_birth_estimated","boolean",4,NULL
+"hts_index_elicitation","sex","bigint",5,NULL
+"hts_index_elicitation","address","character varying",6,NULL
+"hts_index_elicitation","last_name","character varying",7,NULL
+"hts_index_elicitation","first_name","character varying",8,NULL
+"hts_index_elicitation","middle_name","character varying",9,NULL
+"hts_index_elicitation","phone_number","character varying",10,NULL
+"hts_index_elicitation","alt_phone_number","character varying",11,NULL
+"hts_index_elicitation","hang_out_spots","character varying",12,NULL
+"hts_index_elicitation","physical_hurt","bigint",13,NULL
+"hts_index_elicitation","threaten_to_hurt","bigint",14,NULL
+"hts_index_elicitation","notification_method","bigint",15,NULL
+"hts_index_elicitation","partner_tested_positive","bigint",16,NULL
+"hts_index_elicitation","sexually_uncomfortable","bigint",17,NULL
+"hts_index_elicitation","currently_live_with_partner","boolean",18,NULL
+"hts_index_elicitation","relationship_with_index_client","bigint",19,NULL
+"hts_index_elicitation","date_partner_came_for_testing","date",20,NULL
+"hts_index_elicitation","facility_id","bigint",21,NULL
+"hts_index_elicitation","hts_client_uuid","character varying",22,NULL
+"hts_index_elicitation","date_created","timestamp without time zone",23,NULL
+"hts_risk_stratification","age","character varying",4,NULL
+"hts_risk_stratification","id","bigint",1,NULL
+"hts_risk_stratification","code","character varying",2,NULL
+"hts_risk_stratification","person_uuid","character varying",3,NULL
+"hts_risk_stratification","testing_setting","character varying",5,NULL
+"hts_risk_stratification","modality","character varying",6,NULL
+"hts_risk_stratification","target_group","character varying",7,NULL
+"hts_risk_stratification","entry_point","character varying",8,NULL
+"hts_risk_stratification","community_entry_point","character varying",9,NULL
+"hts_risk_stratification","visit_date","date",10,NULL
+"hts_risk_stratification","dob","date",11,NULL
+"hts_risk_stratification","date_created","timestamp without time zone",12,NULL
+"hts_risk_stratification","created_by","character varying",13,NULL
+"hts_risk_stratification","date_modified","timestamp without time zone",14,NULL
+"hts_risk_stratification","modified_by","character varying",15,NULL
+"hts_risk_stratification","archived","integer",16,NULL
+"hts_risk_stratification","facility_id","bigint",17,NULL
+"hts_risk_stratification","risk_assessment","jsonb",18,NULL
+"hts_risk_stratification","ods_load_time","timestamp without time zone",19,NULL
+"hts_risk_stratification","ods_datim_id","character varying",20,255
+"hts_risk_stratification","source","character varying",21,255
+"hts_risk_stratification","latitude","character varying",22,NULL
+"hts_risk_stratification","longitude","character varying",23,NULL
+"laboratory_labtest","uuid","character varying",2,NULL
+"laboratory_labtest","id","bigint",1,NULL
+"laboratory_labtest","ods_datim_id","character varying",12,255
+"laboratory_labtest","ods_load_time","timestamp without time zone",11,NULL
+"laboratory_labtest","archived","integer",10,NULL
+"laboratory_labtest","date_modified","timestamp without time zone",9,NULL
+"laboratory_labtest","modified_by","character varying",8,NULL
+"laboratory_labtest","date_created","timestamp without time zone",7,NULL
+"laboratory_labtest","created_by","character varying",6,NULL
+"laboratory_labtest","labtestgroup_id","integer",5,NULL
+"laboratory_labtest","unit","character varying",4,NULL
+"laboratory_labtest","lab_test_name","character varying",3,NULL
+"laboratory_labtestgroup","archived","integer",8,NULL
+"laboratory_labtestgroup","ods_load_time","timestamp without time zone",9,NULL
+"laboratory_labtestgroup","ods_datim_id","character varying",10,255
+"laboratory_labtestgroup","created_by","character varying",4,NULL
+"laboratory_labtestgroup","date_created","timestamp without time zone",5,NULL
+"laboratory_labtestgroup","modified_by","character varying",6,NULL
+"laboratory_labtestgroup","id","bigint",1,NULL
+"laboratory_labtestgroup","uuid","character varying",2,NULL
+"laboratory_labtestgroup","group_name","character varying",3,NULL
+"laboratory_labtestgroup","date_modified","timestamp without time zone",7,NULL
+"laboratory_number","modified_by","character varying",7,NULL
+"laboratory_number","created_by","character varying",5,NULL
+"laboratory_number","id","bigint",1,NULL
+"laboratory_number","lab_name","character varying",3,NULL
+"laboratory_number","uuid","character varying",2,NULL
+"laboratory_number","ods_datim_id","character varying",11,255
+"laboratory_number","ods_load_time","timestamp without time zone",10,NULL
+"laboratory_number","archived","integer",9,NULL
+"laboratory_number","lab_number","character varying",4,NULL
+"laboratory_number","date_modified","timestamp without time zone",8,NULL
+"laboratory_number","date_created","timestamp without time zone",6,NULL
+"laboratory_order","ods_load_time","timestamp without time zone",15,NULL
+"laboratory_order","ods_datim_id","character varying",16,255
+"laboratory_order","ordered_date","date",17,NULL
+"laboratory_order","lab_order_indication","character varying",18,255
+"laboratory_order","order_date","timestamp without time zone",5,NULL
+"laboratory_order","id","bigint",1,NULL
+"laboratory_order","visit_id","integer",4,NULL
+"laboratory_order","patient_id","integer",3,NULL
+"laboratory_order","uuid","character varying",2,NULL
+"laboratory_order","facility_id","integer",7,NULL
+"laboratory_order","patient_uuid","character varying",6,NULL
+"laboratory_order","create_date","timestamp without time zone",8,NULL
+"laboratory_order","userid","character varying",9,NULL
+"laboratory_order","created_by","character varying",10,NULL
+"laboratory_order","date_created","timestamp without time zone",11,NULL
+"laboratory_order","modified_by","character varying",12,NULL
+"laboratory_order","date_modified","timestamp without time zone",13,NULL
+"laboratory_order","archived","integer",14,NULL
+"laboratory_result","date_result_received","timestamp without time zone",16,NULL
+"laboratory_result","ods_datim_id","character varying",28,255
+"laboratory_result","ods_load_time","timestamp without time zone",27,NULL
+"laboratory_result","pcr_lab_name","character varying",26,NULL
+"laboratory_result","result_received_by","character varying",25,NULL
+"laboratory_result","date_approved","timestamp without time zone",24,NULL
+"laboratory_result","approved_by","character varying",23,NULL
+"laboratory_result","assayed_by","character varying",22,NULL
+"laboratory_result","archived","integer",21,NULL
+"laboratory_result","date_modified","timestamp without time zone",20,NULL
+"laboratory_result","modified_by","character varying",19,NULL
+"laboratory_result","date_created","timestamp without time zone",18,NULL
+"laboratory_result","id","bigint",1,NULL
+"laboratory_result","uuid","character varying",2,NULL
+"laboratory_result","date_assayed","timestamp without time zone",3,NULL
+"laboratory_result","date_result_reported","timestamp without time zone",4,NULL
+"laboratory_result","result_reported","character varying",5,NULL
+"laboratory_result","result_report","character varying",6,NULL
+"laboratory_result","result_reported_by","character varying",7,NULL
+"laboratory_result","patient_uuid","character varying",8,NULL
+"laboratory_result","facility_id","integer",9,NULL
+"laboratory_result","patient_id","integer",10,NULL
+"laboratory_result","pcr_lab_sample_number","character varying",11,NULL
+"laboratory_result","date_sample_received_at_pcr_lab","date",12,NULL
+"laboratory_result","test_id","integer",13,NULL
+"laboratory_result","date_checked","timestamp without time zone",14,NULL
+"laboratory_result","checked_by","character varying",15,NULL
+"laboratory_result","created_by","character varying",17,NULL
+"laboratory_sample","date_sample_collected","timestamp without time zone",6,NULL
+"laboratory_sample","ods_datim_id","character varying",25,255
+"laboratory_sample","ods_load_time","timestamp without time zone",24,NULL
+"laboratory_sample","archived","integer",23,NULL
+"laboratory_sample","date_modified","timestamp without time zone",22,NULL
+"laboratory_sample","modified_by","character varying",21,NULL
+"laboratory_sample","date_created","timestamp without time zone",20,NULL
+"laboratory_sample","created_by","character varying",19,NULL
+"laboratory_sample","sample_logged_remotely","integer",18,NULL
+"laboratory_sample","date_sample_logged_remotely","timestamp without time zone",17,NULL
+"laboratory_sample","test_id","integer",16,NULL
+"laboratory_sample","patient_id","integer",15,NULL
+"laboratory_sample","facility_id","integer",14,NULL
+"laboratory_sample","patient_uuid","character varying",13,NULL
+"laboratory_sample","sample_accepted","character varying",12,NULL
+"laboratory_sample","sample_verified_by","character varying",11,NULL
+"laboratory_sample","comment_sample_verified","character varying",10,NULL
+"laboratory_sample","date_sample_verified","timestamp without time zone",9,NULL
+"laboratory_sample","sample_collected_by","character varying",8,NULL
+"laboratory_sample","comment_sample_collected","character varying",7,NULL
+"laboratory_sample","sample_collection_mode","integer",5,NULL
+"laboratory_sample","sample_type_id","integer",4,NULL
+"laboratory_sample","sample_number","character varying",3,NULL
+"laboratory_sample","uuid","character varying",2,NULL
+"laboratory_sample","id","bigint",1,NULL
+"laboratory_sample_type","created_by","character varying",4,NULL
+"laboratory_sample_type","modified_by","character varying",6,NULL
+"laboratory_sample_type","date_modified","timestamp without time zone",7,NULL
+"laboratory_sample_type","archived","integer",8,NULL
+"laboratory_sample_type","ods_load_time","timestamp without time zone",9,NULL
+"laboratory_sample_type","ods_datim_id","character varying",10,255
+"laboratory_sample_type","id","bigint",1,NULL
+"laboratory_sample_type","uuid","character varying",2,NULL
+"laboratory_sample_type","sample_type_name","character varying",3,NULL
+"laboratory_sample_type","date_created","timestamp without time zone",5,NULL
+"laboratory_sampletype_labtest_link","created_by","character varying",5,NULL
+"laboratory_sampletype_labtest_link","modified_by","character varying",7,NULL
+"laboratory_sampletype_labtest_link","date_modified","timestamp without time zone",8,NULL
+"laboratory_sampletype_labtest_link","ods_datim_id","character varying",11,255
+"laboratory_sampletype_labtest_link","ods_load_time","timestamp without time zone",10,NULL
+"laboratory_sampletype_labtest_link","archived","integer",9,NULL
+"laboratory_sampletype_labtest_link","id","bigint",1,NULL
+"laboratory_sampletype_labtest_link","uuid","character varying",2,NULL
+"laboratory_sampletype_labtest_link","sample_type_id","integer",3,NULL
+"laboratory_sampletype_labtest_link","labtest_id","integer",4,NULL
+"laboratory_sampletype_labtest_link","date_created","timestamp without time zone",6,NULL
+"laboratory_test","lab_test_id","integer",4,NULL
+"laboratory_test","description","character varying",5,NULL
+"laboratory_test","modified_by","character varying",17,NULL
+"laboratory_test","date_created","timestamp without time zone",16,NULL
+"laboratory_test","created_by","character varying",15,NULL
+"laboratory_test","lab_order_id","integer",14,NULL
+"laboratory_test","facility_id","integer",13,NULL
+"laboratory_test","lab_number","character varying",6,NULL
+"laboratory_test","lab_test_group_id","integer",7,NULL
+"laboratory_test","order_priority","integer",8,NULL
+"laboratory_test","unit_measurement","character varying",9,NULL
+"laboratory_test","lab_test_order_status","integer",10,NULL
+"laboratory_test","viral_load_indication","integer",11,NULL
+"laboratory_test","patient_uuid","character varying",12,NULL
+"laboratory_test","ods_load_time","timestamp without time zone",20,NULL
+"laboratory_test","archived","integer",19,NULL
+"laboratory_test","date_modified","timestamp without time zone",18,NULL
+"laboratory_test","clinical_note","character varying",22,NULL
+"laboratory_test","ods_datim_id","character varying",21,255
+"laboratory_test","id","bigint",1,NULL
+"laboratory_test","uuid","character varying",2,NULL
+"laboratory_test","patient_id","integer",3,NULL
+"mhpss_screening","ods_batch_id","text",17,NULL
+"mhpss_screening","updated_by","text",13,NULL
+"mhpss_screening","suicidal_thoughts","text",12,NULL
+"mhpss_screening","updated_at","timestamp without time zone",11,NULL
+"mhpss_screening","archived","boolean",10,NULL
+"mhpss_screening","screened_by","text",9,NULL
+"mhpss_screening","sleep_issues","text",8,NULL
+"mhpss_screening","created_by","text",7,NULL
+"mhpss_screening","created_at","timestamp without time zone",6,NULL
+"mhpss_screening","encounter_date","text",5,NULL
+"mhpss_screening","person_uuid","text",4,NULL
+"mhpss_screening","patient_visit_id","text",3,NULL
+"mhpss_screening","recent_activity_challenge","text",2,NULL
+"mhpss_screening","recent_calmness","text",1,NULL
+"mhpss_screening","referred","boolean",16,NULL
+"mhpss_screening","substance_abuse","text",15,NULL
+"mhpss_screening","facility_id","bigint",21,NULL
+"mhpss_screening","ods_datim_id","text",20,NULL
+"mhpss_screening","ods_file_name","text",19,NULL
+"mhpss_screening","ods_load_time","timestamp without time zone",18,NULL
+"mhpss_screening","id","text",14,NULL
+"monitoring","ods_load_time","timestamp without time zone",1,NULL
+"monitoring","ods_datim_id","character varying",2,255
+"ndr_code_set","alt_description","character varying",4,NULL
+"ndr_code_set","code_description","character varying",3,NULL
+"ndr_code_set","code","character varying",2,NULL
+"ndr_code_set","code_set_nm","character varying",1,NULL
+"ndr_code_set","ods_datim_id","character varying",7,255
+"ndr_code_set","ods_load_time","timestamp without time zone",6,NULL
+"ndr_code_set","sys_description","character varying",5,NULL
+"ndr_facility","datim_id","character varying",4,NULL
+"ndr_facility","ods_load_time","timestamp without time zone",5,NULL
+"ndr_facility","ods_datim_id","character varying",6,255
+"ndr_facility","id","uuid",1,NULL
+"ndr_facility","name","character varying",2,NULL
+"ndr_facility","facility_local_id","bigint",3,NULL
+"ndr_message_log","last_updated","timestamp without time zone",4,NULL
+"ndr_message_log","file_type","character varying",5,NULL
+"ndr_message_log","ods_load_time","timestamp without time zone",6,NULL
+"ndr_message_log","ods_datim_id","character varying",7,255
+"ndr_message_log","id","integer",1,NULL
+"ndr_message_log","identifier","character varying",2,NULL
+"ndr_message_log","file","character varying",3,NULL
+"ndr_messages","id","bigint",1,NULL
+"ndr_messages","ods_datim_id","character varying",8,255
+"ndr_messages","ods_load_time","timestamp without time zone",7,NULL
+"ndr_messages","identifier","character varying",6,NULL
+"ndr_messages","message_date","date",5,NULL
+"ndr_messages","facility_id","bigint",3,NULL
+"ndr_messages","is_pushed","boolean",4,NULL
+"ndr_messages","de_message","character varying",2,NULL
+"ndr_pusher","id","integer",1,NULL
+"ndr_pusher","code","integer",2,NULL
+"ndr_pusher","batch_number","character varying",3,NULL
+"ndr_pusher","de_message","character varying",4,NULL
+"ndr_pusher","message","character varying",5,NULL
+"ndr_pusher","facility_id","bigint",6,NULL
+"ndr_pusher","is_authenticated","boolean",7,NULL
+"ndr_pusher","push_date","date",8,NULL
+"ndr_pusher","ods_load_time","timestamp without time zone",9,NULL
+"ndr_pusher","ods_datim_id","character varying",10,255
+"ndr_pusher_config","facility_id","bigint",2,NULL
+"ndr_pusher_config","id","integer",1,NULL
+"ndr_pusher_config","ods_datim_id","character varying",6,255
+"ndr_pusher_config","ods_load_time","timestamp without time zone",5,NULL
+"ndr_pusher_config","password","character varying",4,NULL
+"ndr_pusher_config","username","character varying",3,NULL
+"ndr_xml_status","ods_datim_id","character varying",11,255
+"ndr_xml_status","push_identifier","character varying",6,NULL
+"ndr_xml_status","last_modified","timestamp without time zone",5,NULL
+"ndr_xml_status","file_name","character varying",4,NULL
+"ndr_xml_status","completely_pushed","boolean",8,NULL
+"ndr_xml_status","files","integer",3,NULL
+"ndr_xml_status","facility_id","bigint",2,NULL
+"ndr_xml_status","id","integer",1,NULL
+"ndr_xml_status","percentage_pushed","integer",7,NULL
+"ndr_xml_status","error","jsonb",9,NULL
+"ndr_xml_status","ods_load_time","timestamp without time zone",10,NULL
+"ndrdata","demorgraphic","jsonb",2,NULL
+"ndrdata","care_cards","jsonb",4,NULL
+"ndrdata","labs","jsonb",5,NULL
+"ndrdata","pharmacies","jsonb",6,NULL
+"ndrdata","date_modified","date",7,NULL
+"ndrdata","ods_load_time","timestamp without time zone",8,NULL
+"ndrdata","ods_datim_id","character varying",9,255
+"ndrdata","patient_id","character varying",1,NULL
+"ndrdata","commencement","jsonb",3,NULL
+"patient_check_post_service","encounter_type","character varying",5,NULL
+"patient_check_post_service","ods_datim_id","character varying",7,255
+"patient_check_post_service","id","bigint",1,NULL
+"patient_check_post_service","facility_id","bigint",2,NULL
+"patient_check_post_service","module_service_code","character varying",3,NULL
+"patient_check_post_service","module_service_name","character varying",4,NULL
+"patient_check_post_service","ods_load_time","timestamp without time zone",6,NULL
+"patient_encounter","service_code","character varying",11,NULL
+"patient_encounter","ods_datim_id","character varying",15,255
+"patient_encounter","ods_load_time","timestamp without time zone",14,NULL
+"patient_encounter","archived","integer",13,NULL
+"patient_encounter","status","character varying",12,NULL
+"patient_encounter","visit_id","character varying",10,NULL
+"patient_encounter","uuid","character varying",9,NULL
+"patient_encounter","person_uuid","character varying",8,NULL
+"patient_encounter","encounter_date","timestamp without time zone",7,NULL
+"patient_encounter","facility_id","bigint",6,NULL
+"patient_encounter","last_modified_by","character varying",5,NULL
+"patient_encounter","last_modified_date","timestamp without time zone",4,NULL
+"patient_encounter","created_by","character varying",3,NULL
+"patient_encounter","created_date","timestamp without time zone",2,NULL
+"patient_encounter","id","bigint",1,NULL
+"patient_person","first_name","character varying",25,NULL
+"patient_person","sex","character varying",26,NULL
+"patient_person","surname","character varying",27,NULL
+"patient_person","other_name","character varying",28,NULL
+"patient_person","hospital_number","character varying",29,NULL
+"patient_person","is_date_of_birth_estimated","boolean",30,NULL
+"patient_person","full_name","character varying",31,NULL
+"patient_person","case_manager_id","bigint",32,NULL
+"patient_person","ods_load_time","timestamp without time zone",33,NULL
+"patient_person","identifier","jsonb",10,NULL
+"patient_person","gender","jsonb",9,NULL
+"patient_person","address","jsonb",8,NULL
+"patient_person","contact_point","jsonb",7,NULL
+"patient_person","active","boolean",6,NULL
+"patient_person","last_modified_by","character varying",5,NULL
+"patient_person","source","character varying",38,NULL
+"patient_person","id","bigint",1,NULL
+"patient_person","ods_datim_id","character varying",34,255
+"patient_person","reason","text",35,NULL
+"patient_person","last_modified_date","timestamp without time zone",4,NULL
+"patient_person","created_by","character varying",3,NULL
+"patient_person","created_date","timestamp without time zone",2,NULL
+"patient_person","latitude","character varying",36,NULL
+"patient_person","longitude","character varying",37,NULL
+"patient_person","deceased","boolean",11,NULL
+"patient_person","deceased_date_time","timestamp without time zone",12,NULL
+"patient_person","marital_status","jsonb",13,NULL
+"patient_person","employment_status","jsonb",14,NULL
+"patient_person","education","jsonb",15,NULL
+"patient_person","organization","jsonb",16,NULL
+"patient_person","contact","jsonb",17,NULL
+"patient_person","date_of_birth","date",18,NULL
+"patient_person","date_of_registration","date",19,NULL
+"patient_person","archived","integer",20,NULL
+"patient_person","facility_id","bigint",21,NULL
+"patient_person","uuid","character varying",22,NULL
+"patient_person","nin_number","character varying",23,NULL
+"patient_person","emr_id","character varying",24,NULL
+"patient_visit","ods_datim_id","character varying",13,255
+"patient_visit","ods_load_time","timestamp without time zone",12,NULL
+"patient_visit","archived","integer",11,NULL
+"patient_visit","uuid","character varying",10,NULL
+"patient_visit","visit_end_date","timestamp without time zone",9,NULL
+"patient_visit","visit_start_date","timestamp without time zone",8,NULL
+"patient_visit","person_uuid","character varying",7,NULL
+"patient_visit","facility_id","bigint",6,NULL
+"patient_visit","last_modified_by","character varying",5,NULL
+"patient_visit","last_modified_date","timestamp without time zone",4,NULL
+"patient_visit","created_by","character varying",3,NULL
+"patient_visit","created_date","timestamp without time zone",2,NULL
+"patient_visit","id","bigint",1,NULL
+"pmtct_anc","partner_information","jsonb",29,NULL
+"pmtct_anc","anc_no","character varying",2,255
+"pmtct_anc","id","bigint",1,NULL
+"pmtct_anc","tested_hepatitisb","character varying",49,NULL
+"pmtct_anc","tested_hepatitisc","character varying",48,NULL
+"pmtct_anc","date_of_hepatitisc","date",47,NULL
+"pmtct_anc","date_of_hepatitisb","date",46,NULL
+"pmtct_anc","hepatitisc","character varying",45,NULL
+"pmtct_anc","community_setting","character varying",44,NULL
+"pmtct_anc","hepatitisb","character varying",43,NULL
+"pmtct_anc","referred_hepatitisc","character varying",42,NULL
+"pmtct_anc","referred_hepatitisb","character varying",41,NULL
+"pmtct_anc","treated_hepatitisc","character varying",40,NULL
+"pmtct_anc","treated_hepatitisb","character varying",39,NULL
+"pmtct_anc","syphilis_info","character varying",38,NULL
+"pmtct_anc","ods_datim_id","character varying",37,50
+"pmtct_anc","ods_file_name","character varying",36,255
+"pmtct_anc","ods_load_time","timestamp without time zone",35,NULL
+"pmtct_anc","ods_batch_id","character varying",34,255
+"pmtct_anc","previously_known_hiv_status","character varying",33,NULL
+"pmtct_anc","anc_setting","character varying",32,255
+"pmtct_anc","source_of_referral","character varying",31,255
+"pmtct_anc","static_hiv_status","character varying",30,255
+"pmtct_anc","created_by","character varying",3,255
+"pmtct_anc","status","character varying",28,100
+"pmtct_anc","hiv_diognosic_time","character varying",27,100
+"pmtct_anc","default_days","integer",26,NULL
+"pmtct_anc","next_appointment_date","date",25,NULL
+"pmtct_anc","last_visit_date","date",24,NULL
+"pmtct_anc","expected_delivery_date","date",23,NULL
+"pmtct_anc","first_anc_date","date",22,NULL
+"pmtct_anc","person_uuid","character varying",21,255
+"pmtct_anc","partner_notification","jsonb",20,NULL
+"pmtct_anc","pmtct_hts_info","jsonb",19,NULL
+"pmtct_anc","referred_syphilis_treatment","character varying",18,255
+"pmtct_anc","treated_syphilis","character varying",17,255
+"pmtct_anc","test_result_syphilis","character varying",16,255
+"pmtct_anc","tested_syphilis","character varying",15,255
+"pmtct_anc","archived","bigint",14,NULL
+"pmtct_anc","parity","integer",13,NULL
+"pmtct_anc","gravida","integer",12,NULL
+"pmtct_anc","gaweeks","integer",11,NULL
+"pmtct_anc","lmp","date",10,NULL
+"pmtct_anc","uuid","character varying",9,255
+"pmtct_anc","last_modified_date","timestamp without time zone",8,NULL
+"pmtct_anc","last_modified_by","character varying",7,255
+"pmtct_anc","hospital_number","character varying",6,255
+"pmtct_anc","facility_id","bigint",5,NULL
+"pmtct_anc","created_date","timestamp without time zone",4,NULL
+"pmtct_delivery","created_date","timestamp without time zone",4,NULL
+"pmtct_delivery","facility_id","bigint",5,NULL
+"pmtct_delivery","hospital_number","character varying",6,255
+"pmtct_delivery","last_modified_by","character varying",7,255
+"pmtct_delivery","last_modified_date","timestamp without time zone",8,NULL
+"pmtct_delivery","uuid","character varying",9,255
+"pmtct_delivery","person_uuid","character varying",30,NULL
+"pmtct_delivery","place_of_delivery","character varying",31,255
+"pmtct_delivery","non_hbv_exposed_infant_given_hb_within_24hrs","character varying",32,NULL
+"pmtct_delivery","ods_batch_id","character varying",33,255
+"pmtct_delivery","ods_load_time","timestamp without time zone",34,NULL
+"pmtct_delivery","mode_of_delivery","character varying",14,255
+"pmtct_delivery","rom_delivery_interval","character varying",13,255
+"pmtct_delivery","gaweeks","bigint",12,NULL
+"pmtct_delivery","booking_status","character varying",11,255
+"pmtct_delivery","date_of_delivery","date",10,NULL
+"pmtct_delivery","hcstatus","character varying",26,255
+"pmtct_delivery","referal_source","character varying",27,255
+"pmtct_delivery","number_of_infants_alive","bigint",28,NULL
+"pmtct_delivery","number_of_infants_dead","bigint",29,NULL
+"pmtct_delivery","hbstatus","character varying",25,255
+"pmtct_delivery","ods_datim_id","character varying",36,50
+"pmtct_delivery","delivery_time","character varying",22,255
+"pmtct_delivery","child_given_arv_within72","character varying",21,255
+"pmtct_delivery","hiv_exposed_infant_given_hb_within24hrs","character varying",20,255
+"pmtct_delivery","child_status","character varying",19,255
+"pmtct_delivery","maternal_outcome","character varying",18,255
+"pmtct_delivery","feeding_decision","character varying",17,255
+"pmtct_delivery","art_started_ld_ward","character varying",24,255
+"pmtct_delivery","on_art","character varying",23,255
+"pmtct_delivery","vaginal_tear","character varying",16,255
+"pmtct_delivery","episiotomy","character varying",15,255
+"pmtct_delivery","ods_file_name","character varying",35,255
+"pmtct_delivery","id","bigint",1,NULL
+"pmtct_delivery","anc_no","character varying",2,255
+"pmtct_delivery","created_by","character varying",3,255
+"pmtct_enrollment","ods_file_name","character varying",30,255
+"pmtct_enrollment","date_modified","date",32,NULL
+"pmtct_enrollment","date_of_delivery","date",33,NULL
+"pmtct_enrollment","tb_status","character varying",15,255
+"pmtct_enrollment","entry_point","character varying",16,NULL
+"pmtct_enrollment","person_uuid","character varying",17,NULL
+"pmtct_enrollment","pmtct_type","character varying",18,255
+"pmtct_enrollment","archived","bigint",19,NULL
+"pmtct_enrollment","hiv_status","character varying",20,255
+"pmtct_enrollment","lmp","date",21,NULL
+"pmtct_enrollment","mother_art_initiation_time","character varying",22,255
+"pmtct_enrollment","regimen_type_id","bigint",23,NULL
+"pmtct_enrollment","regimen_id","character varying",24,255
+"pmtct_enrollment","hepatitisb","character varying",25,255
+"pmtct_enrollment","urinalysis","character varying",26,255
+"pmtct_enrollment","time_of_hiv_diagnosis","character varying",27,NULL
+"pmtct_enrollment","ods_batch_id","character varying",28,255
+"pmtct_enrollment","ods_load_time","timestamp without time zone",29,NULL
+"pmtct_enrollment","ods_datim_id","character varying",31,50
+"pmtct_enrollment","id","bigint",1,NULL
+"pmtct_enrollment","anc_no","character varying",2,255
+"pmtct_enrollment","created_by","character varying",3,255
+"pmtct_enrollment","created_date","timestamp without time zone",4,NULL
+"pmtct_enrollment","facility_id","bigint",5,NULL
+"pmtct_enrollment","hospital_number","character varying",6,255
+"pmtct_enrollment","last_modified_by","character varying",7,255
+"pmtct_enrollment","last_modified_date","timestamp without time zone",8,NULL
+"pmtct_enrollment","uuid","character varying",9,255
+"pmtct_enrollment","pmtct_enrollment_date","date",10,NULL
+"pmtct_enrollment","gaweeks","integer",11,NULL
+"pmtct_enrollment","gravida","integer",12,NULL
+"pmtct_enrollment","art_start_date","date",13,NULL
+"pmtct_enrollment","art_start_time","character varying",14,255
+"pmtct_infant_arv","id","bigint",1,NULL
+"pmtct_infant_arv","visit_date","date",2,NULL
+"pmtct_infant_arv","infant_hospital_number","character varying",3,NULL
+"pmtct_infant_arv","anc_number","character varying",4,NULL
+"pmtct_infant_arv","age_at_ctx","character varying",5,NULL
+"pmtct_infant_arv","infant_arv_type","character varying",6,NULL
+"pmtct_infant_arv","infant_arv_time","character varying",7,NULL
+"pmtct_infant_arv","arv_delivery_point","character varying",8,NULL
+"pmtct_infant_arv","uuid","character varying",9,NULL
+"pmtct_infant_arv","timing_of_avr_after_72hours","character varying",10,255
+"pmtct_infant_arv","timing_of_avr_within_72hours","character varying",11,255
+"pmtct_infant_arv","unique_uuid","character varying",12,NULL
+"pmtct_infant_arv","ods_batch_id","character varying",13,255
+"pmtct_infant_arv","ods_load_time","timestamp without time zone",14,NULL
+"pmtct_infant_arv","ods_file_name","character varying",15,255
+"pmtct_infant_arv","ods_datim_id","character varying",16,50
+"pmtct_infant_information","ods_datim_id","character varying",26,50
+"pmtct_infant_information","id","bigint",1,NULL
+"pmtct_infant_information","anc_no","character varying",2,255
+"pmtct_infant_information","created_by","character varying",3,255
+"pmtct_infant_information","created_date","timestamp without time zone",4,NULL
+"pmtct_infant_information","facility_id","bigint",5,NULL
+"pmtct_infant_information","hospital_number","character varying",6,255
+"pmtct_infant_information","last_modified_by","character varying",7,255
+"pmtct_infant_information","last_modified_date","timestamp without time zone",8,NULL
+"pmtct_infant_information","uuid","character varying",9,255
+"pmtct_infant_information","date_of_delivery","date",10,NULL
+"pmtct_infant_information","first_name","character varying",11,255
+"pmtct_infant_information","middle_name","character varying",12,255
+"pmtct_infant_information","surname","character varying",13,255
+"pmtct_infant_information","sex","character varying",14,255
+"pmtct_infant_information","nin","character varying",15,255
+"pmtct_infant_information","infant_outcome_at18_months","character varying",16,255
+"pmtct_infant_information","last_visit_date","date",17,NULL
+"pmtct_infant_information","next_appointment_date","date",18,NULL
+"pmtct_infant_information","default_days","integer",19,NULL
+"pmtct_infant_information","mother_person_uuid","character varying",20,NULL
+"pmtct_infant_information","body_weight","double precision",21,NULL
+"pmtct_infant_information","ctx_status","character varying",22,255
+"pmtct_infant_information","ods_batch_id","character varying",23,255
+"pmtct_infant_information","ods_load_time","timestamp without time zone",24,NULL
+"pmtct_infant_information","ods_file_name","character varying",25,255
+"pmtct_infant_mother_art","anc_number","character varying",3,NULL
+"pmtct_infant_mother_art","regimen_type_id","bigint",5,NULL
+"pmtct_infant_mother_art","regimen_id","bigint",6,NULL
+"pmtct_infant_mother_art","uuid","character varying",7,NULL
+"pmtct_infant_mother_art","unique_uuid","character varying",8,NULL
+"pmtct_infant_mother_art","ods_batch_id","character varying",9,255
+"pmtct_infant_mother_art","ods_load_time","timestamp without time zone",10,NULL
+"pmtct_infant_mother_art","ods_file_name","character varying",11,255
+"pmtct_infant_mother_art","ods_datim_id","character varying",12,50
+"pmtct_infant_mother_art","id","bigint",1,NULL
+"pmtct_infant_mother_art","visit_date","date",2,NULL
+"pmtct_infant_mother_art","mother_art_initiation_time","character varying",4,NULL
+"pmtct_infant_pcr","test_type","character varying",6,NULL
+"pmtct_infant_pcr","date_sample_collected","date",7,NULL
+"pmtct_infant_pcr","date_result_received_at_facility","date",9,NULL
+"pmtct_infant_pcr","id","bigint",1,NULL
+"pmtct_infant_pcr","visit_date","date",2,NULL
+"pmtct_infant_pcr","infant_hospital_number","character varying",3,NULL
+"pmtct_infant_pcr","anc_number","character varying",4,NULL
+"pmtct_infant_pcr","age_at_test","character varying",5,255
+"pmtct_infant_pcr","ods_datim_id","character varying",17,50
+"pmtct_infant_pcr","ods_file_name","character varying",16,255
+"pmtct_infant_pcr","ods_load_time","timestamp without time zone",15,NULL
+"pmtct_infant_pcr","ods_batch_id","character varying",14,255
+"pmtct_infant_pcr","unique_uuid","character varying",13,NULL
+"pmtct_infant_pcr","uuid","character varying",12,NULL
+"pmtct_infant_pcr","results","character varying",11,NULL
+"pmtct_infant_pcr","date_result_received_by_caregiver","date",10,NULL
+"pmtct_infant_pcr","date_sample_sent","date",8,NULL
+"pmtct_infant_rapid_antibody","ods_file_name","character varying",14,255
+"pmtct_infant_rapid_antibody","id","bigint",1,NULL
+"pmtct_infant_rapid_antibody","visit_date","date",2,NULL
+"pmtct_infant_rapid_antibody","ods_datim_id","character varying",15,50
+"pmtct_infant_rapid_antibody","ods_load_time","timestamp without time zone",13,NULL
+"pmtct_infant_rapid_antibody","ods_batch_id","character varying",12,255
+"pmtct_infant_rapid_antibody","unique_uuid","character varying",11,NULL
+"pmtct_infant_rapid_antibody","result","character varying",10,NULL
+"pmtct_infant_rapid_antibody","anc_number","character varying",9,NULL
+"pmtct_infant_rapid_antibody","rapid_result","character varying",3,NULL
+"pmtct_infant_rapid_antibody","rapid_test_type","character varying",4,NULL
+"pmtct_infant_rapid_antibody","date_of_test","date",5,NULL
+"pmtct_infant_rapid_antibody","age_at_test","character varying",6,NULL
+"pmtct_infant_rapid_antibody","uuid","character varying",7,NULL
+"pmtct_infant_rapid_antibody","visit_id","character varying",8,NULL
+"pmtct_infant_visit","uuid","character varying",9,NULL
+"pmtct_infant_visit","mother_person_uuid","character varying",10,NULL
+"pmtct_infant_visit","unique_uuid","character varying",11,NULL
+"pmtct_infant_visit","ods_batch_id","character varying",12,255
+"pmtct_infant_visit","ods_load_time","timestamp without time zone",13,NULL
+"pmtct_infant_visit","ods_file_name","character varying",14,255
+"pmtct_infant_visit","ods_datim_id","character varying",15,50
+"pmtct_infant_visit","id","bigint",1,NULL
+"pmtct_infant_visit","visit_date","date",2,NULL
+"pmtct_infant_visit","infant_hospital_number","character varying",3,NULL
+"pmtct_infant_visit","anc_number","character varying",4,NULL
+"pmtct_infant_visit","body_weight","double precision",5,NULL
+"pmtct_infant_visit","visit_status","character varying",6,NULL
+"pmtct_infant_visit","ctx_status","character varying",7,NULL
+"pmtct_infant_visit","breast_feeding","character varying",8,NULL
+"pmtct_mother_visitation","anc_no","character varying",2,255
+"pmtct_mother_visitation","person_uuid","character varying",3,255
+"pmtct_mother_visitation","hospital_number","character varying",4,255
+"pmtct_mother_visitation","date_of_visit","date",5,NULL
+"pmtct_mother_visitation","time_of_viral_load","character varying",21,255
+"pmtct_mother_visitation","fp_counseling","character varying",6,255
+"pmtct_mother_visitation","fp_method","character varying",7,255
+"pmtct_mother_visitation","date_of_delivery","date",22,NULL
+"pmtct_mother_visitation","date_of_viral_load","date",8,NULL
+"pmtct_mother_visitation","ga_of_viral_load","smallint",9,NULL
+"pmtct_mother_visitation","dsd_option","character varying",11,255
+"pmtct_mother_visitation","result_of_viral_load","smallint",10,NULL
+"pmtct_mother_visitation","dsd_model","character varying",12,255
+"pmtct_mother_visitation","maternal_outcome","character varying",13,255
+"pmtct_mother_visitation","date_of_maternal_outcome","date",14,NULL
+"pmtct_mother_visitation","ods_batch_id","character varying",23,255
+"pmtct_mother_visitation","ods_load_time","timestamp without time zone",24,NULL
+"pmtct_mother_visitation","ods_file_name","character varying",25,255
+"pmtct_mother_visitation","ods_datim_id","character varying",26,50
+"pmtct_mother_visitation","visit_status","character varying",15,255
+"pmtct_mother_visitation","transfer_to","character varying",16,255
+"pmtct_mother_visitation","next_appointment_date","date",17,NULL
+"pmtct_mother_visitation","uuid","character varying",18,255
+"pmtct_mother_visitation","entry_point","character varying",19,255
+"pmtct_mother_visitation","dsd","character varying",20,255
+"pmtct_mother_visitation","id","bigint",1,NULL
+"prep_clinic","liver_function_test_result","character varying",59,NULL
+"prep_clinic","id","bigint",1,NULL
+"prep_clinic","weight","double precision",2,NULL
+"prep_clinic","height","double precision",3,NULL
+"prep_clinic","pulse","double precision",4,NULL
+"prep_clinic","temperature","double precision",5,NULL
+"prep_clinic","respiratory_rate","double precision",6,NULL
+"prep_clinic","systolic","double precision",7,NULL
+"prep_clinic","diastolic","double precision",8,NULL
+"prep_clinic","adherence_level","character varying",9,NULL
+"prep_clinic","sti_screening","boolean",10,NULL
+"prep_clinic","date_prep_start","date",11,NULL
+"prep_clinic","date_prep_given","date",12,NULL
+"prep_clinic","prep_given","character varying",13,NULL
+"prep_clinic","other_drugs","character varying",14,NULL
+"prep_clinic","hiv_test_result","character varying",15,NULL
+"prep_clinic","encounter_date","date",16,NULL
+"prep_clinic","is_commencement","boolean",17,NULL
+"prep_clinic","prep_enrollment_uuid","character varying",18,NULL
+"prep_clinic","uuid","character varying",19,NULL
+"prep_clinic","regimen_id","bigint",20,NULL
+"prep_clinic","regimen_type_id","bigint",21,NULL
+"prep_clinic","duration","integer",22,NULL
+"prep_clinic","vital_sign_uuid","character varying",23,NULL
+"prep_clinic","person_uuid","character varying",24,NULL
+"prep_clinic","visit_uuid","character varying",25,NULL
+"prep_clinic","next_appointment","date",26,NULL
+"prep_clinic","why","boolean",27,NULL
+"prep_clinic","dateprepgiven","date",28,NULL
+"prep_clinic","urinalysis","jsonb",29,NULL
+"prep_clinic","hepatitis","jsonb",30,NULL
+"prep_clinic","syphilis","jsonb",31,NULL
+"prep_clinic","other_tests_done","jsonb",32,NULL
+"prep_clinic","syndromic_sti_screening","jsonb",33,NULL
+"prep_clinic","date_initial_adherence_counseling","date",34,NULL
+"prep_clinic","date_referred","date",35,NULL
+"prep_clinic","referred","boolean",36,NULL
+"prep_clinic","urinalysis_result","character varying",37,NULL
+"prep_clinic","pregnant","character varying",38,NULL
+"prep_clinic","facility_id","bigint",39,NULL
+"prep_clinic","extra","jsonb",40,NULL
+"prep_clinic","risk_reduction_services","character varying",41,NULL
+"prep_clinic","noted_side_effects","character varying",42,NULL
+"prep_clinic","created_by","character varying",43,NULL
+"prep_clinic","date_created","timestamp without time zone",44,NULL
+"prep_clinic","modified_by","character varying",45,NULL
+"prep_clinic","date_modified","timestamp without time zone",46,NULL
+"prep_clinic","archived","integer",47,NULL
+"prep_clinic","ods_load_time","timestamp without time zone",48,NULL
+"prep_clinic","ods_datim_id","character varying",49,255
+"prep_clinic","prep_distribution_setting","character varying",50,NULL
+"prep_clinic","family_planning","character varying",51,255
+"prep_clinic","date_of_family_planning","date",52,NULL
+"prep_clinic","date_of_liver_function_test_results","character varying",53,NULL
+"prep_clinic","history_of_drug_allergies","character varying",54,NULL
+"prep_clinic","prep_type","character varying",55,NULL
+"prep_clinic","hiv_test_result_date","character varying",56,NULL
+"prep_clinic","population_type","character varying",57,NULL
+"prep_clinic","history_of_drug_to_drug_interaction","character varying",58,NULL
+"prep_clinic","months_of_refill","integer",60,NULL
+"prep_clinic","health_care_worker_signature","character varying",61,NULL
+"prep_clinic","visit_type","character varying",62,NULL
+"prep_clinic","creatinine_result","jsonb",63,NULL
+"prep_clinic","other_regimen_id","character varying",64,NULL
+"prep_clinic","liver_function_test_results","jsonb",65,NULL
+"prep_clinic","creatinine","jsonb",66,NULL
+"prep_clinic","prep_noted_side_effects","jsonb",67,NULL
+"prep_clinic","comment","character varying",68,255
+"prep_clinic","other_prep_type","character varying",69,255
+"prep_clinic","reason_for_switch","character varying",70,255
+"prep_clinic","other_prep_given","character varying",71,255
+"prep_clinic","was_prep_administered","character varying",72,255
+"prep_eligibility","assessment_for_acute_hiv_infection","jsonb",32,NULL
+"prep_eligibility","counseling_type","character varying",13,NULL
+"prep_eligibility","sex_partner","character varying",12,NULL
+"prep_eligibility","person_uuid","character varying",11,NULL
+"prep_eligibility","sex_partner_risk","jsonb",10,NULL
+"prep_eligibility","personal_hiv_risk_assessment","jsonb",9,NULL
+"prep_eligibility","drug_use_history","jsonb",8,NULL
+"prep_eligibility","uuid","character varying",2,NULL
+"prep_eligibility","unique_id","character varying",3,NULL
+"prep_eligibility","score","integer",4,NULL
+"prep_eligibility","visit_date","date",5,NULL
+"prep_eligibility","hiv_risk","jsonb",6,NULL
+"prep_eligibility","sti_screening","jsonb",7,NULL
+"prep_eligibility","lft_conducted","character varying",37,NULL
+"prep_eligibility","reason_for_switch","character varying",36,NULL
+"prep_eligibility","liver_function_test_results","character varying",35,NULL
+"prep_eligibility","date_of_liver_function_test_results","date",34,NULL
+"prep_eligibility","population_type","character varying",33,NULL
+"prep_eligibility","pregnancy_status","character varying",31,NULL
+"prep_eligibility","assessment_for_prep_eligibility","jsonb",30,NULL
+"prep_eligibility","assessment_for_pep_indication","jsonb",29,NULL
+"prep_eligibility","services_received_by_client","jsonb",28,NULL
+"prep_eligibility","visit_type","character varying",27,NULL
+"prep_eligibility","ods_datim_id","character varying",26,255
+"prep_eligibility","ods_load_time","timestamp without time zone",25,NULL
+"prep_eligibility","date_modified","timestamp without time zone",24,NULL
+"prep_eligibility","modified_by","character varying",23,NULL
+"prep_eligibility","date_created","timestamp without time zone",22,NULL
+"prep_eligibility","created_by","character varying",21,NULL
+"prep_eligibility","archived","integer",20,NULL
+"prep_eligibility","facility_id","bigint",19,NULL
+"prep_eligibility","extra","jsonb",18,NULL
+"prep_eligibility","target_group","character varying",17,NULL
+"prep_eligibility","num_wives","integer",16,NULL
+"prep_eligibility","id","bigint",1,NULL
+"prep_eligibility","num_children_less_than_five","character varying",15,NULL
+"prep_eligibility","first_time_visit","boolean",14,NULL
+"prep_enrollment","ods_datim_id","character varying",27,255
+"prep_enrollment","date_started","date",5,NULL
+"prep_enrollment","uuid","character varying",4,NULL
+"prep_enrollment","target_group","character varying",3,NULL
+"prep_enrollment","unique_id","character varying",2,NULL
+"prep_enrollment","id","bigint",1,NULL
+"prep_enrollment","person_uuid","character varying",6,NULL
+"prep_enrollment","visit_uuid","character varying",7,NULL
+"prep_enrollment","extra","jsonb",8,NULL
+"prep_enrollment","facility_id","bigint",9,NULL
+"prep_enrollment","prep_eligibility_uuid","character varying",10,NULL
+"prep_enrollment","status","character varying",11,NULL
+"prep_enrollment","date_enrolled","date",12,NULL
+"prep_enrollment","date_referred","date",13,NULL
+"prep_enrollment","risk_type","character varying",14,NULL
+"prep_enrollment","supporter_phone","character varying",15,NULL
+"prep_enrollment","supporter_name","character varying",16,NULL
+"prep_enrollment","supporter_relationship_type","character varying",17,NULL
+"prep_enrollment","anc_unique_art_no","character varying",18,NULL
+"prep_enrollment","hiv_testing_point","character varying",19,NULL
+"prep_enrollment","date_last_hiv_negative_test","date",20,NULL
+"prep_enrollment","archived","integer",21,NULL
+"prep_enrollment","created_by","character varying",22,NULL
+"prep_enrollment","date_created","timestamp without time zone",23,NULL
+"prep_enrollment","modified_by","character varying",24,NULL
+"prep_enrollment","date_modified","timestamp without time zone",25,NULL
+"prep_enrollment","ods_load_time","timestamp without time zone",26,NULL
+"prep_interruption","cause_of_death","character varying",8,NULL
+"prep_interruption","reason_for_prep_discontinuation","character varying",28,NULL
+"prep_interruption","ods_datim_id","character varying",27,255
+"prep_interruption","ods_load_time","timestamp without time zone",26,NULL
+"prep_interruption","reason_stopped_others","character varying",25,NULL
+"prep_interruption","reason_stopped","character varying",24,NULL
+"prep_interruption","date_modified","timestamp without time zone",23,NULL
+"prep_interruption","encounter_date","date",22,NULL
+"prep_interruption","link_to_art","boolean",21,NULL
+"prep_interruption","date_restart_placed_back_medication","date",20,NULL
+"prep_interruption","date_sero_converted","date",19,NULL
+"prep_interruption","modified_by","character varying",18,NULL
+"prep_interruption","date_created","timestamp without time zone",17,NULL
+"prep_interruption","created_by","character varying",16,NULL
+"prep_interruption","archived","integer",15,NULL
+"prep_interruption","facility_id","bigint",14,NULL
+"prep_interruption","extra","jsonb",13,NULL
+"prep_interruption","interruption_reason","character varying",12,NULL
+"prep_interruption","facility_referred_to","character varying",11,NULL
+"prep_interruption","date_client_referred_out","date",10,NULL
+"prep_interruption","source_of_death_info","character varying",9,NULL
+"prep_interruption","date_client_died","date",7,NULL
+"prep_interruption","interruption_date","date",6,NULL
+"prep_interruption","interruption_type","character varying",5,NULL
+"prep_interruption","prep_enrollment_uuid","character varying",4,NULL
+"prep_interruption","person_uuid","character varying",3,NULL
+"prep_interruption","uuid","character varying",2,NULL
+"prep_interruption","id","bigint",1,NULL
+"prep_regimen","id","bigint",1,NULL
+"prep_regimen","regimen","character varying",2,NULL
+"prep_regimen","prep_type","character varying",9,NULL
+"prep_regimen","ods_datim_id","character varying",8,255
+"prep_regimen","ods_load_time","timestamp without time zone",7,NULL
+"prep_regimen","code","character varying",6,NULL
+"prep_regimen","archived","integer",5,NULL
+"prep_regimen","description","character varying",4,NULL
+"prep_regimen","composition","character varying",3,NULL
+"quick_sync_history","file_size","integer",6,NULL
+"quick_sync_history","facility_name","character varying",4,NULL
+"quick_sync_history","table_name","character varying",3,NULL
+"quick_sync_history","filename","character varying",2,NULL
+"quick_sync_history","id","bigint",1,NULL
+"quick_sync_history","ods_datim_id","character varying",9,255
+"quick_sync_history","ods_load_time","timestamp without time zone",8,NULL
+"quick_sync_history","status","character varying",7,NULL
+"quick_sync_history","date_created","timestamp without time zone",5,NULL
+"records_migration_logs","table_name","character varying",2,255
+"records_migration_logs","migrated_count","bigint",3,NULL
+"records_migration_logs","start_time","timestamp without time zone",5,NULL
+"records_migration_logs","id","bigint",1,NULL
+"records_migration_logs","end_time","timestamp without time zone",6,NULL
+"records_migration_logs","size_before_migration","text",4,NULL
+"records_streaming_log","table_name","character varying",2,255
+"records_streaming_log","id","bigint",1,NULL
+"records_streaming_log","size_after_deletion","text",7,NULL
+"records_streaming_log","size_before_deletion","text",6,NULL
+"records_streaming_log","end_time","timestamp without time zone",5,NULL
+"records_streaming_log","start_time","timestamp without time zone",4,NULL
+"records_streaming_log","deleted_records_count","bigint",3,NULL
+"remote_access_token","id","bigint",1,NULL
+"remote_access_token","username","character varying",5,NULL
+"remote_access_token","url","character varying",4,NULL
+"remote_access_token","token","character varying",3,NULL
+"remote_access_token","password","character varying",2,NULL
+"remote_access_token","pub_key","character varying",10,NULL
+"remote_access_token","status","bigint",12,NULL
+"remote_access_token","ods_load_time","timestamp without time zone",13,NULL
+"remote_access_token","ods_datim_id","character varying",14,255
+"remote_access_token","any_pub_key","character varying",11,NULL
+"remote_access_token","application_user_id","bigint",6,NULL
+"remote_access_token","organisation_unit_id","bigint",7,NULL
+"remote_access_token","remote_id","bigint",8,NULL
+"remote_access_token","pr_key","character varying",9,NULL
+"remote_key","ods_datim_id","character varying",5,255
+"remote_key","ods_load_time","timestamp without time zone",4,NULL
+"remote_key","uuid","character varying",3,NULL
+"remote_key","key","character varying",2,NULL
+"remote_key","id","bigint",1,NULL
+"report","ods_load_time","timestamp without time zone",3,NULL
+"report","ods_datim_id","character varying",4,255
+"report","id","bigint",1,NULL
+"report","details","jsonb",2,NULL
+"sync_config","ods_load_time","timestamp without time zone",7,NULL
+"sync_config","ods_datim_id","character varying",8,255
+"sync_config","version","character varying",3,NULL
+"sync_config","release_date","timestamp without time zone",4,NULL
+"sync_config","name","character varying",2,NULL
+"sync_config","id","uuid",1,NULL
+"sync_config","upload_date","timestamp without time zone",5,NULL
+"sync_config","active","boolean",6,NULL
+"sync_config_module","module_name","character varying",2,NULL
+"sync_config_module","ods_datim_id","character varying",5,255
+"sync_config_module","ods_load_time","timestamp without time zone",4,NULL
+"sync_config_module","config_id","uuid",3,NULL
+"sync_config_module","id","uuid",1,NULL
+"sync_config_table","ods_datim_id","character varying",8,255
+"sync_config_table","ods_load_time","timestamp without time zone",7,NULL
+"sync_config_table","has_facility_id","boolean",6,NULL
+"sync_config_table","config_module_id","uuid",5,NULL
+"sync_config_table","update_column","character varying",4,NULL
+"sync_config_table","exclude_columns","character varying",3,NULL
+"sync_config_table","table_name","character varying",2,NULL
+"sync_config_table","id","uuid",1,NULL
+"sync_facility_app_key","ods_datim_id","character varying",5,255
+"sync_facility_app_key","ods_load_time","timestamp without time zone",4,NULL
+"sync_facility_app_key","app_key","character varying",3,NULL
+"sync_facility_app_key","facility_id","integer",2,NULL
+"sync_facility_app_key","id","uuid",1,NULL
+"sync_history","file_path","character varying",11,NULL
+"sync_history","ods_datim_id","character varying",13,255
+"sync_history","processed_size","integer",9,NULL
+"sync_history","upload_size","integer",8,NULL
+"sync_history","remote_access_token_id","bigint",7,NULL
+"sync_history","sync_queue_id","bigint",6,NULL
+"sync_history","processed","integer",5,NULL
+"sync_history","table_name","character varying",4,NULL
+"sync_history","organisation_unit_id","bigint",3,NULL
+"sync_history","date_last_sync","timestamp without time zone",2,NULL
+"sync_history","id","bigint",1,NULL
+"sync_history","error_log","jsonb",10,NULL
+"sync_history","ods_load_time","timestamp without time zone",12,NULL
+"sync_history_tracker","ods_datim_id","character varying",2,255
+"sync_history_tracker","ods_load_time","timestamp without time zone",1,NULL
+"sync_queue","processed","integer",5,NULL
+"sync_queue","table_name","character varying",6,NULL
+"sync_queue","date_created","timestamp without time zone",2,NULL
+"sync_queue","organisation_unit_id","bigint",4,NULL
+"sync_queue","ods_datim_id","character varying",12,255
+"sync_queue","id","bigint",1,NULL
+"sync_queue","file_name","character varying",3,NULL
+"sync_queue","upload_size","integer",7,NULL
+"sync_queue","processed_size","integer",8,NULL
+"sync_queue","received_size","integer",9,NULL
+"sync_queue","created_by","character varying",10,NULL
+"sync_queue","ods_load_time","timestamp without time zone",11,NULL
+"tables","constraints_columns","character varying",2,NULL
+"tables","ods_table_info","character varying",3,NULL
+"tables","ods_table_name","text",1,NULL
+"triage_post_service","ods_datim_id","character varying",7,255
+"triage_post_service","id","bigint",1,NULL
+"triage_post_service","facility_id","bigint",2,NULL
+"triage_post_service","module_service_code","character varying",3,NULL
+"triage_post_service","module_service_name","character varying",4,NULL
+"triage_post_service","encounter_type","character varying",5,NULL
+"triage_post_service","ods_load_time","timestamp without time zone",6,NULL
+"triage_vital_sign","ods_datim_id","character varying",20,255
+"triage_vital_sign","ods_load_time","timestamp without time zone",19,NULL
+"triage_vital_sign","uuid","character varying",18,NULL
+"triage_vital_sign","archived","integer",17,NULL
+"triage_vital_sign","systolic","double precision",16,NULL
+"triage_vital_sign","visit_id","character varying",15,NULL
+"triage_vital_sign","person_uuid","character varying",14,NULL
+"triage_vital_sign","respiratory_rate","double precision",13,NULL
+"triage_vital_sign","pulse","double precision",12,NULL
+"triage_vital_sign","temperature","double precision",11,NULL
+"triage_vital_sign","height","double precision",10,NULL
+"triage_vital_sign","capture_date","timestamp without time zone",9,NULL
+"triage_vital_sign","diastolic","double precision",8,NULL
+"triage_vital_sign","body_weight","double precision",7,NULL
+"triage_vital_sign","facility_id","bigint",6,NULL
+"triage_vital_sign","last_modified_by","character varying",5,NULL
+"triage_vital_sign","last_modified_date","timestamp without time zone",4,NULL
+"triage_vital_sign","created_by","character varying",3,NULL
+"triage_vital_sign","created_date","timestamp without time zone",2,NULL
+"triage_vital_sign","id","bigint",1,NULL
+"triage_vital_sign_duplicates","ods_datim_id","character varying",20,255
+"triage_vital_sign_duplicates","ods_load_time","timestamp without time zone",19,NULL
+"triage_vital_sign_duplicates","capture_date","timestamp without time zone",18,NULL
+"triage_vital_sign_duplicates","respiratory_rate","double precision",17,NULL
+"triage_vital_sign_duplicates","pulse","double precision",16,NULL
+"triage_vital_sign_duplicates","temperature","double precision",15,NULL
+"triage_vital_sign_duplicates","height","double precision",14,NULL
+"triage_vital_sign_duplicates","systolic","double precision",13,NULL
+"triage_vital_sign_duplicates","diastolic","double precision",12,NULL
+"triage_vital_sign_duplicates","body_weight","double precision",11,NULL
+"triage_vital_sign_duplicates","archived","integer",10,NULL
+"triage_vital_sign_duplicates","visit_id","character varying",9,NULL
+"triage_vital_sign_duplicates","uuid","character varying",8,NULL
+"triage_vital_sign_duplicates","last_modified_by","character varying",7,NULL
+"triage_vital_sign_duplicates","created_by","character varying",6,NULL
+"triage_vital_sign_duplicates","last_modified_date","timestamp without time zone",5,NULL
+"triage_vital_sign_duplicates","created_date","timestamp without time zone",4,NULL
+"triage_vital_sign_duplicates","facility_id","integer",3,NULL
+"triage_vital_sign_duplicates","person_uuid","character varying",2,NULL
+"triage_vital_sign_duplicates","id","integer",1,NULL

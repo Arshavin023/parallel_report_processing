@@ -162,7 +162,7 @@ with DAG("lamisplus_radet_generation_dwh_server_v2",start_date=datetime.datetime
             sql='call expanded_radet.proc_cervical_cancer()',
             autocommit=True
         )
-        
+
         sub_cte_ipt_c = PostgresOperator(
             task_id="sub_cte_ipt_c",
             postgres_conn_id="lamisplus_conn",
@@ -184,8 +184,8 @@ with DAG("lamisplus_radet_generation_dwh_server_v2",start_date=datetime.datetime
             autocommit = True
         )
         
-        sub2_iptnew_tptc = PostgresOperator(
-            task_id="sub2_iptnew_tptc",
+        sub_iptnew_tptc = PostgresOperator(
+            task_id="sub_iptnew_tptc",
             postgres_conn_id="lamisplus_conn",
             sql='call expanded_radet.proc_sub_iptnew_tptc()',
             autocommit=True
@@ -250,7 +250,7 @@ with DAG("lamisplus_radet_generation_dwh_server_v2",start_date=datetime.datetime
         cte_tbstatus_tbscreening_cs = PostgresOperator(
             task_id="cte_tbstatus_tbscreening_cs",
             postgres_conn_id="lamisplus_conn",
-            sql='call expanded_radet.proc_tbstatus_tbscreening_cs()',
+            sql='call expanded_radet.proc_tbstatus_tbscreening_cs_updated()',
             autocommit=True
         )
 
@@ -260,8 +260,31 @@ with DAG("lamisplus_radet_generation_dwh_server_v2",start_date=datetime.datetime
             sql='call expanded_radet.proc_tbstatus_tbscreening_hac()',
             autocommit=True
         )
+        
+        pharmacy_current_status = PostgresOperator(
+            task_id="pharmacy_current_status",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_pharmacy_current_status()',
+            autocommit=True
+        )
+        
+        sub2_stat_current_status = PostgresOperator(
+            task_id="sub2_stat_current_status",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_sub2_stat_current_status()',
+            autocommit=True
+        )
+        
+        
 
     with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
+        
+        cte_current_status = PostgresOperator(
+            task_id="cte_current_status",
+            postgres_conn_id="lamisplus_conn",
+            sql='call expanded_radet.proc_current_status()',
+            autocommit=True
+        )
         
         cte_current_vl_result = PostgresOperator(
             task_id="cte_current_vl_result",

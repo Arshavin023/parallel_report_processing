@@ -32,10 +32,10 @@ with DAG("nomis_upsert_streaming_for_refresh_tables",start_date=datetime(2024, 1
             autocommit=True
         )
         
-        upsert_latest_status = PostgresOperator(
-            task_id="upsert_latest_status",
+        upsert_status_refresh = PostgresOperator(
+            task_id="upsert_status_refresh",
             postgres_conn_id="nomis_datamart_conn",
-            sql='call public.proc_upsert_latest_status_refresh()',
+            sql='call public.proc_upsert_status_refresh()',
             autocommit=True
         )
         
@@ -45,6 +45,15 @@ with DAG("nomis_upsert_streaming_for_refresh_tables",start_date=datetime(2024, 1
             sql='call public.proc_upsert_linelist_refresh()',
             autocommit=True
         )
+    
+    with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
+        
+        latest_status = PostgresOperator(
+            task_id="latest_status",
+            postgres_conn_id="nomis_datamart_conn",
+            sql='call public.proc_latest_status()',
+            autocommit=True
+        )
 
 		
     end = BashOperator(
@@ -52,4 +61,4 @@ with DAG("nomis_upsert_streaming_for_refresh_tables",start_date=datetime(2024, 1
         bash_command="echo end"
     )
     # Define the task dependencies
-    start >> upstream_tasks >> end
+    start >> upstream_tasks >> midstream_tasks >> end

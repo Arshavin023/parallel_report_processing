@@ -174,7 +174,23 @@ with DAG("lamisplus_hts_prep_datamart_server", start_date=datetime.datetime(2024
             autocommit = True
         )
         
+        hts_mapping = PostgresOperator(
+            task_id="hts_mapping",
+            postgres_conn_id="hts_prep_conn",
+            sql = 'call expanded_hts_prep.proc_hts_mapping()',
+            autocommit = True
+        )
+        
+        hts_max = PostgresOperator(
+            task_id="hts_max",
+            postgres_conn_id="hts_prep_conn",
+            sql = 'call expanded_hts_prep.proc_hts_max()',
+            autocommit = True
+        )
+        
+        
     with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
+        
         expanded_hts_joined_bio = PostgresOperator(
             task_id="expanded_hts_joined_bio",
             postgres_conn_id="hts_prep_conn",
@@ -188,6 +204,7 @@ with DAG("lamisplus_hts_prep_datamart_server", start_date=datetime.datetime(2024
             sql = 'call expanded_hts_prep.proc_sub_expanded_hts_joined_codeset()',
             autocommit = True
         )
+    
     
     with TaskGroup(group_id='downstream_tasks') as downstream_tasks:
         
@@ -205,7 +222,9 @@ with DAG("lamisplus_hts_prep_datamart_server", start_date=datetime.datetime(2024
             autocommit = True
             )
            
+           
     with TaskGroup(group_id='final_stream_tasks') as final_stream_tasks:
+        
         expanded_hts_weekly = PostgresOperator(
             task_id="expanded_hts_weekly",
             postgres_conn_id="hts_prep_conn",
