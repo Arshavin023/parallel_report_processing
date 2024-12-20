@@ -254,6 +254,13 @@
 "hiv_art_pharmacy_regimens","ods_load_time","timestamp without time zone",4,NULL
 "hiv_art_pharmacy_regimens","ods_datim_id","character varying",5,255
 "hiv_art_pharmacy_regimens","id","bigint",1,NULL
+"sync_table_count","facility_id","bigint",2,NULL
+"sync_table_count","id","text",3,NULL
+"sync_table_count","name","text",1,NULL
+"sync_table_count","ods_datim_id","text",7,NULL
+"sync_table_count","ods_load_time","timestamp without time zone",6,NULL
+"sync_table_count","time_generated","text",4,NULL
+"sync_table_count","total_record","bigint",5,NULL
 "hiv_drug","evening","integer",9,NULL
 "hiv_drug","ods_datim_id","character varying",12,255
 "hiv_drug","ods_load_time","timestamp without time zone",11,NULL
@@ -1255,7 +1262,7 @@
 "prep_clinic","months_of_refill","integer",60,NULL
 "prep_clinic","health_care_worker_signature","character varying",61,NULL
 "prep_clinic","visit_type","character varying",62,NULL
-"prep_clinic","creatinine_result","jsonb",63,NULL
+"prep_clinic","creatinine_result","character varying",63,NULL
 "prep_clinic","other_regimen_id","character varying",64,NULL
 "prep_clinic","liver_function_test_results","jsonb",65,NULL
 "prep_clinic","creatinine","jsonb",66,NULL
@@ -1280,7 +1287,7 @@
 "prep_eligibility","sti_screening","jsonb",7,NULL
 "prep_eligibility","lft_conducted","character varying",37,NULL
 "prep_eligibility","reason_for_switch","character varying",36,NULL
-"prep_eligibility","liver_function_test_results","character varying",35,NULL
+"prep_eligibility","liver_function_test_results","jsonb",35,NULL
 "prep_eligibility","date_of_liver_function_test_results","date",34,NULL
 "prep_eligibility","population_type","character varying",33,NULL
 "prep_eligibility","pregnancy_status","character varying",31,NULL
