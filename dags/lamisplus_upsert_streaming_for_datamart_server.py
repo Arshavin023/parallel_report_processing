@@ -258,4 +258,4 @@ with DAG("lamisplus_upsert_streaming_for_datamart_server",start_date=datetime.da
         bash_command="echo end"
     )
     # Define the task dependencies
-    start >> upstream_tasks >> midstream_tasks >> downstream_tasks >> end
+    start >> upstream_tasks >> midstream_tasks >> downstream_tasks >> upsert_laboratory_details_refresh >> end

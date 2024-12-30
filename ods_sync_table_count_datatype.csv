@@ -1,8 +1,0 @@
-"table_name","column_name","data_type","ordinal_position","character_maximum_length"
-"sync_table_count","facility_id","bigint",2,NULL
-"sync_table_count","id","text",3,NULL
-"sync_table_count","name","text",1,NULL
-"sync_table_count","ods_datim_id","text",7,NULL
-"sync_table_count","ods_load_time","timestamp without time zone",6,NULL
-"sync_table_count","time_generated","text",4,NULL
-"sync_table_count","total_record","bigint",5,NULL

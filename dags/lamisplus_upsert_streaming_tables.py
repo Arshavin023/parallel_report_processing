@@ -14,7 +14,7 @@ default_args = {
     "retry_delay": datetime.timedelta(minutes=5)
 }
 
-with DAG("lamisplus_upsert_streaming_for_refresh_tables",start_date=datetime.datetime(2024, 7, 1),schedule_interval=None,
+with DAG("lamisplus_upsert_streaming_for_refresh_tables_new",start_date=datetime.datetime(2024, 7, 1),schedule_interval=None,
             default_args=default_args,catchup=True,max_active_runs=1,) as dag:
 
     start = BashOperator(

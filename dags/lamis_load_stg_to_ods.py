@@ -11,7 +11,7 @@ from lamisplus_funcs.airflow_api import trigger_dag
 # sys.path.append('/home/lamisplus/airflow/lamisplus_funcs')
 
 def trigger_dag_function(**kwargs):
-    trigger_dag(dag_id='lamisplus_upsert_streaming_for_refresh_tables')  
+    trigger_dag(dag_id='lamisplus_upsert_streaming_for_datamart_server')  
 
 default_args = {
     "owner": "airflow",
@@ -23,7 +23,7 @@ default_args = {
 }
 
 
-with DAG("lamis_stg_to_ods_test_asc", start_date=datetime(2024, 1, 26), schedule_interval=timedelta(hours=1),
+with DAG("lamis_stg_to_ods", start_date=datetime(2024, 1, 26), schedule_interval=timedelta(hours=1),
  default_args=default_args, catchup=False, max_active_runs=1) as dag:
 
     start = BashOperator(
@@ -250,6 +250,11 @@ with DAG("lamis_stg_to_ods_test_asc", start_date=datetime(2024, 1, 26), schedule
         python_callable=lamisplus_funcs.process_sync_table_count
     )
     
+    hiv_regimen_drug = PythonOperator(
+        task_id="hiv_regimen_drug",
+        python_callable=lamisplus_funcs.process_hiv_regimen_drug
+    )
+    
     encrypt_hts_tables = PostgresOperator(
         task_id="encrypt_hts_tables",
         postgres_conn_id="lamisplus_conn",
@@ -283,7 +288,7 @@ with DAG("lamis_stg_to_ods_test_asc", start_date=datetime(2024, 1, 26), schedule
              triage_vital_sign,hts_client,base_organisation_unit,
              base_organisation_unit_identifier,hiv_regimen,hiv_regimen_type,laboratory_sample,
              laboratory_test,laboratory_result,hiv_art_pharmacy,laboratory_labtest,
-             hiv_art_pharmacy_regimens,hiv_eac_session,hiv_eac,dsd_devolvement, 
+             hiv_art_pharmacy_regimens,hiv_regimen_drug, hiv_eac_session,hiv_eac,dsd_devolvement, 
              laboratory_order,pmtct_anc,pmtct_delivery,pmtct_enrollment,pmtct_infant_arv,
              pmtct_infant_pcr,pmtct_infant_visit,pmtct_mother_visitation,pmtct_infant_information,
              pmtct_infant_mother_art,pmtct_infant_rapid_antibody,sync_table_count] >> encrypt_hts_tables >> upsert_hts_client_refresh >> end >> trigger_refresh_streaming_dag

@@ -160,11 +160,12 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
     record_count = 0
     cur.execute("""SELECT datim_id, batch_id, file_name 
                 from stg_monitoring 
-                where table_name = '{}' AND datim_id IN (SELECT datim_id FROM central_partner_mapping WHERE ip_name IN ('SFH-KP-CARE 2','HAN-KP-CARE 1'))
+                where table_name = '{}' 
+                AND datim_id NOT IN (SELECT datim_id FROM central_partner_mapping WHERE is_run)
                 AND json_rec_count > 0 
                 AND processed = 'N' 
                 AND load_time >= '2024-10-01' 
-                ORDER BY load_time ASC LIMIT (SELECT (COUNT(file_name)/2) FROM stg_monitoring WHERE processed='N')""".format(staging_table))
+                ORDER BY load_time ASC LIMIT 3000""".format(staging_table))
     ls_to_process = cur.fetchall()
     load_time = datetime.datetime.now()
     ls_to_process.sort(key=lambda i: i[1])
@@ -456,6 +457,13 @@ def process_hiv_art_pharmacy_regimens():
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
+def process_hiv_regimen_drug():
+    table_name = 'hiv_regimen_drug'
+    constraints = 'regimen_id, drug_id, ods_datim_id'
+    #ods_setup_new(table_name, constraints)
+    process_stg_to_ods(table_name, constraints)
+    
+
 def process_hiv_eac_session():
     table_name = 'hiv_eac_session'
     constraints = 'ods_datim_id, uuid'
@@ -614,3 +622,4 @@ if __name__ == '__main__':
     process_pmtct_infant_mother_art()
     process_pmtct_infant_rapid_antibody()
     process_sync_table_count()
+    process_hiv_regimen_drug()
