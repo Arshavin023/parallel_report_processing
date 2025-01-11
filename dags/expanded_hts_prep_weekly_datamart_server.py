@@ -245,6 +245,21 @@ with DAG("lamisplus_hts_prep_datamart_server", start_date=datetime.datetime(2024
             autocommit = True
         )
         
+        hts_totalriskscore = PostgresOperator(
+            task_id="hts_totalriskscore",
+            postgres_conn_id="hts_prep_conn",
+            sql = 'call expanded_hts_prep.proc_hts_totalriskscore()',
+            autocommit = True
+        )
+        
+        family_patient_index = PostgresOperator(
+            task_id="family_patient_index",
+            postgres_conn_id="hts_prep_conn",
+            sql = 'call expanded_hts_prep.proc_family_patient_index()',
+            autocommit = True
+        )
+        
+        
     with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
         
         expanded_hts_joined_bio = PostgresOperator(

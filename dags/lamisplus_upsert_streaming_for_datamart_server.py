@@ -73,6 +73,13 @@ with DAG("lamisplus_upsert_streaming_for_datamart_server",start_date=datetime.da
             autocommit=True
         )
 
+        upsert_cte_client_verification = PostgresOperator(
+            task_id="upsert_cte_client_verification",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_cte_client_verification()',
+            autocommit=True
+        )
+        
         upsert_client_verification = PostgresOperator(
             task_id="upsert_client_verification",
             postgres_conn_id="radet_conn",
@@ -90,79 +97,101 @@ with DAG("lamisplus_upsert_streaming_for_datamart_server",start_date=datetime.da
         upsert_art_commencement_vitals = PostgresOperator(
             task_id="upsert_art_commencement_vitals",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_art_commencement_vitals_refresh()',
+            sql='call expanded_radet.proc_upsert_art_commencement_vitals()',
             autocommit=True
         )
         
         upsert_hiv_status_tracker = PostgresOperator(
             task_id="upsert_hiv_status_tracker",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_hiv_status_tracker_refresh()',
+            sql='call expanded_radet.proc_upsert_hiv_status_tracker()',
             autocommit=True
         )
         
-        upsert_clinic_data_refresh = PostgresOperator(
-            task_id="upsert_clinic_data_refresh",
+        upsert_clinic_data = PostgresOperator(
+            task_id="upsert_clinic_data",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_clinic_data_refresh()',
+            sql='call expanded_radet.proc_upsert_clinic_data()',
             autocommit=True
         )
         
-        upsert_hiv_clinical_enrollment_refresh = PostgresOperator(
-            task_id="upsert_hiv_clinical_enrollment_refresh",
+        upsert_hiv_clinical_enrollment = PostgresOperator(
+            task_id="upsert_hiv_clinical_enrollment",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_hiv_clinical_enrollment_refresh()',
+            sql='call expanded_radet.proc_upsert_hiv_clinical_enrollment()',
             autocommit=True
         )
         
-        upsert_baseappcodeset_refresh = PostgresOperator(
-            task_id="upsert_baseappcodeset_refresh",
+        upsert_baseappcodeset = PostgresOperator(
+            task_id="upsert_baseappcodeset",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_baseappcodeset_refresh()',
+            sql='call expanded_radet.proc_upsert_baseappcodeset()',
             autocommit=True
         )
         
-        upsert_laboratoryorder_hivenrollment_refresh = PostgresOperator(
-            task_id="upsert_laboratoryorder_hivenrollment_refresh",
+        upsert_laboratoryorder_hivenrollment = PostgresOperator(
+            task_id="upsert_laboratoryorder_hivenrollment",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_laboratoryorder_hivenrollment_refresh()',
+            sql='call expanded_radet.proc_upsert_laboratoryorder_hivenrollment()',
             autocommit=True
         )
         
-        temp_laboratorytestresults_refresh = PostgresOperator(
-            task_id="temp_laboratorytestresults_refresh",
+        temp_laboratorytestresults = PostgresOperator(
+            task_id="temp_laboratorytestresults",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_temp_laboratorytestresults_refresh()',
+            sql='call expanded_radet.proc_upsert_temp_laboratorytestresults()',
             autocommit=True
         )
         
-        upsert_regimenatstart_refresh = PostgresOperator(
-            task_id="upsert_regimenatstart_refresh",
+        upsert_regimenatstart = PostgresOperator(
+            task_id="upsert_regimenatstart",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_regimenatstart_refresh()',
+            sql='call expanded_radet.proc_upsert_regimenatstart()',
             autocommit=True
         )
         
-        upsert_lastpickup_refresh = PostgresOperator(
-            task_id="upsert_lastpickup_refresh",
+        upsert_lastpickup = PostgresOperator(
+            task_id="upsert_lastpickup",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_lastpickup_refresh()',
+            sql='call expanded_radet.proc_upsert_lastpickup()',
             autocommit=True
         )
         
-        upsert_eac_sessions_refresh = PostgresOperator(
-            task_id="upsert_eac_sessions_refresh",
+        upsert_eac_sessions = PostgresOperator(
+            task_id="upsert_eac_sessions",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_eac_sessions_refresh()',
+            sql='call expanded_radet.proc_upsert_eac_sessions()',
             autocommit=True
         )
         
-        upsert_hts_client_codeset_refresh = PostgresOperator(
-            task_id="upsert_hts_client_codeset_refresh",
+        upsert_hts_client_codeset = PostgresOperator(
+            task_id="upsert_hts_client_codeset",
             postgres_conn_id="hts_prep_conn",
-            sql='call expanded_hts_prep.proc_upsert_hts_client_codeset_refresh()',
+            sql='call expanded_hts_prep.proc_upsert_hts_client_codeset()',
             autocommit=True
         )
+        
+        upsert_risk_stratification = PostgresOperator(
+            task_id="upsert_risk_stratification",
+            postgres_conn_id="hts_prep_conn",
+            sql='call expanded_hts_prep.proc_upsert_risk_stratification()',
+            autocommit=True
+        )
+        
+        upsert_familyindex = PostgresOperator(
+            task_id="upsert_familyindex",
+            postgres_conn_id="hts_prep_conn",
+            sql='call expanded_hts_prep.proc_upsert_familyindex()',
+            autocommit=True
+        )
+        
+        upsert_partnerindex = PostgresOperator(
+            task_id="upsert_partnerindex",
+            postgres_conn_id="hts_prep_conn",
+            sql='call expanded_hts_prep.proc_upsert_partnerindex()',
+            autocommit=True
+        )
+        
         
         upsert_cte_bio_data = PostgresOperator(
             task_id="upsert_cte_bio_data",
@@ -178,24 +207,24 @@ with DAG("lamisplus_upsert_streaming_for_datamart_server",start_date=datetime.da
             autocommit=True
         )
         
-        upsert_hiv_observation_refresh = PostgresOperator(
-            task_id="upsert_hiv_observation_refresh",
+        upsert_hiv_observation = PostgresOperator(
+            task_id="upsert_hiv_observation",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_hiv_observation_refresh()',
+            sql='call expanded_radet.proc_upsert_hiv_observation()',
             autocommit=True
         )
         
-        upsert_hivregimentype_refresh = PostgresOperator(
-            task_id="upsert_hivregimentype_refresh",
+        upsert_hivregimentype = PostgresOperator(
+            task_id="upsert_hivregimentype",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_hivregimentype_refresh()',
+            sql='call expanded_radet.proc_upsert_hivregimentype()',
             autocommit=True
         )
         
-        upsert_statelgaresidence_refresh = PostgresOperator(
-            task_id="upsert_statelgaresidence_refresh",
+        upsert_statelgaresidence = PostgresOperator(
+            task_id="upsert_statelgaresidence",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_statelgaresidence_refresh()',
+            sql='call expanded_radet.proc_upsert_statelgaresidence()',
             autocommit=True
         )
         
@@ -208,47 +237,47 @@ with DAG("lamisplus_upsert_streaming_for_datamart_server",start_date=datetime.da
             autocommit=True
         )
         
-        upsert_hivclinicalenrollment_baseappcode_refresh = PostgresOperator(
-            task_id="upsert_hivclinicalenrollment_baseappcode_refresh",
+        upsert_hivclinicalenrollment_baseappcode = PostgresOperator(
+            task_id="upsert_hivclinicalenrollment_baseappcode",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_hivclinicalenrollment_baseappcode_refresh()',
+            sql='call expanded_radet.proc_upsert_hivclinicalenrollment_baseappcode()',
             autocommit=True
         )
         
-        laboratorytestresults_refresh = PostgresOperator(
-            task_id="temp_laboratorytestresults_refresh",
+        laboratorytestresults = PostgresOperator(
+            task_id="temp_laboratorytestresults",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_laboratorytestresults_refresh()',
+            sql='call expanded_radet.proc_upsert_laboratorytestresults()',
             autocommit=True
         )
         
-        upsert_eac_client_refresh = PostgresOperator(
-            task_id="upsert_eac_client_refresh",
+        upsert_eac_client = PostgresOperator(
+            task_id="upsert_eac_client",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_eac_client_refresh()',
+            sql='call expanded_radet.proc_upsert_eac_client()',
             autocommit=True
         )
         
     with TaskGroup(group_id='downstream_tasks') as downstream_tasks:
         
-        upsert_sub_tvs_current_clinical_refresh = PostgresOperator(
-            task_id="upsert_sub_tvs_current_clinical_refresh",
+        upsert_sub_tvs_current_clinical = PostgresOperator(
+            task_id="upsert_sub_tvs_current_clinical",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_sub_tvs_current_clinical_refresh()',
+            sql='call expanded_radet.proc_upsert_sub_tvs_current_clinical()',
             autocommit=True
         )
         
-        upsert_sub_laboratory_details_refresh = PostgresOperator(
-            task_id="upsert_sub_laboratory_details_refresh",
+        upsert_sub_laboratory_details = PostgresOperator(
+            task_id="upsert_sub_laboratory_details",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_sub_laboratory_details_refresh()',
+            sql='call expanded_radet.proc_upsert_sub_laboratory_details()',
             autocommit=True
         )
 
-    upsert_laboratory_details_refresh = PostgresOperator(
-        task_id="upsert_laboratory_details_refresh",
+    upsert_laboratory_details = PostgresOperator(
+        task_id="upsert_laboratory_details",
         postgres_conn_id="radet_conn",
-        sql='call expanded_radet.proc_upsert_laboratory_details_refresh()',
+        sql='call expanded_radet.proc_upsert_laboratory_details()',
         autocommit=True
     )
         
@@ -258,4 +287,4 @@ with DAG("lamisplus_upsert_streaming_for_datamart_server",start_date=datetime.da
         bash_command="echo end"
     )
     # Define the task dependencies
-    start >> upstream_tasks >> midstream_tasks >> downstream_tasks >> upsert_laboratory_details_refresh >> end
+    start >> upstream_tasks >> midstream_tasks >> downstream_tasks >> upsert_laboratory_details >> end

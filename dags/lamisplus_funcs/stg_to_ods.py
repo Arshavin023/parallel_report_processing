@@ -161,10 +161,10 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
     cur.execute("""SELECT datim_id, batch_id, file_name 
                 from stg_monitoring 
                 where table_name = '{}' 
-                AND datim_id NOT IN (SELECT datim_id FROM central_partner_mapping WHERE is_run)
+                --AND datim_id NOT IN (SELECT datim_id FROM central_partner_mapping WHERE is_run)
                 AND json_rec_count > 0 
                 AND processed = 'N' 
-                AND load_time >= '2024-10-01' 
+                AND load_time >= '2024-12-01' 
                 ORDER BY load_time ASC LIMIT 3000""".format(staging_table))
     ls_to_process = cur.fetchall()
     load_time = datetime.datetime.now()
@@ -250,7 +250,6 @@ def process_patient_person():
                                   'marital_status': JSON().with_variant(JSONB, 'postgresql'), 'employment_status': JSON().with_variant(JSONB, 'postgresql'),
                                   'organization': JSON().with_variant(JSONB, 'postgresql'), 'contact': JSON().with_variant(JSONB, 'postgresql'),
                                   'education': JSON().with_variant(JSONB, 'postgresql')}
-
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
     
@@ -327,6 +326,28 @@ def process_hts_risk_stratification():
     dtype = {'risk_assessment': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
+def process_hts_family_index():
+    table_name = 'hts_family_index'
+    constraints = 'ods_datim_id, uuid'
+    #ods_setup_new(table_name, constraints)
+    process_stg_to_ods(table_name, constraints)
+    
+def process_hts_family_index_testing():
+    table_name = 'hts_family_index_testing'
+    constraints = 'ods_datim_id, uuid'
+    #ods_setup_new(table_name, constraints)
+    dtype = {'extra': JSON().with_variant(JSONB, 'postgresql')}
+    process_stg_to_ods(table_name, constraints, dtype=dtype)
+    
+def process_hts_pns_index_client_partner():
+    table_name = 'hts_pns_index_client_partner'
+    constraints = 'ods_datim_id, uuid'
+    #ods_setup_new(table_name, constraints)
+    dtype = {'intermediate_partner_violence': JSON().with_variant(JSONB, 'postgresql'), 
+             'hts_client_information': JSON().with_variant(JSONB, 'postgresql'),
+             'contact_tracing': JSON().with_variant(JSONB, 'postgresql'),}
+    process_stg_to_ods(table_name, constraints, dtype=dtype)
+    
 def process_patient_encounter():
     table_name = 'patient_encounter'
     constraints = 'ods_datim_id, uuid'
@@ -476,8 +497,7 @@ def process_biometric():
     table_name = 'biometric'
     constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
-    dtype = {'extra': JSON().with_variant(JSONB, 'postgresql')
-                                         }
+    dtype = {'extra': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints, dtype=dtype)  
 
 def process_hiv_eac():
@@ -490,8 +510,7 @@ def process_hiv_eac_out_come():
     table_name = 'hiv_eac_out_come'
     constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
-    dtype = {'plan_action': JSON().with_variant(JSONB, 'postgresql')
-                                         }
+    dtype = {'plan_action': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints)    
     
 def process_dsd_devolvement():
@@ -588,6 +607,9 @@ if __name__ == '__main__':
     process_hiv_status_tracker()
     process_hts_index_elicitation()
     process_hts_risk_stratification()
+    process_hts_family_index()
+    process_hts_family_index_testing()
+    process_hts_pns_index_client_partner()
     process_patient_encounter()
     process_prep_clinic()
     process_prep_enrollment()

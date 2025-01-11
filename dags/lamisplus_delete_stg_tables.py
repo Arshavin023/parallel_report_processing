@@ -312,6 +312,12 @@ with DAG("lamisplus_delete_stg_tables",start_date=datetime(2024, 11, 1),schedule
             sql="call public.proc_delete_stg_tables('stg_laboratory_number')",
             autocommit=True)
         
+        stg_biometric = PostgresOperator(
+            task_id="stg_biometric",
+            postgres_conn_id="lamisplus_stg_conn",
+            sql="call public.proc_delete_stg_tables('stg_biometric')",
+            autocommit=True)
+        
        
     end = BashOperator(
         task_id="end",

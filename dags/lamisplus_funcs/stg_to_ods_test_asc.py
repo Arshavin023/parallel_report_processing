@@ -167,7 +167,7 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
                 from stg_monitoring 
                 where table_name = %s
                 --AND json_rec_count > 0 
-                AND processed = 'N' 
+                AND processed = 'N' --AND datim_id IN (SELECT datim_id FROM central_partner_mapping WHERE is_run)
                 AND load_time > '2024-10-01' 
                 ORDER BY load_time ASC
                 LIMIT 1000""", (staging_table,))
@@ -247,31 +247,31 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
      
 def process_patient_person():  
     table_name = 'patient_person'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id,uuid'
     #ods_setup_new(table_name, constraints)
     dtype = {'contact_point': JSON().with_variant(JSONB, 'postgresql'), 'address': JSON().with_variant(JSONB, 'postgresql'),
                                   'gender': JSON().with_variant(JSONB, 'postgresql'), 'identifier': JSON().with_variant(JSONB, 'postgresql'),
                                   'marital_status': JSON().with_variant(JSONB, 'postgresql'), 'employment_status': JSON().with_variant(JSONB, 'postgresql'),
                                   'organization': JSON().with_variant(JSONB, 'postgresql'), 'contact': JSON().with_variant(JSONB, 'postgresql'),
                                   'education': JSON().with_variant(JSONB, 'postgresql')}
-
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
+    
 def process_case_manager():
     table_name = 'case_manager'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_case_manager_patients():
     table_name = 'case_manager_patients'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_patient_visit():
     table_name = 'patient_visit'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
@@ -293,32 +293,32 @@ def process_hiv_art_clinical():
                                   'tb_screen': JSON().with_variant(JSONB, 'postgresql'), 'opportunistic_infections': JSON().with_variant(JSONB, 'postgresql'),
                                   'arvdrugs_regimen': JSON().with_variant(JSONB, 'postgresql'), 'viral_load_order': JSON().with_variant(JSONB, 'postgresql'),
                                   'extra': JSON().with_variant(JSONB, 'postgresql'),}
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
 def process_hiv_enrollment():
     table_name = 'hiv_enrollment'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_hiv_observation():
     table_name = 'hiv_observation'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     dtype ={'data': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
 def process_hiv_status_tracker():
     table_name = 'hiv_status_tracker'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_hts_index_elicitation():
     table_name = 'hts_index_elicitation'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     dtype = {'extra': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
@@ -330,15 +330,37 @@ def process_hts_risk_stratification():
     dtype = {'risk_assessment': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
+def process_hts_family_index():
+    table_name = 'hts_family_index'
+    constraints = 'ods_datim_id, uuid'
+    #ods_setup_new(table_name, constraints)
+    process_stg_to_ods(table_name, constraints)
+    
+def process_hts_family_index_testing():
+    table_name = 'hts_family_index_testing'
+    constraints = 'ods_datim_id, uuid'
+    #ods_setup_new(table_name, constraints)
+    dtype = {'extra': JSON().with_variant(JSONB, 'postgresql')}
+    process_stg_to_ods(table_name, constraints, dtype=dtype)
+    
+def process_hts_pns_index_client_partner():
+    table_name = 'hts_pns_index_client_partner'
+    constraints = 'ods_datim_id, uuid'
+    #ods_setup_new(table_name, constraints)
+    dtype = {'intermediate_partner_violence': JSON().with_variant(JSONB, 'postgresql'), 
+             'hts_client_information': JSON().with_variant(JSONB, 'postgresql'),
+             'contact_tracing': JSON().with_variant(JSONB, 'postgresql'),}
+    process_stg_to_ods(table_name, constraints, dtype=dtype)
+    
 def process_patient_encounter():
     table_name = 'patient_encounter'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_prep_clinic():
     table_name = 'prep_clinic'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     dtype = {'hepatitis': JSON().with_variant(JSONB, 'postgresql'), 'syphilis': JSON().with_variant(JSONB, 'postgresql'),
                                          'syndromic_sti_screening': JSON().with_variant(JSONB, 'postgresql'), 'other_tests_done': JSON().with_variant(JSONB, 'postgresql'),
@@ -347,21 +369,21 @@ def process_prep_clinic():
 
 def process_prep_enrollment():
     table_name = 'prep_enrollment'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     dtype = {'extra': JSON().with_variant(JSONB, 'postgresql'),}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
 def process_prep_interruption():
     table_name = 'prep_interruption'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     dtype = {'extra': JSON().with_variant(JSONB, 'postgresql'),}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
 def process_prep_eligibility():
     table_name = 'prep_eligibility'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     dtype = {'extra': JSON().with_variant(JSONB, 'postgresql'),
              'hiv_risk': JSON().with_variant(JSONB, 'postgresql'),
@@ -377,13 +399,13 @@ def process_prep_eligibility():
 
 def process_triage_vital_sign():
     table_name = 'triage_vital_sign'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_hts_client():
     table_name = 'hts_client'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     dtype={'extra': JSON().with_variant(JSONB, 'postgresql'), 'test1': JSON().with_variant(JSONB, 'postgresql'),
                                   'test2': JSON().with_variant(JSONB, 'postgresql'), 'confirmatory_test': JSON().with_variant(JSONB, 'postgresql'),
@@ -399,50 +421,50 @@ def process_hts_client():
 
 def process_base_organisation_unit():
     table_name = 'base_organisation_unit'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     dtype={'details': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
 def process_base_organisation_unit_identifier():
     table_name = 'base_organisation_unit_identifier'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_hiv_regimen():
     table_name = 'hiv_regimen'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_hiv_regimen_type():
     table_name = 'hiv_regimen_type'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_laboratory_sample():
     table_name = 'laboratory_sample'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_laboratory_test():
     table_name = 'laboratory_test'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_laboratory_result():
     table_name = 'laboratory_result'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_hiv_art_pharmacy():
     table_name = 'hiv_art_pharmacy'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     dtype = {'extra': JSON().with_variant(JSONB, 'postgresql'), 'adverse_drug_reactions': JSON().with_variant(JSONB, 'postgresql'),
                                          'ipt': JSON().with_variant(JSONB, 'postgresql')}
@@ -450,7 +472,7 @@ def process_hiv_art_pharmacy():
 
 def process_laboratory_labtest():
     table_name = 'laboratory_labtest'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
@@ -460,9 +482,16 @@ def process_hiv_art_pharmacy_regimens():
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
+def process_hiv_regimen_drug():
+    table_name = 'hiv_regimen_drug'
+    constraints = 'regimen_id, drug_id, ods_datim_id'
+    #ods_setup_new(table_name, constraints)
+    process_stg_to_ods(table_name, constraints)
+    
+
 def process_hiv_eac_session():
     table_name = 'hiv_eac_session'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     dtype = {'barriers': JSON().with_variant(JSONB, 'postgresql'), 'intervention': JSON().with_variant(JSONB, 'postgresql'),
                                          }
@@ -470,25 +499,23 @@ def process_hiv_eac_session():
 
 def process_biometric():
     table_name = 'biometric'
-    constraints = constraint_type_two
+    constraints = 'ods_datim_id, id'
     #ods_setup_new(table_name, constraints)
-    dtype = {'extra': JSON().with_variant(JSONB, 'postgresql')
-                                         }
+    dtype = {'extra': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints, dtype=dtype)  
 
 def process_hiv_eac():
     table_name = 'hiv_eac'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints) 
 
 def process_hiv_eac_out_come():
     table_name = 'hiv_eac_out_come'
-    constraints = constraint_type_one
+    constraints = 'ods_datim_id, uuid'
     #ods_setup_new(table_name, constraints)
-    dtype = {'plan_action': JSON().with_variant(JSONB, 'postgresql')
-                                         }
-    process_stg_to_ods(table_name, constraints, dtype=dtype)    
+    dtype = {'plan_action': JSON().with_variant(JSONB, 'postgresql')}
+    process_stg_to_ods(table_name, constraints)    
     
 def process_dsd_devolvement():
     table_name = 'dsd_devolvement'
@@ -525,19 +552,19 @@ def process_pmtct_enrollment():
 
 def process_pmtct_infant_arv():
     table_name = 'pmtct_infant_arv'
-    constraints = constraint_type_three
+    constraints = 'id, uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_pmtct_infant_pcr():
     table_name = 'pmtct_infant_pcr'
-    constraints = constraint_type_three
+    constraints = 'id, uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_pmtct_infant_visit():
     table_name = 'pmtct_infant_visit'
-    constraints = constraint_type_three
+    constraints = 'id, uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
@@ -555,7 +582,7 @@ def process_pmtct_infant_information():
 
 def process_pmtct_infant_mother_art():
     table_name = 'pmtct_infant_mother_art'
-    constraints = constraint_type_three
+    constraints = 'id, uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
     
@@ -564,19 +591,19 @@ def process_pmtct_infant_rapid_antibody():
     constraints = 'id, uuid, ods_datim_id,unique_uuid'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
-    
+
 def process_sync_table_count():
     table_name = 'sync_table_count'
     constraints = 'id, facility_id, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
-
 if __name__ == '__main__':
     process_patient_person()
     process_case_manager()
     process_case_manager_patients()
     process_patient_visit()
+    process_hiv_regimen_resolver()
     process_base_application_codeset()
     process_hiv_art_clinical()
     process_hiv_enrollment()
@@ -584,6 +611,9 @@ if __name__ == '__main__':
     process_hiv_status_tracker()
     process_hts_index_elicitation()
     process_hts_risk_stratification()
+    process_hts_family_index()
+    process_hts_family_index_testing()
+    process_hts_pns_index_client_partner()
     process_patient_encounter()
     process_prep_clinic()
     process_prep_enrollment()
@@ -591,18 +621,23 @@ if __name__ == '__main__':
     process_prep_eligibility()
     process_triage_vital_sign()
     process_hts_client()
+    process_base_organisation_unit()
+    process_base_organisation_unit_identifier()
+    process_hiv_regimen()
+    process_hiv_regimen_type()
     process_laboratory_sample()
     process_laboratory_test()
     process_laboratory_result()
     process_hiv_art_pharmacy()
     process_laboratory_labtest()
+    process_hiv_art_pharmacy_regimens()
     process_hiv_eac_session()
     process_biometric()
     process_hiv_eac() 
     process_hiv_eac_out_come()
     process_dsd_devolvement()
     process_laboratory_order()
-    process_hiv_art_pharmacy_regimens()
+    process_pmtct_anc()
     process_pmtct_delivery()
     process_pmtct_enrollment()
     process_pmtct_infant_arv()
@@ -612,10 +647,5 @@ if __name__ == '__main__':
     process_pmtct_infant_information()
     process_pmtct_infant_mother_art()
     process_pmtct_infant_rapid_antibody()
-    process_hiv_regimen_resolver()
-    process_base_organisation_unit()
-    process_base_organisation_unit_identifier()
-    process_hiv_regimen()
-    process_hiv_regimen_type()
-    process_pmtct_anc()
     process_sync_table_count()
+    process_hiv_regimen_drug()

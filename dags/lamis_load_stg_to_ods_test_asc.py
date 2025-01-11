@@ -6,12 +6,12 @@ import datetime
 from datetime import datetime, timedelta
 import sys
 import os
-from lamisplus_funcs import stg_to_ods as lamisplus_funcs
+from lamisplus_funcs import stg_to_ods_test_asc as lamisplus_funcs
 from lamisplus_funcs.airflow_api import trigger_dag
 # sys.path.append('/home/lamisplus/airflow/lamisplus_funcs')
 
 def trigger_dag_function(**kwargs):
-    trigger_dag(dag_id='lamisplus_upsert_streaming_for_datamart_server')  
+    trigger_dag(dag_id='lamisplus_upsert_streaming_for_refresh_tables')  
 
 default_args = {
     "owner": "airflow",
@@ -22,8 +22,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5)
 }
 
-
-with DAG("lamis_stg_to_ods", start_date=datetime(2024, 1, 26), schedule_interval=timedelta(hours=1),
+with DAG("lamis_stg_to_ods_test_asc", start_date=datetime(2024, 1, 26), schedule_interval=timedelta(hours=1),
  default_args=default_args, catchup=False, max_active_runs=1) as dag:
 
     start = BashOperator(
@@ -104,6 +103,11 @@ with DAG("lamis_stg_to_ods", start_date=datetime(2024, 1, 26), schedule_interval
         task_id="patient_encounter",
         python_callable=lamisplus_funcs.process_patient_encounter
     )
+
+    prep_clinic = PythonOperator(
+        task_id="prep_clinic",
+        python_callable=lamisplus_funcs.process_prep_clinic
+    )
     
     prep_enrollment = PythonOperator(
         task_id="prep_enrollment",
@@ -113,6 +117,11 @@ with DAG("lamis_stg_to_ods", start_date=datetime(2024, 1, 26), schedule_interval
     prep_interruption = PythonOperator(
         task_id="prep_interruption",
         python_callable=lamisplus_funcs.process_prep_interruption
+    )
+    
+    prep_eligibility = PythonOperator(
+        task_id="prep_eligibility",
+        python_callable=lamisplus_funcs.process_prep_eligibility
     )
 
     triage_vital_sign = PythonOperator(
@@ -184,7 +193,12 @@ with DAG("lamis_stg_to_ods", start_date=datetime(2024, 1, 26), schedule_interval
         task_id="hiv_eac",
         python_callable=lamisplus_funcs.process_hiv_eac
     )
-
+    
+    hiv_eac_out_come = PythonOperator(
+        task_id="hiv_eac_out_come",
+        python_callable=lamisplus_funcs.process_hiv_eac_out_come
+    )
+    
     dsd_devolvement = PythonOperator(
         task_id="dsd_devolvement",
         python_callable=lamisplus_funcs.process_dsd_devolvement
@@ -281,10 +295,15 @@ with DAG("lamis_stg_to_ods", start_date=datetime(2024, 1, 26), schedule_interval
     )
 
 
-    start >> [case_manager,case_manager_patients,patient_visit,hiv_regimen_resolver,base_application_codeset,hiv_art_clinical,hiv_enrollment,
-             hiv_observation,hiv_status_tracker,hts_index_elicitation,hts_risk_stratification,hts_family_index_testing,hts_family_index,hts_pns_index_client_partner,
-             patient_encounter,prep_enrollment,prep_interruption,triage_vital_sign,hts_client,base_organisation_unit,
-             base_organisation_unit_identifier,hiv_regimen,hiv_regimen_type,laboratory_sample,laboratory_test,laboratory_result,hiv_art_pharmacy,laboratory_labtest,
-             hiv_art_pharmacy_regimens,hiv_regimen_drug, hiv_eac_session,hiv_eac,dsd_devolvement, laboratory_order,pmtct_anc,pmtct_delivery,pmtct_enrollment,pmtct_infant_arv,
+    start >> [case_manager,case_manager_patients,patient_visit,
+             hiv_regimen_resolver,base_application_codeset,hiv_art_clinical,hiv_enrollment,
+             hiv_observation,hiv_status_tracker,hts_index_elicitation,hts_risk_stratification,
+             hts_family_index_testing,hts_family_index,hts_pns_index_client_partner,
+             patient_encounter,prep_clinic,prep_enrollment,prep_interruption, prep_eligibility,
+             triage_vital_sign,hts_client,base_organisation_unit,
+             base_organisation_unit_identifier,hiv_regimen,hiv_regimen_type,laboratory_sample,
+             laboratory_test,laboratory_result,hiv_art_pharmacy,laboratory_labtest,
+             hiv_art_pharmacy_regimens,hiv_regimen_drug, hiv_eac_session,hiv_eac,dsd_devolvement, 
+             laboratory_order,pmtct_anc,pmtct_delivery,pmtct_enrollment,pmtct_infant_arv,
              pmtct_infant_pcr,pmtct_infant_visit,pmtct_mother_visitation,pmtct_infant_information,
              pmtct_infant_mother_art,pmtct_infant_rapid_antibody,sync_table_count] >> encrypt_hts_tables >> upsert_hts_client_refresh >> end >> trigger_refresh_streaming_dag
