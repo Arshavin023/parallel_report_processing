@@ -281,11 +281,11 @@ with DAG("lamisplus_radet_generation_datamart_server",start_date=datetime.dateti
             sql='call expanded_radet.proc_dsd2()',
             autocommit=True
         )
-
-        cte_tbstatus_tbscreening_cs = PostgresOperator(
-            task_id="cte_tbstatus_tbscreening_cs",
+        
+        tbstatus_filtered_observation = PostgresOperator(
+            task_id="tbstatus_filtered_observation",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_tbstatus_tbscreening_cs_updated()',
+            sql='call expanded_radet.proc_tbstatus_filtered_observation()',
             autocommit=True
         )
 
@@ -355,13 +355,6 @@ with DAG("lamisplus_radet_generation_datamart_server",start_date=datetime.dateti
             autocommit=True
         )
 
-        cte_tbstatus = PostgresOperator(
-            task_id="cte_tbstatus",
-            postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_tbstatus()',
-            autocommit=True
-        )
-
         cte_ipt = PostgresOperator(
             task_id="cte_ipt",
             postgres_conn_id="radet_conn",
@@ -382,6 +375,13 @@ with DAG("lamisplus_radet_generation_datamart_server",start_date=datetime.dateti
             sql='call expanded_radet.proc_tbtreatment_updated()',
             autocommit=True
         )
+        
+        cte_tbstatus_tbscreening_cs = PostgresOperator(
+            task_id="tbstatus_tbscreening_cs_updated",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_tbstatus_tbscreening_cs_updated()',
+            autocommit=True
+        )
     
     with TaskGroup(group_id='downstream_tasks') as downstream_tasks:
         
@@ -389,6 +389,13 @@ with DAG("lamisplus_radet_generation_datamart_server",start_date=datetime.dateti
             task_id="cte_eac",
             postgres_conn_id="radet_conn",
             sql='call expanded_radet.proc_eac_v2()',
+            autocommit=True
+        )
+        
+        cte_tbstatus = PostgresOperator(
+            task_id="cte_tbstatus",
+            postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_tbstatus()',
             autocommit=True
         )
 

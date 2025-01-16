@@ -34,14 +34,14 @@ with DAG("lamisplus_hts_prep_datamart_server", start_date=datetime.datetime(2024
     )
     
     with TaskGroup(group_id='upstream_tasks') as upstream_tasks:
-
-        prep_current_pc = PostgresOperator(
-            task_id="prep_current_pc",
+        
+        sub_prep_currentprevious_pc = PostgresOperator(
+            task_id="sub_prep_currentprevious_pc",
             postgres_conn_id="hts_prep_conn",
-            sql = 'call expanded_hts_prep.proc_prep_current_pc()',
+            sql = 'CALL expanded_hts_prep.proc_sub_prep_currentprevious_pc()',
             autocommit = True
         )
-
+        
         prep_baseline_pc = PostgresOperator(
             task_id="prep_baseline_pc",
             postgres_conn_id="hts_prep_conn",
@@ -258,9 +258,25 @@ with DAG("lamisplus_hts_prep_datamart_server", start_date=datetime.datetime(2024
             sql = 'call expanded_hts_prep.proc_family_patient_index()',
             autocommit = True
         )
-        
-        
+    
     with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
+        
+        prep_current_pc = PostgresOperator(
+            task_id="prep_current_pc",
+            postgres_conn_id="hts_prep_conn",
+            sql = 'call expanded_hts_prep.proc_prep_current_pc()',
+            autocommit = True
+        )
+        
+        prep_previous_pc = PostgresOperator(
+            task_id="prep_previous_pc",
+            postgres_conn_id="hts_prep_conn",
+            sql = 'CALL expanded_hts_prep.proc_prep_previous_pc() ',
+            autocommit = True
+        )
+        
+        
+    with TaskGroup(group_id='midstream2_tasks') as midstream2_tasks:
         
         expanded_hts_joined_bio = PostgresOperator(
             task_id="expanded_hts_joined_bio",
@@ -316,4 +332,4 @@ with DAG("lamisplus_hts_prep_datamart_server", start_date=datetime.datetime(2024
         )
 
 
-    start >> update_period_table >> upstream_tasks >> midstream_tasks >> downstream_tasks >> final_stream_tasks
+    start >> update_period_table >> upstream_tasks >> midstream_tasks >> midstream2_tasks >> downstream_tasks >> final_stream_tasks

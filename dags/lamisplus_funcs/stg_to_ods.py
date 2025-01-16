@@ -233,7 +233,8 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
             print(f'Updated stg_monitoring table for {staging_table} for successfully data migration')
 
     try:
-        delete_archived_query = f"""DELETE FROM {ods_table} WHERE archived=1"""
+        delete_archived_query = f"""CALL public.proc_delete_archived_records('{ods_table}')"""
+        #delete_archived_query = f"""DELETE FROM {ods_table} WHERE archived=1"""
         # delete_archived_params = (ods_table)
         cur2.execute(delete_archived_query)
         print(f'archived records deleted from {ods_table} on data warehouse')
