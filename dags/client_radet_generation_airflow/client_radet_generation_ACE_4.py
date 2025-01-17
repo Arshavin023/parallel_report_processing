@@ -4,6 +4,12 @@ from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.utils.task_group import TaskGroup
 import datetime
+from lamisplus_funcs.airflow_api import trigger_dag
+from airflow.operators.python import PythonOperator
+
+
+def trigger_dag_function(**kwargs):
+    trigger_dag(dag_id='ACE5_V1_client_radet_generation')
 
 default_args = {
     "owner": "airflow",
@@ -296,5 +302,11 @@ with DAG("ACE4_client_radet_generation",
         bash_command="echo end"
     )
 
+    trigger_ace5_v1_dag = PythonOperator(
+        task_id='trigger_ace5_v1_dag',
+        python_callable=trigger_dag_function,
+        provide_context=True,
+    )
+
     # Define task dependencies
-    start >> update_period_table >> task_group_endpoints >> end
+    start >> update_period_table >> task_group_endpoints >> end >> trigger_ace5_v1_dag

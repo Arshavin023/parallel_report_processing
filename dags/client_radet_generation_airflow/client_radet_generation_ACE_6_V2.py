@@ -4,6 +4,12 @@ from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.utils.task_group import TaskGroup
 import datetime
+from lamisplus_funcs.airflow_api import trigger_dag
+from airflow.operators.python import PythonOperator
+
+
+def trigger_dag_function(**kwargs):
+    trigger_dag(dag_id='HANKPCARE1_client_radet_generation')
 
 default_args = {
     "owner": "airflow",
@@ -284,13 +290,6 @@ with DAG("ACE6_V2_client_radet_generation",
     # Dynamically create tasks for each datim_id
     task_group_endpoints = [create_task_groups(datim_id) for datim_id in datim_ids]
 
-    #radet_joined = PostgresOperator(
-        #    task_id="radet_joined",
-          #  postgres_conn_id="lamisplus_conn",
-         #   sql= "call expanded_radet_client.proc_radet_joined()",
-        #    autocommit=True
-       # )
-
     #expanded_radet_weekly = PostgresOperator(
      #   task_id="expanded_radet_weekly",
       #  postgres_conn_id="lamisplus_conn",
@@ -303,5 +302,11 @@ with DAG("ACE6_V2_client_radet_generation",
         bash_command="echo end"
     )
 
+    trigger_hankpcare1_dag = PythonOperator(
+        task_id='trigger_hankpcare1_dag',
+        python_callable=trigger_dag_function,
+        provide_context=True,
+    )
+
     # Define task dependencies
-    start >> update_period_table >> task_group_endpoints >> end
+    start >> update_period_table >> task_group_endpoints >> end >> trigger_hankpcare1_dag
