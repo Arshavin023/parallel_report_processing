@@ -122,9 +122,16 @@ with DAG("lamisplus_upsert_streaming_for_datamart_server",start_date=datetime.da
             autocommit=True
         )
         
-        upsert_baseappcodeset = PostgresOperator(
+        upsert_baseappcodeset_radetdb = PostgresOperator(
             task_id="upsert_baseappcodeset",
             postgres_conn_id="radet_conn",
+            sql='call expanded_radet.proc_upsert_baseappcodeset()',
+            autocommit=True
+        )
+        
+        upsert_baseappcodeset_dwh = PostgresOperator(
+            task_id="upsert_baseappcodeset",
+            postgres_conn_id="lamisplus_conn",
             sql='call expanded_radet.proc_upsert_baseappcodeset()',
             autocommit=True
         )

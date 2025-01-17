@@ -1,4 +1,3 @@
-import math
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
@@ -18,7 +17,9 @@ default_args = {
 # Function to fetch datim_ids from the database
 def fetch_datim_ids(**kwargs):
     hook = PostgresHook(postgres_conn_id="lamisplus_conn")
-    sql = "SELECT datim_id FROM central_partner_mapping WHERE is_run"
+    sql = """"SELECT datim_id FROM central_partner_mapping 
+            WHERE ip_name='ACE-2'
+            """
     records = hook.get_records(sql)
     datim_ids = [record[0] for record in records]  # Extract datim_id from the records
     return datim_ids
@@ -144,14 +145,14 @@ def create_task_groups(datim_id):
 
         cte_dsd1 = PostgresOperator(
             task_id=f"cte_dsd1_{datim_id}",
-            postgres_conn_id="lamisplus_conn",
+            postgres_conn_id=f"lamisplus_conn",
             sql=f"call expanded_radet_client.proc_dsd1('{datim_id}')",
             autocommit=True
         )
 
         cte_dsd2 = PostgresOperator(
             task_id=f"cte_dsd2_{datim_id}",
-            postgres_conn_id="lamisplus_conn",
+            postgres_conn_id=f"lamisplus_conn",
             sql=f"call expanded_radet_client.proc_dsd2('{datim_id}')",
             autocommit=True
         )
@@ -241,27 +242,24 @@ def create_task_groups(datim_id):
             autocommit=True
         )
 
+        radet_joined = PostgresOperator(
+           task_id="radet_joined",
+           postgres_conn_id="lamisplus_conn",
+           sql= f"call expanded_radet_client.proc_radet_joined('{datim_id}')",
+           autocommit=True
+       )
+
         [cte_bio_data,cte_biometric,cte_carecardcd4,cte_case_manager,cte_cervical_cancer,
          cte_client_verification,cte_crytococal_antigen,cte_current_clinical,cte_current_regimen,
          cte_current_status,cte_current_tb_result,cte_current_vl_result,cte_dsd1,cte_dsd2,
          cte_eac,cte_ipt,cte_ipt_s,cte_iptnew,cte_labcd4,cte_naive_vl_data,cte_ovc,cte_patient_lga,
          cte_pharmacy_details_regimen,cte_sample_collection_date,cte_tb_sample_collection,cte_tblam,
-         cte_tbstatus,cte_tbtreatment,cte_tbtreatmentnew,cte_vacauseofdeath]
+         cte_tbstatus,cte_tbtreatment,cte_tbtreatmentnew,cte_vacauseofdeath] >> radet_joined
 
     return datim_tasks
 
-# Function to create task groups for each batch of datim_ids
-def create_task_group_batch(datim_batch, batch_index):
-    """
-    Dynamically creates task groups for each batch of datim_ids.
-    """
-    with TaskGroup(group_id=f"batch_{batch_index}") as batch_group:
-        for datim_id in datim_batch:
-            create_task_groups(datim_id)
-    return batch_group
-
 # Define the DAG
-with DAG("lamisplus_client_radet_generation_dwh_v2",
+with DAG("ACE2_client_radet_generation",
          start_date=datetime.datetime(2024, 7, 1),
          schedule_interval=None,
          default_args=default_args,
@@ -281,34 +279,17 @@ with DAG("lamisplus_client_radet_generation_dwh_v2",
     )
 
     # List of datim_ids
-    # datim_ids = ['PBvN0n4G8hf','wQbXqZui5JX','OvwdEjZGjKt','hBMgAL3QIyX','s04k18oAHbQ',
-    #             'TTOoi0wF4G9','th6DuyiCxCr','bTaWOxebwQJ','OeJa4jlFOD7','YCp9aLmSmMt',
-    #             'lcN4UPIp3pu','FKlk0W9Cyp1','RuHdlmhOXxR','L9BtLFuM11b','ByosPb3uhpZ',
-    #             'CCcAjuVA9e3','f2d3oP0aYEL','zFIutbAwvSN','rSmFsJpZIM9','nGR9a1EEjSe']
+    datim_ids = fetch_datim_ids()
+
+    # Dynamically create tasks for each datim_id
+    task_group_endpoints = [create_task_groups(datim_id) for datim_id in datim_ids]
     
-    datim_ids=fetch_datim_ids()
-    
-    # Split datim_ids into batches of 10
-    batch_size = 10
-    total_batches = math.ceil(len(datim_ids) / batch_size)
-    datim_batches = [datim_ids[i * batch_size:(i + 1) * batch_size] for i in range(total_batches)]
-
-    # Dynamically create task groups for each batch
-    task_group_batches = []
-    for batch_index, datim_batch in enumerate(datim_batches):
-        task_group_batches.append(create_task_group_batch(datim_batch, batch_index))
-
-    # radet_joined = PostgresOperator(
-    #     task_id="radet_joined",
-    #     postgres_conn_id="lamisplus_conn",
-    #     sql= "call expanded_radet_client.proc_radet_joined()",
-    #     autocommit=True)
-
-    # expanded_radet_weekly = PostgresOperator(
-    #     task_id="expanded_radet_weekly",
-    #     postgres_conn_id="lamisplus_conn",
-    #     sql="call expanded_radet_client.proc_expanded_radet_weekly()",
-    #    autocommit=True)
+    #expanded_radet_weekly = PostgresOperator(
+     #   task_id="expanded_radet_weekly",
+      #  postgres_conn_id="lamisplus_conn",
+      #  sql="call expanded_radet_client.proc_expanded_radet_weekly()",
+    #    autocommit=True
+    #)
 
     end = BashOperator(
         task_id="end",
@@ -316,12 +297,4 @@ with DAG("lamisplus_client_radet_generation_dwh_v2",
     )
 
     # Define task dependencies
-    start >> update_period_table
-
-    # Process each batch sequentially
-    previous_batch = update_period_table
-    for batch_group in task_group_batches:
-        previous_batch >> batch_group
-        previous_batch = batch_group
-
-    previous_batch >> end
+    start >> update_period_table >> task_group_endpoints >> end
