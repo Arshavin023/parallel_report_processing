@@ -53,14 +53,14 @@ with DAG("lamisplus_previous_and_prepre_status",start_date=datetime.datetime(202
         previous_previous_status = PostgresOperator(
             task_id="previous_previous_status",
             postgres_conn_id="radet_conn",
-            sql="call expanded_radet.proc_previous_prep_status('2024Q3')",
+            sql="call expanded_radet.proc_previous_prepre_status('2024Q3')",
             autocommit=True
         )
         
         previous_status = PostgresOperator(
             task_id="previous_status",
             postgres_conn_id="radet_conn",
-            sql="call expanded_radet.proc_previous_prep_status('2024Q4')",
+            sql="call expanded_radet.proc_previous_prepre_status('2024Q4')",
             autocommit=True
         )
 		
