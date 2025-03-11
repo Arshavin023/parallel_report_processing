@@ -1,1 +1,1 @@
-This repository contains Python scripts automate data processing and migration from the lamisplus_staging_dwh (situated on the PRODUCTION FILE SERVER) database to the lamisplus_ods_dwh (situated on PRODUCTION DATA WAREHOUSE) database.
+This repository contains Airflow DAGs for ETL/ELT pipelines within and between databases across different servers.
