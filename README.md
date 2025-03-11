@@ -6,15 +6,8 @@ This repository contains Python scripts automate data processing and migration f
 - [Introduction](#introduction)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Process Overview](#process-overview)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Automation](#automation)
-- [Monitoring](#monitoring)
-- [File-Structure](#file-structure)
-- [Other-Supporting-Jobs](#other-supporting-jobs)
-- [Contributing](#contributing)  
-- [Improvements](#improvements)
+ -[Database Credentials] (configuration)
+ - [Launch-Airflow-Web-UI] (testting)
 
 
 ## Introduction <a name="introduction"></a>
