@@ -4,7 +4,6 @@ This project contains Airflow DAGS that automates extraction, transformation and
 
 # Table of Contents
 - [Introduction](#introduction)
-- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Database Credentials](#configuration)
 - [Launch-Airflow-Web-UI](#testting)
