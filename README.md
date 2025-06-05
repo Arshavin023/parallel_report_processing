@@ -38,3 +38,13 @@ Kindly refer to the Airflow Installation Guide provided in the repository
 
 - Navigate to your browser and launch http://public-IP:port
 - Login with Airflow credentials set during Airflow installation
+
+## License <a name="license"></a>
+- MIT License
+
+## Authors & Acknowledgements <a name="authors_and_acknowledgments"></a>
+- Uche Nnodim (https://github.com/Arshavin023)
+- ChukwuEmeka Ilozie
+- Peter Abiodon
+- Barnabas Tyav
+- Emmanuel Nnajiofor
