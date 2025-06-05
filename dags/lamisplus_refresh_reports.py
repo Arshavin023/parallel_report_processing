@@ -73,10 +73,10 @@ with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),sc
             autocommit=True
         )
         
-        upsert_client_verification_v2 = PostgresOperator(
-            task_id="upsert_client_verification_v2",
+        upsert_client_verification_v3 = PostgresOperator(
+            task_id="upsert_client_verification_v3",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_client_verification_v2()',
+            sql='call expanded_radet.proc_upsert_client_verification_v3()',
             autocommit=True
         )
 

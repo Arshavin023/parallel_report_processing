@@ -203,7 +203,7 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
     cur.execute("""SELECT datim_id, batch_id, file_name 
                 from stg_monitoring 
                 where table_name = '{}' 
-                AND json_rec_count > 0 
+                --AND json_rec_count > 0 
                 AND processed = 'N' 
                 AND load_time >= '2025-04-01' 
                 ORDER BY load_time ASC LIMIT 5000""".format(staging_table))
@@ -395,6 +395,12 @@ def process_prep_clinic():
                                          'syndromic_sti_screening': JSON().with_variant(JSONB, 'postgresql'), 'other_tests_done': JSON().with_variant(JSONB, 'postgresql'),
                                          'extra': JSON().with_variant(JSONB, 'postgresql'), 'urinalysis': JSON().with_variant(JSONB, 'postgresql'),}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
+
+def process_prep_regimen():
+    table_name = 'prep_regimen'
+    constraints = 'ods_datim_id, id'
+    #ods_setup_new(table_name, constraints)
+    process_stg_to_ods(table_name, constraints)
 
 def process_prep_enrollment():
     table_name = 'prep_enrollment'
@@ -664,6 +670,7 @@ if __name__ == '__main__':
     process_hts_pns_index_client_partner()
     process_patient_encounter()
     process_prep_clinic()
+    process_prep_regimen()
     process_prep_enrollment()
     process_prep_interruption()
     process_prep_eligibility()

@@ -42,9 +42,9 @@ with DAG("lamisplus_stg_to_ods", start_date=datetime(2025, 5, 26),
         task_id="hiv_eac_out_come",
         python_callable=lamisplus_funcs.process_hiv_eac_out_come)
         
-        #prep_clinic = PythonOperator(
-        #task_id="prep_clinic",
-        #python_callable=lamisplus_funcs.process_prep_clinic)
+        prep_regimen = PythonOperator(
+        task_id="prep_regimen",
+        python_callable=lamisplus_funcs.process_prep_regimen)
         
         prep_eligibility = PythonOperator(
         task_id="prep_eligibility",
