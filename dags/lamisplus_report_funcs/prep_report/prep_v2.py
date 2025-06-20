@@ -125,7 +125,7 @@ def generate_prep_report(**kwargs):
         raise ValueError("No periods provided for the report generation.")
     
     table_names = ["prep.prep_joined","prep.cte_baselineclinic",
-                   "prep.cte_current_pc","prep.cte_prepbiodata",
+                   "prep.cte_current_pc",
                    "prep.prep_monitoring"]
     
     ip_names = [
@@ -133,16 +133,15 @@ def generate_prep_report(**kwargs):
         'CARE 1','CARE 2'
                 ]
     
-    procedures = ["proc_currentpc","proc_baselineclinic","proc_prepbiodata"]
+    procedures = ["proc_currentpc","proc_baselineclinic"]
     
     group_datim_ids = [fetch_datim_ids(ip_name) for ip_name in ip_names]
     
     # Update period table
     for periodcode in periods:
-        update_prep_period_table(periodcode)
         run_truncate_for_ctes(table_names)
         for datim_ids in group_datim_ids:
-            generate_cte_concurrently(datim_ids, procedures, batch_size=25)
+            generate_cte_concurrently(datim_ids, procedures, batch_size=50)
         for ip_name in ip_names:
             run_final_prep(ip_name, periodcode)
 

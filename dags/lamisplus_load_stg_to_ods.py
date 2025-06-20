@@ -237,9 +237,12 @@ with DAG("lamisplus_stg_to_ods", start_date=datetime(2025, 5, 26),
         hts_client_referral = PythonOperator(
             task_id="hts_client_referral",
             python_callable=lamisplus_funcs.process_hts_client_referral)
-    
-    with TaskGroup(group_id='delete_archived_records') as delete_archived_records:
+
+        hivst = PythonOperator(
+            task_id="hivst",
+            python_callable=lamisplus_funcs.process_hivst)
         
+    with TaskGroup(group_id='delete_archived_records') as delete_archived_records:
         ods_base_application_codeset = PostgresOperator(
             task_id="ods_base_application_codeset",
             postgres_conn_id="lamisplus_conn",
@@ -455,6 +458,13 @@ with DAG("lamisplus_stg_to_ods", start_date=datetime(2025, 5, 26),
             postgres_conn_id="lamisplus_conn",
             sql="call public.proc_delete_archived_records_updated('hts_client_referral')",
             autocommit=True)
+        
+        ods_hivst = PostgresOperator(
+            task_id="ods_hivst",
+            postgres_conn_id="lamisplus_conn",
+            sql="call public.proc_delete_archived_records_updated('hivst')",
+            autocommit=True)
+        
     
     encrypt_hts_tables = PostgresOperator(
         task_id="encrypt_hts_tables",

@@ -590,12 +590,6 @@ def process_pmtct_infant_arv():
     constraints = 'id, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
-
-def process_hivst():
-    table_name = 'hivst'
-    constraints = ''
-    #ods_setup_new(table_name, constraints)
-    process_stg_to_ods(table_name, constraints)
     
 def process_pmtct_infant_pcr():
     table_name = 'pmtct_infant_pcr'
@@ -652,6 +646,15 @@ def process_hts_client_referral():
             'service_needed': JSON().with_variant(JSONB, 'postgresql'),}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
+def process_hivst():
+    table_name = 'hivst'
+    constraints = 'id, ods_datim_id'
+    dtype = {'other_test_kit_user_details': JSON().with_variant(JSONB, 'postgresql'),
+            'part_b': JSON().with_variant(JSONB, 'postgresql'),
+            'referral_information': JSON().with_variant(JSONB, 'postgresql'),
+            'test_kit_users': JSON().with_variant(JSONB, 'postgresql')}
+    process_stg_to_ods(table_name, constraints, dtype=dtype)
+
 if __name__ == '__main__':
     process_patient_person()
     process_case_manager()
@@ -706,3 +709,4 @@ if __name__ == '__main__':
     process_hiv_regimen_drug()
     process_hts_family_index_testing_tracker()
     process_hts_client_referral()
+    process_hivst()

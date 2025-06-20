@@ -168,9 +168,6 @@
 "dsd_devolvement","longitude","character varying",31,NULL
 "dsd_devolvement","dsd_outlet","character varying",32,NULL
 "dsd_devolvement","dsd_outlet_state","character varying",33,NULL
-<<<<<<< HEAD
-=======
-"table_name","column_name","data_type","ordinal_position","character_maximum_length"
 "hivst","patient_id","bigint",1,NULL
 "hivst","other_test_kit_user_details","jsonb",2,NULL
 "hivst","part_b","jsonb",3,NULL
@@ -198,7 +195,6 @@
 "hivst","modified_by","character varying",25,NULL
 "hivst","ods_load_time","character varying",26,NULL
 "hivst","ods_datim_id","character varying",27,NULL
->>>>>>> 25b777e (new)
 "hiv_art_clinical","reason","text",57,NULL
 "hiv_art_clinical","id","bigint",1,NULL
 "hiv_art_clinical","created_date","timestamp without time zone",2,NULL

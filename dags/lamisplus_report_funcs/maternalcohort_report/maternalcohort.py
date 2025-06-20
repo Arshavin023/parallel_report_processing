@@ -97,13 +97,8 @@ def generate_maternalcohort_report(**kwargs):
     
     table_names = ["maternalcohort.maternalcohort_joined",
                    "maternalcohort.maternalcohort_monitoring"]
-    
-    # periods = [
-    #     '2025W21'
-    #     ]
-    ip_names = ['ACE-1','ACE-2','ACE-3','ACE-4','ACE-5',
-                # 'ACE-6',
-                'CARE 1','CARE 2']
+
+    ip_names = ['ACE-1','ACE-2','ACE-3','ACE-4','ACE-5', 'CARE 1','CARE 2']
     
     group_datim_ids = [fetch_datim_ids(ip_name) for ip_name in ip_names]
 

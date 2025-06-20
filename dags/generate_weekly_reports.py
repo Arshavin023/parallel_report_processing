@@ -13,8 +13,8 @@ from lamisplus_funcs.airflow_api import trigger_dag
 from lamisplus_report_funcs.maternalcohort_report import maternalcohort
 from lamisplus_report_funcs.pmtcthts_report import pmtcthts
 from lamisplus_report_funcs.preplongitudinal_report import preplongitudinal
-from lamisplus_report_funcs.radet_report import pre_prepre, radet
-from lamisplus_report_funcs.prep_report import prep
+from lamisplus_report_funcs.radet_report import pre_prepre, radet_v2
+from lamisplus_report_funcs.prep_report import prep_v2
 from lamisplus_report_funcs.hts_report import hts
 from lamisplus_report_funcs.tb_report import tb
 from lamisplus_report_funcs.familypartnerindex_report  import familypartnerindex
@@ -58,7 +58,7 @@ def run_prep_report(**kwargs):
         raise ValueError("No 'periods' provided in DAG params.")
     if isinstance(periods, str):
         periods = [periods]
-    prep.generate_prep_report(periods=periods)
+    prep_v2.generate_prep_report(periods=periods)
 
 def run_familypartnerindex_report(**kwargs):
     periods = kwargs.get('params', {}).get('periods')
@@ -74,7 +74,7 @@ def run_radet_report(**kwargs):
         raise ValueError("No 'periods' provided in DAG params.")
     if isinstance(periods, str):
         periods = [periods]
-    radet.generate_radet_report(periods=periods)
+    radet_v2.generate_radet_report(periods=periods)
 
 def run_prepre_report(**kwargs):
     periods = kwargs.get('params', {}).get('periods')
@@ -157,7 +157,7 @@ with DAG("generate_weekly_reports", start_date=datetime(2025, 5, 18),
             provide_context=True,
         )
         prep_task = PythonOperator(
-            task_id="prep",
+            task_id="prep_v2",
             python_callable=run_prep_report,
             provide_context=True,
         )
