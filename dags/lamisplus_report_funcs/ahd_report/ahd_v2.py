@@ -137,39 +137,42 @@ def run_final_ahd(ip_name:str):
     except Exception as e:
         logger.error(f"Error occurred executing final_ahd for {ip_name}: {e}")
 
-if __name__ == '__main__':
+def run_final_ahd_for_ips(ip_names:list, periodcode:str):
+    [run_final_ahd(ip_name,periodcode) for ip_name in ip_names]
+
+def generate_ahd_report(**kwargs):
+    periods = kwargs.get('periods', [])
+    if not periods:
+        raise ValueError("No periods provided for the report generation.")
+    
     table_names = [
         "cte_ahd","cte_carecardcd4","cte_labcd4","cte_lastcrytococalantigen",
         "cte_lastcsfcrag","cte_lastlflam","cte_lastserumcrag","cte_lastvisitect",
         "cte_sample_collection_date","cte_current_status","cte_cd4type","cte_eac",
         "cte_lastoneyear_vl_result","cte_current_vl_result","cte_lastcd4",
         "ahd_monitoring","ahd_joined"
-        #,"cte_previous"
-        
-    ]
-    periods = [
-        # '2025Q2'
-        # ,
-        '2025W14','2025W15','2025W16',
         ]
+    
     procedures = [
         "proc_ahd","proc_carecardcd4","proc_labcd4","proc_lastcrytococalantigen",
         "proc_lastcsfcrag","proc_lastlflam","proc_lastserumcrag","proc_lastvisitect",
         "proc_sample_collection_date","proc_current_status","proc_cd4type","proc_eac",
         "proc_lastoneyear_vl_result","proc_current_vl_result"
-        #,"proc_previous"
-        
-    ]
+        # proc_previous
+                  ]
+
     ip_names = [
-        'ACE-1','ACE-2','ACE-3','ACE-4','ACE-5','ACE-6','CARE 1','CARE 2'
+        'ACE-1','ACE-2','ACE-3','ACE-4','ACE-5',
+        'CARE 1', 'CARE 2'
                 ]
+    
     group_ip_datims = [fetch_datim_ids(ip) for ip in ip_names]
 
     for periodcode in periods:
-        update_ahd_period_table(periodcode)
         run_truncate_for_ctes(table_names)
         for datim_ids in group_ip_datims:
-            generate_cte_concurrently(datim_ids, procedures)
-        for ip_name in ip_names:
-            run_final_ahd(ip_name)
+            generate_cte_concurrently(datim_ids, procedures, batch_size=50)
+        run_final_ahd_for_ips(ip_names,periodcode)
 
+if __name__ == '__main__':
+    generate_ahd_report()
