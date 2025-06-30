@@ -101,12 +101,12 @@ default_args = {
     "retry_delay": timedelta(minutes=5)
 }
 
-with DAG("generate_weekly_reports", start_date=datetime(2025, 5, 18),
+with DAG("generate_periodic_reports", start_date=datetime(2025, 5, 18),
          schedule_interval=None,
          default_args=default_args,catchup=False,
          params={"periods": None},
          max_active_runs=1,
-         tags=["reports", "weekly", "lamisplus"]
+         tags=["reports", "periodic", "lamisplus"]
          ) as dag:
 
     start = BashOperator(
