@@ -14,7 +14,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5)
 }
 
-with DAG("lamis_stg_to_ods_biometric_template",start_date=datetime(2024, 10, 24),schedule_interval=timedelta(hours=2),
+with DAG("lamis_stg_to_ods_biometric_template",start_date=datetime(2024, 10, 24),schedule_interval=timedelta(hours=6),
             default_args=default_args,catchup=True,max_active_runs=1,) as dag:
 
     start = BashOperator(

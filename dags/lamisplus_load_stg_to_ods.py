@@ -25,7 +25,7 @@ default_args = {
 
 
 with DAG("lamisplus_stg_to_ods", start_date=datetime(2025, 5, 26), 
-         schedule_interval=timedelta(hours=1), default_args=default_args, 
+         schedule_interval=timedelta(hours=2), default_args=default_args, 
          catchup=False, max_active_runs=1) as dag:
 
     start = BashOperator(
