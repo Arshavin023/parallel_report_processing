@@ -15,21 +15,26 @@ import threading
 import schedule
 from database_connection.db_connect import connect_to_db
 from src import logger
+from functools import partial
 
-dwh_conn = connect_to_db.connect('lamisplus_ods_dwh')[0]
+# Create a connection and engine once for global use, but be cautious with multithreading
+# It's better to create connections within each function/thread
+# as done in the corrected code. The original global connection setup is problematic.
+dwh_conn, dwh_engine = connect_to_db.connect('lamisplus_ods_dwh')
 cur2 = dwh_conn.cursor()
-dwh_engine = connect_to_db.connect('lamisplus_ods_dwh')[1]
 print(dwh_conn)
 pd.set_option('display.max_columns', None)
 
 # Function to fetch datim_ids from the database
 def fetch_datim_ids(ip_name):
-    fetch_datims_query = """SELECT datim_id FROM central_partner_mapping 
-                            WHERE ip_name=%s"""
-    cur2.execute(fetch_datims_query,(ip_name,))
-    datims = cur2.fetchall()
-    datim_ids = [record[0] for record in datims]  # Extract datim_id from the records
-    return datim_ids
+    with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
+        with conn.cursor() as cur:
+            fetch_datims_query = """SELECT datim_id FROM central_partner_mapping 
+                                    WHERE ip_name=%s"""
+            cur.execute(fetch_datims_query,(ip_name,))
+            datims = cur.fetchall()
+            datim_ids = [record[0] for record in datims]
+            return datim_ids
 
 def update_expanded_radet_period_table(periodcode):
     try:
@@ -41,110 +46,92 @@ def update_expanded_radet_period_table(periodcode):
     except Exception as e:
         logger.error(f"Operational error occurred while updating period {periodcode}: {e}")
 
-def truncate_table(table_name):
+# Corrected function to truncate tables
+def truncate_table(table_name, periodcode):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
+                if 'W' in periodcode:
+                    cur.execute(f"TRUNCATE expanded_radet.{table_name} RESTART IDENTITY")
+                    conn.commit()
+                    logger.info(f"Table expanded_radet.{table_name} truncated successfully.")
+                
+                # Truncate expanded_radet_client table
                 cur.execute(f"TRUNCATE expanded_radet_client.{table_name}")
                 conn.commit()
-                logger.info(f"Table {table_name} truncated successfully.")
+                logger.info(f"Table expanded_radet_client.{table_name} truncated successfully.")
     except Exception as e:
         logger.error(f"Operational error occurred while truncating {table_name}: {e}")
 
-def truncate_generic_table(table_name):
-    try:
-        with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
-            with conn.cursor() as cur:
-                cur.execute(f"TRUNCATE {table_name}")
-                conn.commit()
-                logger.info(f"Table {table_name} truncated successfully.")
-    except Exception as e:
-        logger.error(f"Operational error occurred while truncating {table_name}: {e}")
-
-def run_truncate_for_ctes(table_names):
+# Corrected function to run truncates concurrently
+def run_truncate_for_ctes(table_names, periodcode):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-       executor.map(truncate_table, table_names)
+        # Use functools.partial to fix the periodcode argument
+        truncate_func = partial(truncate_table, periodcode=periodcode)
+        executor.map(truncate_func, table_names)
 
-
-def run_single_procedure(procedure, datim):
+def run_single_procedure(procedure, datim, periodcode):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
-                # cur.execute("CALL %s(%s)", (procedure, datim))
+                if 'W' in periodcode:
+                    cur.execute(f"CALL expanded_radet.{procedure}('{datim}')")
+                    conn.commit()
+                    logger.info(f"Successfully executed expanded_radet.{procedure} for {datim} for period {periodcode}.")
+                
                 cur.execute(f"CALL expanded_radet_client.{procedure}('{datim}')")
                 conn.commit()
-                logger.info(f"Successfully executed {procedure} for {datim}")
+                logger.info(f"Successfully executed expanded_radet_client.{procedure} for {datim} for period {periodcode}.")
     except Exception as e:
         logger.error(f"Error occurred executing {procedure} for {datim}: {e}")
 
-def run_procedures_for_datim(datim, procedures):
+def run_procedures_for_datim(datim, procedures, periodcode):
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(run_single_procedure, procedure, datim)
+            executor.submit(run_single_procedure, procedure, datim, periodcode)
             for procedure in procedures
         ]
-        
-        # Wait for all futures to complete and handle exceptions if necessary
         for future in concurrent.futures.as_completed(futures):
-            future.result()  # This will raise any exceptions that were caught during the procedure execution
+            future.result()
 
-# Function to run `proc_radet_joined_insert` for a single `datim_id`
-def run_proc_radet_joined_insert(datim):
-    try:
-        with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
-            with conn.cursor() as cur:
-                cur.execute("CALL expanded_radet_client.proc_radet_joined_insert_v2(%s)",(datim,))
-                conn.commit()
-                logger.info(f"Successfully executed radet_joined_insert for {datim}")
-    except Exception as e:
-        logger.error(f"Error occurred executing radet_joined_insert for {datim}: {e}")
-
-def generate_cte_concurrently(datim_ids: list, procedures: list, batch_size=5):
+def generate_cte_concurrently(datim_ids: list, procedures: list, periodcode: str, batch_size=5):
+    # This function now correctly passes the periodcode
     def process_datim(datim_id):
-        # Run all 32 procedures for a single facility
-        run_procedures_for_datim(datim_id, procedures)
-    # Split datim_ids into batches of size batch_size
+        run_procedures_for_datim(datim_id, procedures, periodcode)
+
     batches = [datim_ids[i:i + batch_size] for i in range(0, len(datim_ids), batch_size)]
 
-    # Process each batch sequentially
     for batch in batches:
-        # process_batch(batch)
         with ThreadPoolExecutor() as executor:
             executor.map(process_datim, batch)
         logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
-    
-def run_expanded_radet_weekly(ip_name:str):
-    try:
-        with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
-            with conn.cursor() as cur:
-                cur.execute(f"CALL expanded_radet.proc_expanded_radet_weekly('{ip_name}')")
-                logger.info(f"Successfully executed expanded_radet_weekly for {ip_name}")
-    except Exception as e:
-        logger.error(f"Error occurred executing expanded_radet_weekly for {ip_name}: {e}")
 
-def run_expanded_radet_weekly_for_ips(ip_names:list):
-    [run_expanded_radet_weekly(ip_name) for ip_name in ip_names]
-
-def generate_pre_prepre_report(**kwargs):
+def process_pre_prepre_status(**kwargs):
     periods = kwargs.get('periods', [])
     if not periods:
         raise ValueError("No periods provided for the report generation.")
-    table_names = ["cte_previous", "cte_previous_previous"]
-
+    
+    table_names = ["cte_previous", "cte_previous_previous", "expanded_radet_monitoring"]
     procedures = ["proc_previous", "proc_previous_previous"]
-
     ip_names = [
-                'ACE-1','ACE-2','ACE-3','ACE-4','ACE-5',
-                'CARE 1', 'CARE 2'
+                'ACE-1', 
+                'ACE-2', 
+                'ACE-3', 
+                'ACE-4', 
+                'ACE-5', 
+                'CARE 1', 
+                'CARE 2'
                 ]
-                
     group_ip_datims = [fetch_datim_ids(ip) for ip in ip_names]
-
-    # run_truncate_for_ctes(table_names)
+    
     for periodcode in periods:
+        run_truncate_for_ctes(table_names, periodcode)
         for datim_ids in group_ip_datims:
-            generate_cte_concurrently(datim_ids, procedures, 50)
+            # Correctly pass periodcode to the function
+            generate_cte_concurrently(datim_ids, procedures, periodcode, 40)
 
 if __name__ == '__main__':
-    generate_pre_prepre_report()
-    
+    # You need to provide a period list to the function call.
+    # Example: process_pre_prepre_status(periods=['2023W1', '2023W2'])
+    # Or, for a single period:
+    process_pre_prepre_status()

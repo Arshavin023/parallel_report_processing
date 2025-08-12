@@ -14,7 +14,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5)
 }
 
-with DAG("lamis_stg_to_ods_prep_clinic",start_date=datetime(2024, 10, 25),schedule_interval=timedelta(hours=2),
+with DAG("lamis_stg_to_ods_prep_clinic",start_date=datetime(2024, 10, 25),schedule_interval=timedelta(hours=1),
             default_args=default_args,catchup=True,max_active_runs=1,) as dag:
 
     start = BashOperator(

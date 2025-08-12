@@ -97,11 +97,11 @@ def generate_cte_concurrently(datim_ids:list, batch_size=25):
             executor.map(run_hts_joined, batch)
         logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
 
-    for i in range(0, len(datim_ids), batch_size):
-        batch = datim_ids[i:i + batch_size]
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.map(run_hts_mapping, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+    #for i in range(0, len(datim_ids), batch_size):
+    #    batch = datim_ids[i:i + batch_size]
+    #    with concurrent.futures.ThreadPoolExecutor() as executor:
+    #        executor.map(run_hts_mapping, batch)
+    #    logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
 
 def generate_hts_report(**kwargs):
     periods = kwargs.get('periods', [])

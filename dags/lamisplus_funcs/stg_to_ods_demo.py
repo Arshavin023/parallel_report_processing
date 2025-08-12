@@ -15,7 +15,7 @@ from psycopg2.extras import execute_values
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, message=".*pandas only supports SQLAlchemy.*")
 
-def read_db_config(filename='/home/lamisplus/database_credentials/config.ini', section='database'):
+def read_db_config(filename='/home/lamisplus/database_credentials/demo_config.ini', section='database'):
     # Create a parser
     parser = configparser.ConfigParser()
     # Read the configuration file

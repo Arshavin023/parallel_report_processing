@@ -14,20 +14,20 @@ default_args = {
     "retry_delay": timedelta(minutes=5)
 }
 
-with DAG("lamis_stg_to_ods_biometric_template",start_date=datetime(2024, 10, 24),schedule_interval=timedelta(minutes=15),
+with DAG("demo_lamis_stg_to_ods_prep_clinic",start_date=datetime(2024, 10, 25),schedule_interval=timedelta(hours=1),
             default_args=default_args,catchup=True,max_active_runs=1,) as dag:
 
     start = BashOperator(
         task_id="start",
         bash_command="echo start"
-    )
+    ) 
     
     with TaskGroup(group_id='upstream_tasks') as upstream_tasks:
     
-        biometric_template = PostgresOperator(
-            task_id="biometric_template",
-            postgres_conn_id="biometric_conn",
-            sql="call public.proc_stream_biometric_template('stg_biometric')",
+        stream_prep_clinic = PostgresOperator(
+            task_id="stream_prep_clinic",
+            postgres_conn_id="demo_lamisplus_conn",
+            sql="call public.proc_stream_prep_clinic('stg_prep_clinic')",
             autocommit=True)
         
        

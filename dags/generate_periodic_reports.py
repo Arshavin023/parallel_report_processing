@@ -13,7 +13,7 @@ from lamisplus_funcs.airflow_api import trigger_dag
 from lamisplus_report_funcs.maternalcohort_report import maternalcohort
 from lamisplus_report_funcs.pmtcthts_report import pmtcthts
 from lamisplus_report_funcs.preplongitudinal_report import preplongitudinal
-from lamisplus_report_funcs.radet_report import pre_prepre, radet_v2
+from lamisplus_report_funcs.radet_report import pre_prepre, radet_v3
 from lamisplus_report_funcs.prep_report import prep_v2
 from lamisplus_report_funcs.hts_report import hts
 from lamisplus_report_funcs.tb_report import tb
@@ -77,7 +77,7 @@ def run_radet_report(**kwargs):
         raise ValueError("No 'periods' provided in DAG params.")
     if isinstance(periods, str):
         periods = [periods]
-    radet_v2.generate_radet_report(periods=periods)
+    radet_v3.generate_radet_report(periods=periods)
 
 def run_prepre_report(**kwargs):
     periods = kwargs.get('params', {}).get('periods')
@@ -155,11 +155,11 @@ with DAG("generate_periodic_reports", start_date=datetime(2025, 5, 18),
         autocommit = True
     )
 
-    radet_task = PythonOperator(
-        task_id="radet",
-        python_callable=run_radet_report,
-        provide_context=True,
-    )
+    #radet_task = PythonOperator(
+    #    task_id="radet",
+    #    python_callable=run_radet_report,
+    #    provide_context=True,
+    #)
     
     #with TaskGroup(group_id='generate_first_report_batch') as generate_first_report_batch:
      #   maternalcohort_task = PythonOperator(
@@ -196,9 +196,9 @@ with DAG("generate_periodic_reports", start_date=datetime(2025, 5, 18),
    #     )
     
     with TaskGroup(group_id='generate_third_report_batch') as generate_third_report_batch:
-        ahd_task = PythonOperator(
-            task_id="ahd_v2",
-            python_callable=run_ahd_report,
+        familypartnerindex_task = PythonOperator(
+            task_id="familypartnerindex",
+            python_callable=run_familypartnerindex_report,
             provide_context=True,
         )
     #    eac_task = PythonOperator(
@@ -224,5 +224,4 @@ with DAG("generate_periodic_reports", start_date=datetime(2025, 5, 18),
         bash_command="echo end")
 
     # Define the task dependencies
-    start >> update_prep_period >> update_radet_period >> radet_task >> \
-    generate_third_report_batch >> end
+    start >> update_prep_period >> update_radet_period >> generate_third_report_batch >> end
