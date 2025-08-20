@@ -14,15 +14,13 @@ import time
 import threading
 import schedule
 from database_connection.db_connect import connect_to_db
+from database_connection.db_pool import engine  # Assumes this module exists and works
 from src import logger
 from functools import partial
 
 # Create a connection and engine once for global use, but be cautious with multithreading
 # It's better to create connections within each function/thread
 # as done in the corrected code. The original global connection setup is problematic.
-dwh_conn, dwh_engine = connect_to_db.connect('lamisplus_ods_dwh')
-cur2 = dwh_conn.cursor()
-print(dwh_conn)
 pd.set_option('display.max_columns', None)
 
 # Function to fetch datim_ids from the database
@@ -57,30 +55,29 @@ def truncate_table(table_name, periodcode):
                     logger.info(f"Table expanded_radet.{table_name} truncated successfully.")
                 
                 # Truncate expanded_radet_client table
-                cur.execute(f"TRUNCATE expanded_radet_client.{table_name}")
-                conn.commit()
-                logger.info(f"Table expanded_radet_client.{table_name} truncated successfully.")
+                else:
+                    cur.execute(f"TRUNCATE expanded_radet_client.{table_name}")
+                    conn.commit()
+                    logger.info(f"Table expanded_radet_client.{table_name} truncated successfully.")
     except Exception as e:
         logger.error(f"Operational error occurred while truncating {table_name}: {e}")
 
 # Corrected function to run truncates concurrently
 def run_truncate_for_ctes(table_names, periodcode):
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         # Use functools.partial to fix the periodcode argument
         truncate_func = partial(truncate_table, periodcode=periodcode)
         executor.map(truncate_func, table_names)
 
 def run_single_procedure(procedure, datim, periodcode):
     try:
-        with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
-            with conn.cursor() as cur:
-                if 'W' in periodcode:
-                    cur.execute(f"CALL expanded_radet.{procedure}('{datim}')")
-                    conn.commit()
-                    logger.info(f"Successfully executed expanded_radet.{procedure} for {datim} for period {periodcode}.")
-                
-                cur.execute(f"CALL expanded_radet_client.{procedure}('{datim}')")
-                conn.commit()
+        with engine.connect() as conn:
+            conn = conn.execution_options(isolation_level="AUTOCOMMIT")
+            if 'W' in periodcode:
+                conn.execute(f"CALL expanded_radet.{procedure}('{datim}')")
+                logger.info(f"Successfully executed expanded_radet.{procedure} for {datim} for period {periodcode}.")
+            else:
+                conn.execute(f"CALL expanded_radet_client.{procedure}('{datim}')")
                 logger.info(f"Successfully executed expanded_radet_client.{procedure} for {datim} for period {periodcode}.")
     except Exception as e:
         logger.error(f"Error occurred executing {procedure} for {datim}: {e}")
@@ -94,17 +91,14 @@ def run_procedures_for_datim(datim, procedures, periodcode):
         for future in concurrent.futures.as_completed(futures):
             future.result()
 
-def generate_cte_concurrently(datim_ids: list, procedures: list, periodcode: str, batch_size=5):
-    # This function now correctly passes the periodcode
-    def process_datim(datim_id):
-        run_procedures_for_datim(datim_id, procedures, periodcode)
-
-    batches = [datim_ids[i:i + batch_size] for i in range(0, len(datim_ids), batch_size)]
-
-    for batch in batches:
-        with ThreadPoolExecutor() as executor:
-            executor.map(process_datim, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+def generate_cte_concurrently(datim_ids: list, procedures: list, periodcode: str, max_workers:int):
+        
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:  # Use a single thread pool for all tasks
+        # Step 1: Run procedures for each DATIM ID
+        logger.info(f"Starting to generate previous and previous-previous CTEs for {len(datim_ids)} facilities.")
+        tasks_cte = [(datim_id, procedures, periodcode) for datim_id in datim_ids]
+        executor.map(lambda args: run_procedures_for_datim(*args), tasks_cte)
+        logger.info(f"Completed generation of previous and previous-previous CTEs for {len(datim_ids)} facilities.")
 
 def process_pre_prepre_status(**kwargs):
     periods = kwargs.get('periods', [])
@@ -117,21 +111,18 @@ def process_pre_prepre_status(**kwargs):
                 'ACE-1', 
                 'ACE-2', 
                 'ACE-3', 
-                'ACE-4', 
-                'ACE-5', 
+                'ACE-4',  
                 'CARE 1', 
-                'CARE 2'
+                'CARE 2',
+                'ACE-5'
                 ]
     group_ip_datims = [fetch_datim_ids(ip) for ip in ip_names]
     
     for periodcode in periods:
-        run_truncate_for_ctes(table_names, periodcode)
+        # run_truncate_for_ctes(table_names, periodcode)
         for datim_ids in group_ip_datims:
             # Correctly pass periodcode to the function
-            generate_cte_concurrently(datim_ids, procedures, periodcode, 40)
+            generate_cte_concurrently(datim_ids, procedures, periodcode, 50)
 
 if __name__ == '__main__':
-    # You need to provide a period list to the function call.
-    # Example: process_pre_prepre_status(periods=['2023W1', '2023W2'])
-    # Or, for a single period:
     process_pre_prepre_status()
