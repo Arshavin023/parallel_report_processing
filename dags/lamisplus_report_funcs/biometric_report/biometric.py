@@ -65,12 +65,18 @@ def run_biometric(datim):
         logger.error(f"Operational error occurred while processing {datim} for procedure: {e}")
 
 #  Function to generate CTE concurrently
-def generate_cte_concurrently(datim_ids:list, batch_size:int):
-    for i in range(0, len(datim_ids), batch_size):
-        batch = datim_ids[i:i + batch_size]
-        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
-            executor.map(run_biometric, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+#def generate_cte_concurrently(datim_ids:list, batch_size:int):
+#    for i in range(0, len(datim_ids), batch_size):
+#        batch = datim_ids[i:i + batch_size]
+#        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
+#            executor.map(run_biometric, batch)
+#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+
+def generate_cte_concurrently(datim_ids:list, max_workers:int):
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Step 2: Run the final insert procedures
+        logger.info(f"Starting biometric for {len(datim_ids)} facilities.")
+        executor.map(run_biometric, datim_ids)
 
 def run_final_biometric(ip_name, period):
     try:
@@ -105,7 +111,7 @@ def generate_biometric_report(**kwargs):
     for periodcode in periods:
         run_truncate_for_ctes(table_names)
         for datim_ids in group_ip_datims:
-            generate_cte_concurrently(datim_ids, batch_size=15)
+            generate_cte_concurrently(datim_ids, 15)
         for ip_name in ip_names:
             run_final_biometric(ip_name, periodcode)
 

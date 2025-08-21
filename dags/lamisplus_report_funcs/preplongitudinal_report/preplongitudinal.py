@@ -77,13 +77,22 @@ def run_final_preplongitudinal(ip_name, periodcode):
         logger.error(f"Operational error occurred while processing for {periodcode} for {ip_name} procedure: {e}")
 
 #  Function to generate CTE concurrently
-def generate_cte_concurrently(datim_ids:list, batch_size:int):
+#def generate_cte_concurrently(datim_ids:list, batch_size:int):
     # After all initial procedures are completed, run `proc_radet_joined_insert` for each `datim_id`
-    for i in range(0, len(datim_ids), batch_size):
-        batch = datim_ids[i:i + batch_size]
-        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
-            executor.map(run_single_procedure, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+#    for i in range(0, len(datim_ids), batch_size):
+#        batch = datim_ids[i:i + batch_size]
+#        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
+#            executor.map(run_single_procedure, batch)
+#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+
+#  Function to generate CTE concurrently
+#  Function to generate CTE concurrently
+def generate_cte_concurrently(datim_ids:list, max_workers:int):
+    logger.info(f"Starting final joined insert for {len(datim_ids)} facilities.")
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Step 2: Run the final insert procedures
+        executor.map(run_single_procedure, datim_ids)
+    logger.info(f"All procedures for CTE generation and final insert completed for {datim_ids}")
 
 def generate_preplongitudinal_report(**kwargs):
     periods = kwargs.get('periods', [])
@@ -103,7 +112,7 @@ def generate_preplongitudinal_report(**kwargs):
     for periodcode in periods:
         run_truncate_for_ctes(table_names)
         for datim_ids in group_datim_ids:
-            generate_cte_concurrently(datim_ids, batch_size=15)
+            generate_cte_concurrently(datim_ids, 30)
         for ip_name in ip_names:
             run_final_preplongitudinal(ip_name, periodcode)
 

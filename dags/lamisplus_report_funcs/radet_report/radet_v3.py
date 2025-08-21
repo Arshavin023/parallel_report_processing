@@ -18,8 +18,6 @@ from database_connection.db_pool import engine  # Assumes this module exists and
 from src import logger
 from functools import partial
 
-# NOTE: Removed the global dwh_conn and cur2.
-# Connections should always be managed inside the functions to be thread-safe.
 pd.set_option('display.max_columns', None)
 
 # Function to fetch datim_ids from the database
@@ -96,11 +94,14 @@ def run_procedures_for_datim(datim, procedures, periodcode):
             future.result()
 
 # Function to run `proc_radet_joined_insert` for a single `datim_id`
-def run_proc_radet_joined_insert(datim):
+def run_proc_radet_joined_insert(datim, periodcode):
     try:
         with engine.connect() as conn:
             conn = conn.execution_options(isolation_level="AUTOCOMMIT")
-            conn.execute(text("CALL expanded_radet_client.proc_radet_joined_insert_v2(:datim_id)"), {"datim_id": datim})
+            if 'Q' in periodcode:
+                conn.execute(text("CALL expanded_radet_client.proc_radet_joined_insert_quartely(:datim_id)"), {"datim_id": datim})
+            else:
+                conn.execute(text("CALL expanded_radet_client.proc_radet_joined_insert_weekly(:datim_id)"), {"datim_id": datim})
             logger.info(f"Successfully executed radet_joined_insert for {datim}")
     except Exception as e:
         logger.error(f"Error occurred executing radet_joined_insert for {datim}: {e}")
@@ -111,11 +112,12 @@ def generate_cte_concurrently(datim_ids: list, procedures: list, periodcode: str
         logger.info(f"Starting to generate CTEs for {len(datim_ids)} facilities.")
         tasks_cte = [(datim_id, procedures, periodcode) for datim_id in datim_ids]
         executor.map(lambda args: run_procedures_for_datim(*args), tasks_cte)
-        
+    
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Step 2: Run the final insert procedures
         logger.info(f"Starting final joined insert for {len(datim_ids)} facilities.")
-        executor.map(run_proc_radet_joined_insert, datim_ids)
+        tasks_cte = [(datim_id, periodcode) for datim_id in datim_ids]
+        executor.map(lambda args: run_proc_radet_joined_insert(*args), tasks_cte)
 
 def run_expanded_radet_weekly(ip_name: str, periodcode: str):
     try:
@@ -176,7 +178,6 @@ def generate_radet_report(**kwargs):
             if datim_ids:
                 logger.info(f"Processing IP: {ip} with {len(datim_ids)} facilities.")
                 generate_cte_concurrently(datim_ids, procedures, periodcode, 15) # Fixed arguments
-        
         run_expanded_radet_weekly_for_ips(ip_names, periodcode)
 
 if __name__ == '__main__':

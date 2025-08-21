@@ -98,7 +98,7 @@ def generate_cte_concurrently(datim_ids: list, procedures: list, periodcode: str
         logger.info(f"Starting to generate previous and previous-previous CTEs for {len(datim_ids)} facilities.")
         tasks_cte = [(datim_id, procedures, periodcode) for datim_id in datim_ids]
         executor.map(lambda args: run_procedures_for_datim(*args), tasks_cte)
-        logger.info(f"Completed generation of previous and previous-previous CTEs for {len(datim_ids)} facilities.")
+        #logger.info(f"Completed generation of previous and previous-previous CTEs for {len(datim_ids)} facilities.")
 
 def process_pre_prepre_status(**kwargs):
     periods = kwargs.get('periods', [])
@@ -119,7 +119,7 @@ def process_pre_prepre_status(**kwargs):
     group_ip_datims = [fetch_datim_ids(ip) for ip in ip_names]
     
     for periodcode in periods:
-        # run_truncate_for_ctes(table_names, periodcode)
+        run_truncate_for_ctes(table_names, periodcode)
         for datim_ids in group_ip_datims:
             # Correctly pass periodcode to the function
             generate_cte_concurrently(datim_ids, procedures, periodcode, 50)

@@ -121,39 +121,60 @@ def run_proc_eac_joined(datim):
     except Exception as e:
         logger.error(f"Error occurred executing eac_joined for {datim}: {e}")
 
-def generate_cte_concurrently(datim_ids: list, procedures: list, batch_size:int):
+#def generate_cte_concurrently(datim_ids: list, procedures: list, batch_size:int):
+#    for i in range(0, len(datim_ids), batch_size):
+#        batch = datim_ids[i:i + batch_size]
+#        with concurrent.futures.ThreadPoolExecutor() as executor:
+#            executor.map(run_proc_current_eac, batch)
+#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
 
-    for i in range(0, len(datim_ids), batch_size):
-        batch = datim_ids[i:i + batch_size]
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.map(run_proc_current_eac, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
-
-    def process_datim(datim_id):
+#    def process_datim(datim_id):
         # Run all 32 procedures for a single facility
-        run_procedures_for_datim(datim_id, procedures)
+#        run_procedures_for_datim(datim_id, procedures)
     # Split datim_ids into batches of size batch_size
-    batches = [datim_ids[i:i + batch_size] for i in range(0, len(datim_ids), batch_size)]
+#    batches = [datim_ids[i:i + batch_size] for i in range(0, len(datim_ids), batch_size)]
 
     # Process each batch sequentially
-    for batch in batches:
+#    for batch in batches:
         # process_batch(batch)
-        with ThreadPoolExecutor(max_workers=batch_size) as executor:
-            executor.map(process_datim, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+#        with ThreadPoolExecutor(max_workers=batch_size) as executor:
+#            executor.map(process_datim, batch)
+#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
 
-    for i in range(0, len(datim_ids), batch_size):
-        batch = datim_ids[i:i + batch_size]
-        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
-            executor.map(run_proc_vlunsuppressed, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+#    for i in range(0, len(datim_ids), batch_size):
+#        batch = datim_ids[i:i + batch_size]
+#        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
+#            executor.map(run_proc_vlunsuppressed, batch)
+#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
 
-    for i in range(0, len(datim_ids), batch_size):
-        batch = datim_ids[i:i + batch_size]
-        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
-            executor.map(run_proc_eac_joined, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
-    
+#    for i in range(0, len(datim_ids), batch_size):
+#        batch = datim_ids[i:i + batch_size]
+#        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
+#            executor.map(run_proc_eac_joined, batch)
+#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+
+def generate_cte_concurrently(datim_ids: list, procedures: list, max_workers:int):
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Step 2: Run the final insert procedures
+        logger.info(f"Starting current_eac for {len(datim_ids)} facilities.")
+        executor.map(run_proc_current_eac, datim_ids)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:  # Use a single thread pool for all tasks
+        logger.info(f"Starting to generate CTEs for {len(datim_ids)} facilities.")
+        # Step 1: Run procedures for each DATIM ID
+        tasks_cte = [(datim_id, procedures) for datim_id in datim_ids]
+        executor.map(lambda args: run_procedures_for_datim(*args), tasks_cte)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Step 2: Run the final insert procedures
+        logger.info(f"Starting vlunsuppressed for {len(datim_ids)} facilities.")
+        executor.map(run_proc_vlunsuppressed, datim_ids)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Step 2: Run the final insert procedures
+        logger.info(f"Starting final joined insert for {len(datim_ids)} facilities.")
+        executor.map(run_proc_eac_joined, datim_ids)
+
 def run_final_eac(ip_name:str, periodcode:str):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
@@ -198,7 +219,7 @@ def generate_eac_report(**kwargs):
     for periodcode in periods:
         run_truncate_for_ctes(table_names)
         for datim_ids in group_ip_datims:
-            generate_cte_concurrently(datim_ids, procedures, batch_size=5)
+            generate_cte_concurrently(datim_ids, procedures, 10)
         run_final_eac_for_ips(ip_names,periodcode)
 
 if __name__ == '__main__':

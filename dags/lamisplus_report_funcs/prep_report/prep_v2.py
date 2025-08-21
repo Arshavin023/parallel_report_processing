@@ -89,25 +89,39 @@ def run_proc_prep_joined_insert(datim):
     except Exception as e:
         logger.error(f"Error occurred executing prep_joined_insert for {datim}: {e}")
 
-def generate_cte_concurrently(datim_ids: list, procedures: list, batch_size=5):
-    def process_datim(datim_id):
+#def generate_cte_concurrently(datim_ids: list, procedures: list, batch_size=5):
+#    def process_datim(datim_id):
         # Run all 32 procedures for a single facility
-        run_procedures_for_datim(datim_id, procedures)
+#        run_procedures_for_datim(datim_id, procedures)
     # Split datim_ids into batches of size batch_size
-    batches = [datim_ids[i:i + batch_size] for i in range(0, len(datim_ids), batch_size)]
+#    batches = [datim_ids[i:i + batch_size] for i in range(0, len(datim_ids), batch_size)]
 
     # Process each batch sequentially
-    for batch in batches:
+#    for batch in batches:
         # process_batch(batch)
-        with ThreadPoolExecutor(max_workers=batch_size) as executor:
-            executor.map(process_datim, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+#        with ThreadPoolExecutor(max_workers=batch_size) as executor:
+#            executor.map(process_datim, batch)
+#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
 
-    for i in range(0, len(datim_ids), 25):
-        batch = datim_ids[i:i + 25]
-        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
-            executor.map(run_proc_prep_joined_insert, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+#    for i in range(0, len(datim_ids), 25):
+#        batch = datim_ids[i:i + 25]
+#        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
+#            executor.map(run_proc_prep_joined_insert, batch)
+#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+
+def generate_cte_concurrently(datim_ids: list, procedures: list, max_workers:int):
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:  # Use a single thread pool for all tasks
+        logger.info(f"Starting to generate CTEs for {len(datim_ids)} facilities.")
+        # Step 1: Run procedures for each DATIM ID
+        tasks_cte = [(datim_id, procedures) for datim_id in datim_ids]
+        executor.map(lambda args: run_procedures_for_datim(*args), tasks_cte)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Step 2: Run the final insert procedures
+        logger.info(f"Starting final joined insert for {len(datim_ids)} facilities.")
+        executor.map(run_proc_prep_joined_insert, datim_ids)
+
+    logger.info(f"All procedures for CTE generation and final insert completed for {datim_ids}")
 
 def run_final_prep(ip_name, periodcode:str):
     try:
@@ -141,7 +155,7 @@ def generate_prep_report(**kwargs):
     for periodcode in periods:
         run_truncate_for_ctes(table_names)
         for datim_ids in group_datim_ids:
-            generate_cte_concurrently(datim_ids, procedures, batch_size=15)
+            generate_cte_concurrently(datim_ids, procedures, batch_size=30)
         for ip_name in ip_names:
             run_final_prep(ip_name, periodcode)
 
