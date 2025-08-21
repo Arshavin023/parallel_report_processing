@@ -137,7 +137,7 @@ def generate_cte_concurrently(datim_ids: list, procedures: list, max_workers:int
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Step 2: Run the final insert procedures
-        logger.info(f"Starting final joined insert for {len(datim_ids)} facilities.")
+        logger.info(f"Starting proc_lastcd4 execution {len(datim_ids)} facilities.")
         executor.map(run_proc_lastcd4, datim_ids)
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:

@@ -92,7 +92,7 @@ def generate_cte_concurrently(datim_ids:list, max_workers:int):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Step 2: Run the final insert procedures
         executor.map(run_single_procedure, datim_ids)
-    logger.info(f"All procedures for CTE generation and final insert completed for {datim_ids}")
+    logger.info(f"All procedures for CTE generation and preplongitudinal_joined completed for {datim_ids}")
 
 def generate_preplongitudinal_report(**kwargs):
     periods = kwargs.get('periods', [])

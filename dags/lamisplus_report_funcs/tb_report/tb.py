@@ -172,7 +172,7 @@ def generate_tb_report(**kwargs):
     for periodcode in periods:
         run_truncate_for_ctes(table_names)
         for datim_ids in group_ip_datims:
-            generate_cte_concurrently(datim_ids, procedures, batch_size=15)
+            generate_cte_concurrently(datim_ids, procedures, 15)
         run_final_tb_for_ips(ip_names,periodcode)
 
 if __name__ == '__main__':

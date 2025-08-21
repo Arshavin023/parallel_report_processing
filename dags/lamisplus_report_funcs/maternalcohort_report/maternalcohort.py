@@ -83,12 +83,10 @@ def run_final_maternalcohort(ip_name, period):
         logger.error(f"Operational error occurred while processing {ip_name} for {period}: {e}")
 
 #  Function to generate CTE concurrently
-def generate_cte_concurrently(datim_ids:list, batch_size):
-    for i in range(0, len(datim_ids), batch_size):
-        batch = datim_ids[i:i + batch_size]
-        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
-            executor.map(run_maternalcohort_joined, batch)
-        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+def generate_cte_concurrently(datim_ids: list, max_workers:int):
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        logger.info(f"Starting final joined insert for {len(datim_ids)} facilities.")
+        executor.map(run_maternalcohort_joined, datim_ids)
 
 def generate_maternalcohort_report(**kwargs):
     periods = kwargs.get('periods', [])
@@ -106,7 +104,7 @@ def generate_maternalcohort_report(**kwargs):
     for periodcode in periods:
         run_truncate_for_ctes(table_names)
         for datim_ids in group_datim_ids:
-            generate_cte_concurrently(datim_ids, batch_size=30)
+            generate_cte_concurrently(datim_ids, 30)
         for ip_name in ip_names:
             run_final_maternalcohort(ip_name, periodcode)
 
