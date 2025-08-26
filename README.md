@@ -12,8 +12,7 @@ This project contains Airflow DAGS that automates extraction, transformation and
 ## Introduction <a name="introduction"></a>
 This following are Airflow DAGs and there respective functions
 - lamisplus_stg_to_ods: Schedules and executes periodic ETL on different tables between staging database (lamisplus_staging_dwh on PRODUCTION FILE SERVER) and data warehouse (lamisplus_ods_dwh on PRODUCTION DATA WAREHOUSE SERVER)
-- generate_weekly_reports: Schedules and executes periodic report generation for different reports; RADET, HTS, PreP, PrEP_longitudinal, Family_Partner_Index, TB, AHD, PMTCT_HTS and Maternal_Cohort
-- Nomis report generation: Schedules and executes periodic report generation for different reports; NOMIS Child Monitor, 
+- generate_weekly_reports_v2: Schedules and executes periodic report generation for different reports; RADET, HTS, PreP, PrEP_longitudinal, Family_Partner_Index, TB, AHD, PMTCT_HTS and Maternal_Cohort
 
 
 ## Installation <a name="installation"></a>
@@ -43,8 +42,8 @@ Kindly refer to the Airflow Installation Guide provided in the repository
 - MIT License
 
 ## Authors & Acknowledgements <a name="authors_and_acknowledgments"></a>
-- Uche Nnodim (https://github.com/Arshavin023)
-- ChukwuEmeka Ilozie
-- Peter Abiodon
-- Barnabas Tyav
-- Emmanuel Nnajiofor
+- [Uche Nnodim](https://github.com/Arshavin023)
+- [Emmanuel Nnajiofor](https://github.com/emmannajichi)
+- [ChukwuEmeka Ilozie](https://github.com/Asquarep)
+- [Peter Abiodun](https://github.com/drjavanew)
+- [Barnabas Tyav](https://github.com/tyavbarnabas)
