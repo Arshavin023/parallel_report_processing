@@ -9,6 +9,7 @@ from sqlalchemy.dialects.postgresql import JSONB, BYTEA
 import configparser
 import uuid
 import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
 import time
 import threading
 import schedule
@@ -121,7 +122,7 @@ def generate_hts_report(**kwargs):
     for periodcode in periods:
         run_truncate_for_ctes(table_names)
         for datim_ids in group_datim_ids:
-            generate_cte_concurrently(datim_ids, batch_size=30)
+            generate_cte_concurrently(datim_ids, 30)
         for ip_name in ip_names:
             run_final_hts(ip_name, periodcode)
 

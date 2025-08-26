@@ -25,7 +25,7 @@ default_args = {
 
 
 with DAG("lamisplus_stg_to_ods", start_date=datetime(2025, 5, 26), 
-         schedule_interval=timedelta(minutes=30), default_args=default_args, 
+         schedule_interval=timedelta(minutes=15), default_args=default_args, 
          catchup=False, max_active_runs=1) as dag:
 
     start = BashOperator(
@@ -494,10 +494,10 @@ with DAG("lamisplus_stg_to_ods", start_date=datetime(2025, 5, 26),
             autocommit=True)
         
     
-    encrypt_hts_tables = PostgresOperator(
-        task_id="encrypt_hts_tables",
+    encrypt_hts_tables_v2 = PostgresOperator(
+        task_id="encrypt_hts_tables_v2",
         postgres_conn_id="lamisplus_conn",
-        sql='call public.proc_encrypt_hts_tables()',
+        sql='call public.proc_encrypt_hts_tables_v2()',
         autocommit=True)
     
     end = BashOperator(
@@ -510,4 +510,4 @@ with DAG("lamisplus_stg_to_ods", start_date=datetime(2025, 5, 26),
     #    provide_context=True,)
 
     # Define the task dependencies
-    start >> migrate_and_persist_ods_data >> delete_archived_records >> encrypt_hts_tables >> end #>> trigger_refresh_streaming_dag
+    start >> migrate_and_persist_ods_data >> delete_archived_records >> encrypt_hts_tables_v2 >> end #>> trigger_refresh_streaming_dag
