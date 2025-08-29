@@ -106,7 +106,7 @@ def run_proc_radet_joined_insert(datim, periodcode):
     except Exception as e:
         logger.error(f"Error occurred executing radet_joined_insert for {datim}: {e}")
 
-def generate_cte_concurrently(datim_ids: list, procedures: list, periodcode: str, max_workers=30):
+def generate_cte_concurrently(datim_ids: list, procedures: list, periodcode: str, max_workers:int):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:  # Use a single thread pool for all tasks
         # Step 1: Run procedures for each DATIM ID
         logger.info(f"Starting to generate CTEs for {len(datim_ids)} facilities.")
@@ -155,7 +155,7 @@ def generate_radet_report(**kwargs):
         "proc_case_manager","proc_cervical_cancer","proc_client_verification",
         "proc_crytococal_antigen","proc_tbstatus","proc_current_clinical",
         "proc_current_regimen", "proc_current_status","proc_eac",
-        "proc_current_tb_result", "proc_current_vl_result","proc_dsd1",
+        "proc_current_tb_result", "proc_current_vl_result_v2","proc_dsd1",
         "proc_dsd2","proc_ipt", "proc_ipt_s", "proc_iptnew", "proc_labcd4",
         "proc_naive_vl_data", "proc_ovc", "proc_patient_lga","proc_negativetbdiagnosticresults",
         "proc_pharmacy_details_regimen","proc_sample_collection_date", "proc_tb_sample_collection",

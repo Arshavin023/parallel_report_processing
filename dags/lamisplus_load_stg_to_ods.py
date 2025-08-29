@@ -25,7 +25,7 @@ default_args = {
 
 
 with DAG("lamisplus_stg_to_ods", start_date=datetime(2025, 5, 26), 
-         schedule_interval=timedelta(minutes=15), default_args=default_args, 
+         schedule_interval=timedelta(hours=1), default_args=default_args, 
          catchup=False, max_active_runs=1) as dag:
 
     start = BashOperator(
@@ -262,235 +262,235 @@ with DAG("lamisplus_stg_to_ods", start_date=datetime(2025, 5, 26),
         ods_base_organisation_unit = PostgresOperator(
             task_id="ods_base_organisation_unit",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('base_organisation_unit')",
+            sql="call public.proc_delete_archived_records_updated_v2('base_organisation_unit')",
             autocommit=True)
             
         ods_case_manager = PostgresOperator(
             task_id="ods_case_manager",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('case_manager')",
+            sql="call public.proc_delete_archived_records_updated_v2('case_manager')",
             autocommit=True)
         
         ods_dsd_devolvement = PostgresOperator(
             task_id="ods_dsd_devolvement",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('dsd_devolvement')",
+            sql="call public.proc_delete_archived_records_updated_v2('dsd_devolvement')",
             autocommit=True)
             
         ods_case_manager_patients = PostgresOperator(
             task_id="ods_case_manager_patients",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('case_manager_patients')",
+            sql="call public.proc_delete_archived_records_updated_v2('case_manager_patients')",
             autocommit=True)
             
         ods_hiv_eac = PostgresOperator(
             task_id="ods_hiv_eac",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hiv_eac')",
+            sql="call public.proc_delete_archived_records_updated_v2('hiv_eac')",
             autocommit=True)
         
         ods_hiv_eac_out_come = PostgresOperator(
             task_id="ods_hiv_eac_out_come",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hiv_eac_out_come')",
+            sql="call public.proc_delete_archived_records_updated_v2('hiv_eac_out_come')",
             autocommit=True)
             
         ods_hiv_eac_session = PostgresOperator(
             task_id="ods_hiv_eac_session",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hiv_eac_session')",
+            sql="call public.proc_delete_archived_records_updated_v2('hiv_eac_session')",
             autocommit=True)
         
         ods_hts_index_elicitation = PostgresOperator(
             task_id="ods_hts_index_elicitation",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hts_index_elicitation')",
+            sql="call public.proc_delete_archived_records_updated_v2('hts_index_elicitation')",
             autocommit=True)
         
         ods_hts_risk_stratification = PostgresOperator(
             task_id="ods_hts_risk_stratification",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hts_risk_stratification')",
+            sql="call public.proc_delete_archived_records_updated_v2('hts_risk_stratification')",
             autocommit=True)
             
         ods_laboratory_order = PostgresOperator(
             task_id="ods_laboratory_order",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('laboratory_order')",
+            sql="call public.proc_delete_archived_records_updated_v2('laboratory_order')",
             autocommit=True)
         
         ods_patient_encounter = PostgresOperator(
             task_id="ods_patient_encounter",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('patient_encounter')",
+            sql="call public.proc_delete_archived_records_updated_v2('patient_encounter')",
             autocommit=True)
         
         ods_pmtct_anc = PostgresOperator(
             task_id="ods_pmtct_anc",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('pmtct_anc')",
+            sql="call public.proc_delete_archived_records_updated_v2('pmtct_anc')",
             autocommit=True)
 
         ods_pmtct_enrollment = PostgresOperator(
             task_id="ods_pmtct_enrollment",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('pmtct_enrollment')",
+            sql="call public.proc_delete_archived_records_updated_v2('pmtct_enrollment')",
             autocommit=True)
 
         ods_prep_clinic = PostgresOperator(
             task_id="ods_prep_clinic",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('prep_clinic')",
+            sql="call public.proc_delete_archived_records_updated_v2('prep_clinic')",
             autocommit=True)
         
         ods_prep_eligibility = PostgresOperator(
             task_id="ods_prep_eligibility",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('prep_eligibility')",
+            sql="call public.proc_delete_archived_records_updated_v2('prep_eligibility')",
             autocommit=True)
         
         ods_prep_enrollment = PostgresOperator(
             task_id="ods_prep_enrollment",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('prep_enrollment')",
+            sql="call public.proc_delete_archived_records_updated_v2('prep_enrollment')",
             autocommit=True)
             
         ods_prep_interruption = PostgresOperator(
             task_id="ods_prep_interruption",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('prep_interruption')",
+            sql="call public.proc_delete_archived_records_updated_v2('prep_interruption')",
             autocommit=True)
         
         ods_prep_regimen = PostgresOperator(
             task_id="ods_prep_regimen",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('prep_regimen')",
+            sql="call public.proc_delete_archived_records_updated_v2('prep_regimen')",
             autocommit=True)
         
         ods_hiv_observation = PostgresOperator(
             task_id="ods_hiv_observation",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hiv_observation')",
+            sql="call public.proc_delete_archived_records_updated_v2('hiv_observation')",
             autocommit=True)
         
         ods_hts_client = PostgresOperator(
             task_id="ods_hts_client",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hts_client')",
+            sql="call public.proc_delete_archived_records_updated_v2('hts_client')",
             autocommit=True)
             
         ods_laboratory_labtest = PostgresOperator(
             task_id="ods_laboratory_labtest",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('laboratory_labtest')",
+            sql="call public.proc_delete_archived_records_updated_v2('laboratory_labtest')",
             autocommit=True)
             
         ods_patient_visit = PostgresOperator(
             task_id="ods_patient_visit",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('patient_visit')",
+            sql="call public.proc_delete_archived_records_updated_v2('patient_visit')",
             autocommit=True)
         
         ods_hiv_art_clinical = PostgresOperator(
             task_id="ods_hiv_art_clinical",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hiv_art_clinical')",
+            sql="call public.proc_delete_archived_records_updated_v2('hiv_art_clinical')",
             autocommit=True)
             
         ods_hiv_art_pharmacy = PostgresOperator(
             task_id="ods_hiv_art_pharmacy",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hiv_art_pharmacy')",
+            sql="call public.proc_delete_archived_records_updated_v2('hiv_art_pharmacy')",
             autocommit=True)
             
         ods_hiv_enrollment = PostgresOperator(
             task_id="ods_hiv_enrollment",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hiv_enrollment')",
+            sql="call public.proc_delete_archived_records_updated_v2('hiv_enrollment')",
             autocommit=True)
             
         ods_hiv_status_tracker = PostgresOperator(
             task_id="ods_hiv_status_tracker",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hiv_status_tracker')",
+            sql="call public.proc_delete_archived_records_updated_v2('hiv_status_tracker')",
             autocommit=True)
         
         ods_patient_person = PostgresOperator(
             task_id="ods_patient_person",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('patient_person')",
+            sql="call public.proc_delete_archived_records_updated_v2('patient_person')",
             autocommit=True)
             
         ods_triage_vital_sign = PostgresOperator(
             task_id="ods_triage_vital_sign",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('triage_vital_sign')",
+            sql="call public.proc_delete_archived_records_updated_v2('triage_vital_sign')",
             autocommit=True)
             
         ods_laboratory_test = PostgresOperator(
             task_id="ods_laboratory_test",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('laboratory_test')",
+            sql="call public.proc_delete_archived_records_updated_v2('laboratory_test')",
             autocommit=True)
         
         ods_laboratory_sample = PostgresOperator(
             task_id="ods_laboratory_sample",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('laboratory_sample')",
+            sql="call public.proc_delete_archived_records_updated_v2('laboratory_sample')",
             autocommit=True)
             
         ods_laboratory_result = PostgresOperator(
             task_id="ods_laboratory_result",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('laboratory_result')",
+            sql="call public.proc_delete_archived_records_updated_v2('laboratory_result')",
             autocommit=True)
             
         ods_laboratory_number = PostgresOperator(
             task_id="ods_laboratory_number",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('laboratory_number')",
+            sql="call public.proc_delete_archived_records_updated_v2('laboratory_number')",
             autocommit=True)
         
         ods_biometric = PostgresOperator(
             task_id="ods_biometric",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('biometric')",
+            sql="call public.proc_delete_archived_records_updated_v2('biometric')",
             autocommit=True)
 
         ods_hts_family_index_testing_tracker = PostgresOperator(
             task_id="ods_hts_family_index_testing_tracker",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hts_family_index_testing_tracker')",
+            sql="call public.proc_delete_archived_records_updated_v2('hts_family_index_testing_tracker')",
             autocommit=True)
         
         ods_hts_client_referral = PostgresOperator(
             task_id="ods_hts_client_referral",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hts_client_referral')",
+            sql="call public.proc_delete_archived_records_updated_v2('hts_client_referral')",
             autocommit=True)
         
         ods_hivst = PostgresOperator(
             task_id="ods_hivst",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hivst')",
+            sql="call public.proc_delete_archived_records_updated_v2('hivst')",
             autocommit=True)
         
         ods_hiv_patient_tracker = PostgresOperator(
             task_id="ods_hiv_patient_tracker",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('hiv_patient_tracker')",
+            sql="call public.proc_delete_archived_records_updated_v2('hiv_patient_tracker')",
             autocommit=True)
             
         ods_laboratory_sample_type = PostgresOperator(
             task_id="ods_laboratory_sample_type",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('laboratory_sample_type')",
+            sql="call public.proc_delete_archived_records_updated_v2('laboratory_sample_type')",
             autocommit=True)
             
         ods_laboratory_labtestgroup = PostgresOperator(
             task_id="ods_laboratory_labtestgroup",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_delete_archived_records_updated('laboratory_labtestgroup')",
+            sql="call public.proc_delete_archived_records_updated_v2('laboratory_labtestgroup')",
             autocommit=True)
         
     
