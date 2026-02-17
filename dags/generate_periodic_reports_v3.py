@@ -71,13 +71,21 @@ def run_familypartnerindex_report(**kwargs):
         periods = [periods]
     familypartnerindex.generate_familypartnerindex_report(periods=periods)
 
-def run_pre_prep_report(**kwargs):
+def run_radet_report(**kwargs):
     periods = kwargs.get('params', {}).get('periods')
     if not periods:
         raise ValueError("No 'periods' provided in DAG params.")
     if isinstance(periods, str):
         periods = [periods]
-    pre_prepre.process_pre_prepre_status(periods=periods)
+    radet_v2.generate_radet_report(periods=periods)
+
+def run_prepre_report(**kwargs):
+    periods = kwargs.get('params', {}).get('periods')
+    if not periods:
+        raise ValueError("No 'periods' provided in DAG params.")
+    if isinstance(periods, str):
+        periods = [periods]
+    pre_prepre.generate_pre_prepre_report(periods=periods)
 
 def run_tb_report(**kwargs):
     periods = kwargs.get('params', {}).get('periods')
@@ -120,12 +128,12 @@ default_args = {
     "retry_delay": timedelta(minutes=5)
 }
 
-with DAG("lamisplus_process_pre_prepre_status", start_date=datetime(2025, 8, 12),
+with DAG("generate_periodic_reports_v3", start_date=datetime(2025, 5, 18),
          schedule_interval=None,
          default_args=default_args,catchup=False,
          params={"periods": None},
          max_active_runs=1,
-         tags=["previous and previous-previous status"]
+         tags=["reports", "periodic", "lamisplus"]
          ) as dag:
 
     start = BashOperator(
@@ -147,16 +155,73 @@ with DAG("lamisplus_process_pre_prepre_status", start_date=datetime(2025, 8, 12)
         autocommit = True
     )
 
+    #prep_task = PythonOperator(
+    #    task_id="prep",
+    #    python_callable=run_prep_report,
+    #    provide_context=True,
+    #)
+    
     with TaskGroup(group_id='generate_first_report_batch') as generate_first_report_batch:
-        process_pre_prepre_status = PythonOperator(
-            task_id="process_pre_prepre_status",
-            python_callable=run_pre_prep_report,
+        #maternalcohort_task = PythonOperator(
+        #    task_id="maternalcohort",
+        #    python_callable=run_maternalcohort_report,
+        #    provide_context=True,
+        #)
+        ahd_v2_task = PythonOperator(
+            task_id="ahd_v2",
+            python_callable=run_ahd_report,
             provide_context=True,
         )
+        #preplongitudinal_task = PythonOperator(
+        #    task_id="preplongitudinal",
+        #    python_callable=run_preplongitudinal_report,
+        #    provide_context=True,
+        #)
+    
+    #with TaskGroup(group_id='generate_second_report_batch') as generate_second_report_batch:
+    #    familypartnerindex_task = PythonOperator(
+    #        task_id="familypartnerindex",
+    #        python_callable=run_familypartnerindex_report,
+    #        provide_context=True,
+    #    )
+    #    hts_task = PythonOperator(
+    #        task_id="hts",
+    #        python_callable=run_hts_report,
+    #        provide_context=True,
+    #    )
+    #    eac_task = PythonOperator(
+    #        task_id="eac",
+    #        python_callable=run_eac_report,
+    #        provide_context=True,
+    #    )
+    
+    #with TaskGroup(group_id='generate_third_report_batch') as generate_third_report_batch:
+    #    prep_task = PythonOperator(
+    #        task_id="prep",
+    #        python_callable=run_prep_report,
+    #        provide_context=True,
+    #    )
+    #    eac_task = PythonOperator(
+    #        task_id="eac",
+    #        python_callable=run_eac_report,
+    #        provide_context=True,
+    #    )
+    #    biometric_task = PythonOperator(
+    #        task_id="biometric",
+    #        python_callable=run_biometric_report,
+    #        provide_context=True,
+    #    )
 
+    #with TaskGroup(group_id='generate_fourth_report_batch') as generate_fourth_report_batch:
+    #    tb_task = PythonOperator(
+    #        task_id="tb",
+    #        python_callable=run_tb_report,
+    #        provide_context=True,
+    #    )
+    
     end = BashOperator(
         task_id="end",
         bash_command="echo end")
 
     # Define the task dependencies
-    start >> update_prep_period >> update_radet_period >> generate_first_report_batch >> end
+    start >> update_radet_period >> update_prep_period >> generate_first_report_batch >> end

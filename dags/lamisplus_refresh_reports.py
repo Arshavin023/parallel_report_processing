@@ -24,10 +24,10 @@ with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),sc
     
     with TaskGroup(group_id='upstream_tasks') as upstream_tasks:
         
-        upsert_pharmacy_details_regimen = PostgresOperator(
-            task_id="upsert_pharmacy_details_regimen",
+        upsert_pharmacy_details_regimen_v3 = PostgresOperator(
+            task_id="upsert_pharmacy_details_regimen_v3",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_pharmacy_details_regimen_v2()',
+            sql='call expanded_radet.proc_upsert_pharmacy_details_regimen_v3()',
             autocommit=True
         )
 
@@ -38,10 +38,10 @@ with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),sc
             autocommit=True
         )
         
-        upsert_client_verification_v4 = PostgresOperator(
-            task_id="upsert_client_verification_v4",
+        upsert_client_verification_v2 = PostgresOperator(
+            task_id="upsert_client_verification_v3",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_client_verification_v2()',
+            sql='call expanded_radet.proc_upsert_client_verification_v3()',
             autocommit=True
         )
         
@@ -66,8 +66,8 @@ with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),sc
             autocommit=True
         )
         
-        temp_laboratorytestresults = PostgresOperator(
-            task_id="temp_laboratorytestresults",
+        upsert_temp_laboratorytestresults = PostgresOperator(
+            task_id="upsert_temp_laboratorytestresults",
             postgres_conn_id="radet_conn",
             sql='call expanded_radet.proc_upsert_temp_laboratorytestresults()',
             autocommit=True
@@ -82,10 +82,10 @@ with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),sc
             autocommit=True
         )
         
-        laboratorytestresults = PostgresOperator(
-            task_id="laboratorytestresults",
+        upsert_laboratorytestresults_v2 = PostgresOperator(
+            task_id="upsert_laboratorytestresults_v2",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_laboratorytestresults()',
+            sql='call expanded_radet.proc_upsert_laboratorytestresults_v2()',
             autocommit=True
         )
         

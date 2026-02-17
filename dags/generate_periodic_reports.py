@@ -13,7 +13,7 @@ from lamisplus_funcs.airflow_api import trigger_dag
 from lamisplus_report_funcs.maternalcohort_report import maternalcohort
 from lamisplus_report_funcs.pmtcthts_report import pmtcthts
 from lamisplus_report_funcs.preplongitudinal_report import preplongitudinal
-from lamisplus_report_funcs.radet_report import pre_prepre, radet_v3
+from lamisplus_report_funcs.radet_report import pre_prepre, radet
 from lamisplus_report_funcs.prep_report import prep_v2
 from lamisplus_report_funcs.hts_report import hts
 from lamisplus_report_funcs.tb_report import tb
@@ -77,7 +77,7 @@ def run_radet_report(**kwargs):
         raise ValueError("No 'periods' provided in DAG params.")
     if isinstance(periods, str):
         periods = [periods]
-    radet_v3.generate_radet_report(periods=periods)
+    radet.generate_radet_report(periods=periods)
 
 def run_prepre_report(**kwargs):
     periods = kwargs.get('params', {}).get('periods')
@@ -155,52 +155,52 @@ with DAG("generate_periodic_reports", start_date=datetime(2025, 5, 18),
         autocommit = True
     )
 
-    #radet_task = PythonOperator(
-    #    task_id="radet",
-    #    python_callable=run_radet_report,
+    #prep_task = PythonOperator(
+    #    task_id="prep",
+    #    python_callable=run_prep_report,
     #    provide_context=True,
     #)
     
-    #with TaskGroup(group_id='generate_first_report_batch') as generate_first_report_batch:
-     #   maternalcohort_task = PythonOperator(
-      #      task_id="maternalcohort",
-       #     python_callable=run_maternalcohort_report,
-        #    provide_context=True,
-        #)
-       # pmtcthts_task = PythonOperator(
-       #     task_id="pmtcthts",
-       #     python_callable=run_pmtcthts_report,
-       #     provide_context=True,
-       # )
-       # preplongitudinal_task = PythonOperator(
-       #     task_id="preplongitudinal",
-       #     python_callable=run_preplongitudinal_report,
-       #     provide_context=True,
-       # )
+    with TaskGroup(group_id='generate_first_report_batch') as generate_first_report_batch:
+        maternalcohort_task = PythonOperator(
+            task_id="maternalcohort",
+            python_callable=run_maternalcohort_report,
+            provide_context=True,
+        )
+        pmtcthts_task = PythonOperator(
+            task_id="pmtcthts",
+            python_callable=run_pmtcthts_report,
+            provide_context=True,
+        )
+        preplongitudinal_task = PythonOperator(
+            task_id="preplongitudinal",
+            python_callable=run_preplongitudinal_report,
+            provide_context=True,
+        )
     
-   # with TaskGroup(group_id='generate_second_report_batch') as generate_second_report_batch:
-   #     familypartnerindex_task = PythonOperator(
-   #         task_id="familypartnerindex",
-   #         python_callable=run_familypartnerindex_report,
-   #         provide_context=True,
-   #     )
-   #     hts_task = PythonOperator(
-   #         task_id="hts",
-   #         python_callable=run_hts_report,
-   #         provide_context=True,
-   #     )
-   #     prep_task = PythonOperator(
-   #         task_id="prep_v2",
-   #         python_callable=run_prep_report,
-   #         provide_context=True,
-   #     )
-    
-    with TaskGroup(group_id='generate_third_report_batch') as generate_third_report_batch:
+    with TaskGroup(group_id='generate_second_report_batch') as generate_second_report_batch:
         familypartnerindex_task = PythonOperator(
             task_id="familypartnerindex",
             python_callable=run_familypartnerindex_report,
             provide_context=True,
         )
+        hts_task = PythonOperator(
+            task_id="hts",
+            python_callable=run_hts_report,
+            provide_context=True,
+        )
+        eac_task = PythonOperator(
+            task_id="eac",
+            python_callable=run_eac_report,
+            provide_context=True,
+        )
+    
+    #with TaskGroup(group_id='generate_third_report_batch') as generate_third_report_batch:
+    #    prep_task = PythonOperator(
+    #        task_id="prep",
+    #        python_callable=run_prep_report,
+    #        provide_context=True,
+    #    )
     #    eac_task = PythonOperator(
     #        task_id="eac",
     #        python_callable=run_eac_report,
@@ -212,16 +212,16 @@ with DAG("generate_periodic_reports", start_date=datetime(2025, 5, 18),
     #        provide_context=True,
     #    )
 
-    #with TaskGroup(group_id='generate_fourth_report_batch') as generate_fourth_report_batch:
-    #    tb_task = PythonOperator(
-    #        task_id="tb",
-    #        python_callable=run_tb_report,
-    #        provide_context=True,
-    #    )
+    with TaskGroup(group_id='generate_fourth_report_batch') as generate_fourth_report_batch:
+        tb_task = PythonOperator(
+            task_id="tb",
+            python_callable=run_tb_report,
+            provide_context=True,
+        )
     
     end = BashOperator(
         task_id="end",
         bash_command="echo end")
 
     # Define the task dependencies
-    start >> update_prep_period >> update_radet_period >> generate_third_report_batch >> end
+    start >> update_radet_period >> update_prep_period >> generate_first_report_batch >> generate_second_report_batch >> generate_fourth_report_batch >> end

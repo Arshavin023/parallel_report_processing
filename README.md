@@ -1,6 +1,6 @@
 # Airflow ETL/ELT DAGs
 ## Overview
-This project contains Airflow DAGS that automates extraction, transformation and loading of data between servers, and report generation Python Scripts for several Health Informatics reports.
+This project automates high-volume data movement between production staging (Postgres) and the Data Warehouse (ODS). It focuses on idempotent ETL processes, utilizing Python-based multithreading to reduce latency and ensuring strict PII masking during the transfer protocol.
 
 # Table of Contents
 - [Introduction](#introduction)

@@ -27,7 +27,7 @@ with DAG("lamis_stg_to_ods_biometric",start_date=datetime(2024, 10, 24),schedule
         biometric = PostgresOperator(
             task_id="biometric",
             postgres_conn_id="lamisplus_conn",
-            sql="call public.proc_stream_biometric('stg_biometric')",
+            sql="call public.proc_stream_biometric_v2('stg_biometric')",
             autocommit=True)
 
 

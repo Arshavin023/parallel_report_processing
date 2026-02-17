@@ -13,7 +13,7 @@ from lamisplus_funcs.airflow_api import trigger_dag
 from lamisplus_report_funcs.maternalcohort_report import maternalcohort
 from lamisplus_report_funcs.pmtcthts_report import pmtcthts
 from lamisplus_report_funcs.preplongitudinal_report import preplongitudinal
-from lamisplus_report_funcs.radet_report import pre_prepre, radet_v3
+from lamisplus_report_funcs.radet_report import pre_prepre, radet
 from lamisplus_report_funcs.prep_report import prep_v2
 from lamisplus_report_funcs.hts_report import hts
 from lamisplus_report_funcs.tb_report import tb
@@ -77,7 +77,7 @@ def run_radet_report(**kwargs):
         raise ValueError("No 'periods' provided in DAG params.")
     if isinstance(periods, str):
         periods = [periods]
-    radet_v3.generate_radet_report(periods=periods)
+    radet.generate_radet_report(periods=periods)
 
 def run_prepre_report(**kwargs):
     periods = kwargs.get('params', {}).get('periods')

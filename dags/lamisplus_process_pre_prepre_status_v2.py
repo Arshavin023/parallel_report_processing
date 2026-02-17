@@ -13,7 +13,7 @@ from lamisplus_funcs.airflow_api import trigger_dag
 from lamisplus_report_funcs.maternalcohort_report import maternalcohort
 from lamisplus_report_funcs.pmtcthts_report import pmtcthts
 from lamisplus_report_funcs.preplongitudinal_report import preplongitudinal
-from lamisplus_report_funcs.radet_report import pre_prepre, radet_v2
+from lamisplus_report_funcs.radet_report import pre_prepre_v2, radet_v2
 from lamisplus_report_funcs.prep_report import prep_v2
 from lamisplus_report_funcs.hts_report import hts
 from lamisplus_report_funcs.tb_report import tb
@@ -77,7 +77,7 @@ def run_pre_prep_report(**kwargs):
         raise ValueError("No 'periods' provided in DAG params.")
     if isinstance(periods, str):
         periods = [periods]
-    pre_prepre.process_pre_prepre_status(periods=periods)
+    pre_prepre_v2.process_pre_prepre_status(periods=periods)
 
 def run_tb_report(**kwargs):
     periods = kwargs.get('params', {}).get('periods')
@@ -120,7 +120,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5)
 }
 
-with DAG("lamisplus_process_pre_prepre_status", start_date=datetime(2025, 8, 12),
+with DAG("lamisplus_process_pre_prepre_status_v2", start_date=datetime(2025, 8, 12),
          schedule_interval=None,
          default_args=default_args,catchup=False,
          params={"periods": None},

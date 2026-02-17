@@ -52,20 +52,11 @@
 "base_organisation_unit_level","parent_organisation_unit_level_id","bigint",11,NULL
 "base_organisation_unit_level","ods_load_time","timestamp without time zone",12,NULL
 "biometric","id","character varying",1,NULL
+"biometric","created_date","timestamp without time zone",2,NULL
 "biometric","created_by","character varying",3,NULL
 "biometric","last_modified_date","timestamp without time zone",4,NULL
 "biometric","last_modified_by","character varying",5,NULL
 "biometric","facility_id","bigint",6,NULL
-<<<<<<< HEAD
-=======
-"sync_table_count","facility_id","bigint",2,NULL
-"sync_table_count","id","text",3,NULL
-"sync_table_count","name","text",1,NULL
-"sync_table_count","ods_datim_id","text",7,NULL
-"sync_table_count","ods_load_time","timestamp without time zone",6,NULL
-"sync_table_count","time_generated","text",4,NULL
-"sync_table_count","total_record","bigint",5,NULL
->>>>>>> 25b777e (new)
 "biometric","person_uuid","character varying",7,NULL
 "biometric","template","text",8,NULL
 "biometric","biometric_type","character varying",9,NULL
@@ -82,10 +73,12 @@
 "biometric","recapture_message","character varying",20,NULL
 "biometric","hashed","character varying",21,NULL
 "biometric","count","integer",22,NULL
-"biometric","ods_load_time","timestamp without time zone",23,NULL
-"biometric","ods_datim_id","character varying",24,255
+"biometric","load_time","timestamp without time zone",23,NULL
+"biometric","datim_id","character varying",24,NULL
 "biometric","replace_date","date",25,NULL
-"biometric","created_date","timestamp without time zone",2,NULL
+"biometric","match_biometric_id","character varying",26,NULL
+"biometric","match_person_uuid","character varying",27,NULL
+"biometric","match_type","character varying",28,NULL
 "case_manager","last_name","character varying",5,NULL
 "case_manager","username","character varying",21,NULL
 "case_manager","user_id","character varying",20,NULL
@@ -620,8 +613,6 @@
 "hts_client","modified_by","character varying",48,NULL
 "hts_client","archived","integer",49,NULL
 "hts_client","index_client_code","character varying",50,NULL
-<<<<<<< HEAD
-=======
 "hts_client_referral","address_of_receiving_facility","character varying",21,NULL
 "hts_client_referral","address_of_referring_facility","character varying",16,NULL
 "hts_client_referral","archived","integer",3,NULL
@@ -773,7 +764,6 @@
 "hts_pns_index_client_partner","relationship_with_index_client","character varying",16,NULL
 "hts_pns_index_client_partner","sex","character varying",29,NULL
 "hts_pns_index_client_partner","uuid","character varying",27,NULL
->>>>>>> 25b777e (new)
 "hts_index_elicitation","created_by","character varying",24,NULL
 "hts_index_elicitation","date_modified","timestamp without time zone",25,NULL
 "hts_index_elicitation","modified_by","character varying",26,NULL
@@ -1257,16 +1247,31 @@
 "pmtct_enrollment","gravida","integer",12,NULL
 "pmtct_enrollment","art_start_date","date",13,NULL
 "pmtct_enrollment","art_start_time","character varying",14,255
+"pmtct_hts","id","bigint",1,NULL
+"pmtct_hts","date_of_hiv_test","date",2,NULL
+"pmtct_hts","test_entry_point","character varying",3,NULL
+"pmtct_hts","test_setting","character varying",4,NULL
+"pmtct_hts","initial_hiv_test","character varying",5,NULL
+"pmtct_hts","uuid","character varying",6,NULL
+"pmtct_hts","confirmatory_hiv_test","character varying",7,NULL
+"pmtct_hts","stage_of_pregnancy","character varying",8,NULL
+"pmtct_hts","hospital_number","character varying",9,NULL
+"pmtct_hts","syphilis","character varying",10,NULL
+"pmtct_hts","hepatitis_b","character varying",11,NULL
+"pmtct_hts","testing_type","character varying",12,NULL
+"pmtct_hts","hepatitis_c","character varying",13,NULL
+"pmtct_hts","person_uuid","character varying",14,255
+"pmtct_hts","archived","bigint",15,NULL
+"pmtct_hts","final_result","character varying",16,NULL
+"pmtct_hts","ods_load_time","timestamp without time zone",17,NULL
+"pmtct_hts","ods_datim_id","character varying",18,NULL
 "pmtct_infant_arv","id","bigint",1,NULL
 "pmtct_infant_arv","visit_date","date",2,NULL
 "pmtct_infant_arv","infant_hospital_number","character varying",3,NULL
 "pmtct_infant_arv","anc_number","character varying",4,NULL
 "pmtct_infant_arv","age_at_ctx","character varying",5,NULL
-<<<<<<< HEAD
-=======
 "pmtct_infant_arv","date_of_arv","date",17,NULL
 "pmtct_infant_arv","infant_id","integer",18,NULL
->>>>>>> 25b777e (new)
 "pmtct_infant_arv","infant_arv_type","character varying",6,NULL
 "pmtct_infant_arv","infant_arv_time","character varying",7,NULL
 "pmtct_infant_arv","arv_delivery_point","character varying",8,NULL
@@ -1278,10 +1283,7 @@
 "pmtct_infant_arv","ods_load_time","timestamp without time zone",14,NULL
 "pmtct_infant_arv","ods_file_name","character varying",15,255
 "pmtct_infant_arv","ods_datim_id","character varying",16,50
-<<<<<<< HEAD
-=======
 "pmtct_infant_arv","date_of_ctx","date",18,NULL
->>>>>>> 25b777e (new)
 "pmtct_infant_information","ods_datim_id","character varying",26,50
 "pmtct_infant_information","id","bigint",1,NULL
 "pmtct_infant_information","anc_no","character varying",2,255
@@ -1652,6 +1654,13 @@
 "sync_history","ods_load_time","timestamp without time zone",12,NULL
 "sync_history_tracker","ods_datim_id","character varying",2,255
 "sync_history_tracker","ods_load_time","timestamp without time zone",1,NULL
+"sync_table_count","facility_id","bigint",2,NULL
+"sync_table_count","id","text",3,NULL
+"sync_table_count","name","text",1,NULL
+"sync_table_count","ods_datim_id","text",7,NULL
+"sync_table_count","ods_load_time","timestamp without time zone",6,NULL
+"sync_table_count","time_generated","text",4,NULL
+"sync_table_count","total_record","bigint",5,NULL
 "sync_queue","processed","integer",5,NULL
 "sync_queue","table_name","character varying",6,NULL
 "sync_queue","date_created","timestamp without time zone",2,NULL
