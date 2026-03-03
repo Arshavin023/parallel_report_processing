@@ -64,11 +64,11 @@ def run_hts_joined(datim):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
-                cur.execute(f"CALL hts.proc_hts_joined('{datim}')")
+                cur.execute(f"CALL hts.proc_hts_joined_v2('{datim}')")
                 conn.commit()
-                logger.info(f"Procedure proc_hts_joined for {datim} executed successfully.")
+                logger.info(f"Procedure proc_hts_joined_v2 for {datim} executed successfully.")
     except psycopg2.OperationalError as e:
-        logger.error(f"Operational error occurred while processing {datim} for procedure: {e}")
+        logger.error(f"Operational error occurred while processing {datim} for proc_hts_joined_v2 procedure: {e}")
 
 def run_hts_mapping(datim):
     try:
@@ -91,14 +91,6 @@ def run_final_hts(ip_name,periodcode:str):
         logger.error(f"Operational error occurred while processing {ip_name} for procedure: {e}")
 
 #  Function to generate CTE concurrently
-#def generate_cte_concurrently(datim_ids:list, batch_size:int):
-#    for i in range(0, len(datim_ids), batch_size):
-#        batch = datim_ids[i:i + batch_size]
-#        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
-#            executor.map(run_hts_joined, batch)
-#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
-
-#  Function to generate CTE concurrently
 def generate_cte_concurrently(datim_ids:list, max_workers:int):
     logger.info(f"Starting final joined insert for {len(datim_ids)} facilities.")
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -113,8 +105,7 @@ def generate_hts_report(**kwargs):
     
     table_names = ["hts.hts_joined","hts.hts_monitoring", "hts.hts_mapping"]
     
-    ip_names = ['ACE-1','ACE-2','ACE-3','ACE-4','ACE-5',
-                'CARE 1','CARE 2']
+    ip_names = ['ACE-1','ACE-2','ACE-3','ACE-4', 'CARE 1', 'CARE 2','ACE-5']
     
     group_datim_ids = [fetch_datim_ids(ip_name) for ip_name in ip_names]
 

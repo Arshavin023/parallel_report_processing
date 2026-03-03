@@ -125,7 +125,7 @@ with DAG("lamisplus_process_pre_prepre_status", start_date=datetime(2025, 8, 12)
          default_args=default_args,catchup=False,
          params={"periods": None},
          max_active_runs=1,
-         tags=["previous and previous-previous status"]
+         tags=["AWS", "LamisPlus", "Reports", "Previous & Previous_Previous"]
          ) as dag:
 
     start = BashOperator(

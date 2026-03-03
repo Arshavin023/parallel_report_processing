@@ -204,7 +204,7 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
                 from stg_monitoring 
                 where table_name = '{}' 
                 AND processed = 'N' 
-                ORDER BY load_time ASC LIMIT 1000""".format(staging_table))
+                ORDER BY load_time ASC LIMIT 2000""".format(staging_table))
     ls_to_process = cur.fetchall()
     load_time = datetime.datetime.now()
     ls_to_process.sort(key=lambda i: i[1])
@@ -318,19 +318,19 @@ def process_hiv_art_clinical():
                                   'tb_screen': JSON().with_variant(JSONB, 'postgresql'), 'opportunistic_infections': JSON().with_variant(JSONB, 'postgresql'),
                                   'arvdrugs_regimen': JSON().with_variant(JSONB, 'postgresql'), 'viral_load_order': JSON().with_variant(JSONB, 'postgresql'),
                                   'extra': JSON().with_variant(JSONB, 'postgresql'),}
-    constraints = 'ods_datim_id, uuid'
+    constraints = 'uuid, person_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
 def process_hiv_enrollment():
     table_name = 'hiv_enrollment'
-    constraints = 'ods_datim_id, uuid'
+    constraints = 'uuid, person_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_hiv_observation():
     table_name = 'hiv_observation'
-    constraints = 'ods_datim_id, uuid'
+    constraints = 'uuid, person_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     dtype ={'data': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
@@ -391,7 +391,7 @@ def process_patient_encounter():
 
 def process_prep_clinic():
     table_name = 'prep_clinic'
-    constraints = 'ods_datim_id, uuid'
+    constraints = 'uuid, person_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     dtype = {'hepatitis': JSON().with_variant(JSONB, 'postgresql'), 'syphilis': JSON().with_variant(JSONB, 'postgresql'),
                                          'syndromic_sti_screening': JSON().with_variant(JSONB, 'postgresql'), 'other_tests_done': JSON().with_variant(JSONB, 'postgresql'),
@@ -483,7 +483,7 @@ def process_hiv_regimen_type():
 
 def process_laboratory_sample():
     table_name = 'laboratory_sample'
-    constraints = 'ods_datim_id, id'
+    constraints = 'id, uuid, patient_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
@@ -495,13 +495,13 @@ def process_laboratory_sample_type():
     
 def process_laboratory_test():
     table_name = 'laboratory_test'
-    constraints = 'ods_datim_id, id'
+    constraints = 'id, uuid, patient_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_laboratory_result():
     table_name = 'laboratory_result'
-    constraints = 'ods_datim_id, id'
+    constraints = 'id, uuid, patient_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 

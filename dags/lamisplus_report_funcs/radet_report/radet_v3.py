@@ -102,9 +102,9 @@ def run_proc_radet_joined_insert(datim, periodcode):
                 conn.execute(text("CALL expanded_radet_client.proc_radet_joined_insert_quartely(:datim_id)"), {"datim_id": datim})
             else:
                 conn.execute(text("CALL expanded_radet_client.proc_radet_joined_insert_weekly(:datim_id)"), {"datim_id": datim})
-            logger.info(f"Successfully executed radet_joined_insert for {datim}")
+            logger.info(f"Successfully executed radet_joined_insert for {datim} for {periodcode}")
     except Exception as e:
-        logger.error(f"Error occurred executing radet_joined_insert for {datim}: {e}")
+        logger.error(f"Error occurred executing radet_joined_insert for {datim} for {periodcode}: {e}")
 
 def generate_cte_concurrently(datim_ids: list, procedures: list, periodcode: str, max_workers:int):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:  # Use a single thread pool for all tasks
@@ -130,7 +130,7 @@ def run_expanded_radet_weekly(ip_name: str, periodcode: str):
         logger.error(f"Error occurred executing expanded_radet_weekly for {ip_name}: {e}")
 
 def run_expanded_radet_weekly_for_ips(ip_names: list, periodcode: str):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         executor.map(lambda args: run_expanded_radet_weekly(*args), [(ip, periodcode) for ip in ip_names])
     logger.info(f"Batch of {len(ip_names)} expanded_radet_weekly procedures executed successfully for {periodcode}")
         
@@ -155,7 +155,7 @@ def generate_radet_report(**kwargs):
         "proc_case_manager","proc_cervical_cancer","proc_client_verification",
         "proc_crytococal_antigen","proc_tbstatus","proc_current_clinical",
         "proc_current_regimen", "proc_current_status","proc_eac",
-        "proc_current_tb_result", "proc_current_vl_result_v2","proc_dsd1",
+        "proc_current_tb_result", "proc_current_vl_result","proc_dsd1",
         "proc_dsd2","proc_ipt", "proc_ipt_s", "proc_iptnew", "proc_labcd4",
         "proc_naive_vl_data", "proc_ovc", "proc_patient_lga","proc_negativetbdiagnosticresults",
         "proc_pharmacy_details_regimen","proc_sample_collection_date", "proc_tb_sample_collection",
@@ -177,7 +177,7 @@ def generate_radet_report(**kwargs):
             datim_ids = fetch_datim_ids(ip)
             if datim_ids:
                 logger.info(f"Processing IP: {ip} with {len(datim_ids)} facilities.")
-                generate_cte_concurrently(datim_ids, procedures, periodcode, 15) # Fixed arguments
+                generate_cte_concurrently(datim_ids, procedures, periodcode, 10) # Fixed arguments
         run_expanded_radet_weekly_for_ips(ip_names, periodcode)
 
 if __name__ == '__main__':

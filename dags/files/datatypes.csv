@@ -1395,6 +1395,26 @@
 "pmtct_mother_visitation","entry_point","character varying",19,255
 "pmtct_mother_visitation","dsd","character varying",20,255
 "pmtct_mother_visitation","id","bigint",1,NULL
+"pmtct_pregnancy_cycle","id","bigint",1,NULL
+"pmtct_pregnancy_cycle","person_uuid","character varying",2,255
+"pmtct_pregnancy_cycle","maternal_outcome","character varying",3,255
+"pmtct_pregnancy_cycle","entry_point","character varying",4,NULL
+"pmtct_pregnancy_cycle","hiv_status","character varying",5,NULL
+"pmtct_pregnancy_cycle","pregnancy_outcome","character varying",6,NULL
+"pmtct_pregnancy_cycle","number_of_infants","integer",7,NULL
+"pmtct_pregnancy_cycle","pmtct_status","character varying",8,100
+"pmtct_pregnancy_cycle","facility_id","bigint",9,NULL
+"pmtct_pregnancy_cycle","created_by","character varying",10,255
+"pmtct_pregnancy_cycle","created_date","timestamp without time zone",11,NULL
+"pmtct_pregnancy_cycle","last_modified_by","character varying",12,255
+"pmtct_pregnancy_cycle","last_modified_date","timestamp without time zone",13,NULL
+"pmtct_pregnancy_cycle","uuid","character varying",14,255
+"pmtct_pregnancy_cycle","archived","bigint",15,NULL
+"pmtct_pregnancy_cycle","is_closed","boolean",16,NULL
+"pmtct_pregnancy_cycle","source","character varying",17,50
+"pmtct_pregnancy_cycle","visit_status","character varying",18,100
+"pmtct_pregnancy_cycle","datim_id","character varying",19,NULL
+"pmtct_pregnancy_cycle","load_time","timestamp without time zone",20,NULL
 "prep_clinic","liver_function_test_result","character varying",59,NULL
 "prep_clinic","id","bigint",1,NULL
 "prep_clinic","weight","double precision",2,NULL

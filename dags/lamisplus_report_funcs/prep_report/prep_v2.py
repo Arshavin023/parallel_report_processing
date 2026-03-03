@@ -143,8 +143,7 @@ def generate_prep_report(**kwargs):
                    "prep.prep_monitoring"]
     
     ip_names = [
-        'ACE-1','ACE-2','ACE-3','ACE-4','ACE-5',
-        'CARE 1','CARE 2'
+        'ACE-1','ACE-2','ACE-3','ACE-4','CARE 1','CARE 2','ACE-5'
                 ]
     
     procedures = ["proc_currentpc","proc_baselineclinic"]

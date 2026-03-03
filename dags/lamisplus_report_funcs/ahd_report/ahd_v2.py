@@ -95,39 +95,10 @@ def run_proc_ahd_joined_insert(datim):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
-                cur.execute("CALL ahd.proc_ahd_joined_insert(%s)",(datim,))
+                cur.execute("CALL ahd.proc_ahd_joined_insert_v2(%s)",(datim,))
                 conn.commit()
     except Exception as e:
-        print(f"Error occurred while running proc_ahd_joined_insert for {datim}: {e}")
-
-#  Function to generate CTE concurrently
-#def generate_cte_concurrently(datim_ids: list, procedures: list, batch_size=10):
-#    def process_datim(datim_id):
-        # Run all 32 procedures for a single facility
-#        run_procedures_for_datim(datim_id, procedures)
-    # Split datim_ids into batches of size batch_size
-#    batches = [datim_ids[i:i + batch_size] for i in range(0, len(datim_ids), batch_size)]
-
-    # Process each batch sequentially
-#    for batch in batches:
-        # process_batch(batch)
-#        with ThreadPoolExecutor() as executor:
-#            executor.map(process_datim, batch)
-#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
-    
-    # After all initial procedures are completed, run `proc_radet_joined_insert` for each `datim_id`
-#    for i in range(0, len(datim_ids), 50):
-#        batch = datim_ids[i:i + 50]
-#        with concurrent.futures.ThreadPoolExecutor() as executor:
-#            executor.map(run_proc_lastcd4, batch)
-#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
-    
-    # After all initial procedures are completed, run `proc_radet_joined_insert` for each `datim_id`
-#    for i in range(0, len(datim_ids), 50):
-#        batch = datim_ids[i:i + 50]
-#        with concurrent.futures.ThreadPoolExecutor() as executor:
-#            executor.map(run_proc_ahd_joined_insert, batch)
-#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
+        print(f"Error occurred while running proc_ahd_joined_insert_v2 for {datim}: {e}")
 
 def generate_cte_concurrently(datim_ids: list, procedures: list, max_workers:int):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:  # Use a single thread pool for all tasks
@@ -136,10 +107,10 @@ def generate_cte_concurrently(datim_ids: list, procedures: list, max_workers:int
         tasks_cte = [(datim_id, procedures) for datim_id in datim_ids]
         executor.map(lambda args: run_procedures_for_datim(*args), tasks_cte)
 
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        # Step 2: Run the final insert procedures
-        logger.info(f"Starting proc_lastcd4 execution {len(datim_ids)} facilities.")
-        executor.map(run_proc_lastcd4, datim_ids)
+    #with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Step 2: Run proc_lastcd4
+    #    logger.info(f"Starting proc_lastcd4 execution {len(datim_ids)} facilities.")
+    #    executor.map(run_proc_lastcd4, datim_ids)
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Step 2: Run the final insert procedures
@@ -172,11 +143,9 @@ def generate_ahd_report(**kwargs):
         ]
     
     procedures = [
-        "proc_ahd","proc_carecardcd4","proc_labcd4","proc_lastcrytococalantigen",
-        "proc_lastcsfcrag","proc_lastlflam","proc_lastserumcrag","proc_lastvisitect",
-        "proc_sample_collection_date","proc_current_status","proc_cd4type","proc_eac",
-        "proc_lastoneyear_vl_result","proc_current_vl_result"
-        # proc_previous
+        "proc_ahd","proc_lastcrytococalantigen","proc_lastcsfcrag","proc_lastlflam","proc_lastserumcrag",
+        "proc_cd4type", "proc_lastoneyear_vl_result","proc_lastvisitect","proc_lastcd4"
+        # proc_previous, proc_current_status, "proc_labcd4","proc_carecardcd4", "proc_eac","proc_current_vl_result",proc_sample_collection_date
                   ]
 
     ip_names = [

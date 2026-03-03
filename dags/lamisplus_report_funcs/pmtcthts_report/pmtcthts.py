@@ -156,14 +156,14 @@ def generate_pmtcthts_report(**kwargs):
             "hts_client",
             "anc_client",
             "delivery",
-            "pmtct_hts"
+            "pmtct_hts", "hts_pmtct"
             ]
     
     procedures = [
         "proc_anc_client",
         "proc_delivery",
         "proc_hts_client", 
-        "proc_pmtct_hts"
+        "proc_pmtct_hts","proc_hts_pmtct"
                 ]
 
     ip_names = [

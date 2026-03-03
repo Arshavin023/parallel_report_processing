@@ -133,7 +133,7 @@ with DAG("generate_periodic_reports_v2", start_date=datetime(2025, 5, 18),
          default_args=default_args,catchup=False,
          params={"periods": None},
          max_active_runs=1,
-         tags=["reports", "periodic", "lamisplus"]
+         tags=["AWS", "LamisPlus", "Reports", "RADET, HTS, PrEP, MaternalCohort, HTS_Index, TB, EAC, AHD, Biometric", "Periodic"]
          ) as dag:
 
     start = BashOperator(

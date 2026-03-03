@@ -67,9 +67,9 @@ def run_maternalcohort_joined(datim):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
-                cur.execute(f"CALL maternalcohort.proc_maternalcohort_joined('{datim}')")
+                cur.execute(f"CALL maternalcohort.proc_maternalcohort_joined_20251219('{datim}')")
                 conn.commit()
-                logger.info(f"Procedure proc_maternalcohort_joined for {datim} executed successfully.")
+                logger.info(f"Procedure proc_maternalcohort_joined_20251219 for {datim} executed successfully.")
     except psycopg2.OperationalError as e:
         logger.error(f"Operational error occurred while processing {datim} for procedure: {e}")
 

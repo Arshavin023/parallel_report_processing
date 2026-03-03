@@ -11,16 +11,16 @@ import configparser
 import uuid
 from sqlalchemy.exc import SQLAlchemyError
 from psycopg2.extras import execute_values
-from io import StringIO
-import warnings
 
+import warnings
 warnings.filterwarnings("ignore", category=UserWarning, message=".*pandas only supports SQLAlchemy.*")
 
-# --- Configuration and Connection Setup ---
-
 def read_db_config(filename='/home/lamisplus/database_credentials/config.ini', section='database'):
+    # Create a parser
     parser = configparser.ConfigParser()
+    # Read the configuration file
     parser.read(filename)
+    # Get section, default to database
     db = {}
     if parser.has_section(section):
         params = parser.items(section)
@@ -29,6 +29,7 @@ def read_db_config(filename='/home/lamisplus/database_credentials/config.ini', s
     else:
         raise Exception(f'Section {section} not found in the {filename} file')
     return db
+
 
 db_config = read_db_config()
 ods_host = db_config['ods_host']
@@ -44,52 +45,32 @@ stg_database_name = db_config['stg_database_name']
 
 pd.set_option('display.max_columns', None)
 
-# Setup PostgreSQL connections and engines
-staging_conn = psycopg2.connect(
-    host=stg_host,
-    database=stg_database_name,
-    user=stg_username,
-    password=stg_password
-)
-staging_conn.autocommit = False
-cur = staging_conn.cursor()
-
 dwh_conn = psycopg2.connect(
     host=ods_host,
     database=ods_database_name,
     user=ods_username,
-    password=ods_password
-)
-dwh_conn.autocommit = False
+    password=ods_password)
+
 cur2 = dwh_conn.cursor()
 
-stg_engine = create_engine(f"postgresql+psycopg2://{stg_username}:{stg_password}@{stg_host}:{stg_port}/{stg_database_name}")
-dwh_engine = create_engine(f"postgresql://{ods_username}:{ods_password}@{ods_host}:{ods_port}/{ods_database_name}")
+staging_conn = psycopg2.connect(
+    host=stg_host,
+    database=stg_database_name,
+    user=stg_username,
+    password=stg_password)
 
+cur = staging_conn.cursor()
 
-# Load data types once at the start of the script
-try:
-    df_data_types_csv = pd.read_csv('/home/lamisplus/airflow/dags/files/datatypes.csv')
-except FileNotFoundError:
-    raise FileNotFoundError("datatypes.csv not found. Please ensure the file exists at /home/lamisplus/airflow/dags/files/")
+stg_connect = f"postgresql+psycopg2://{stg_username}:{stg_password}@{stg_host}:{stg_port}/{stg_database_name}"
 
-dtype_mapping = {
-    'bigint': 'Int64', # Using Int64 for nullable integer
-    'integer': 'Int64',
-    'timestamp without time zone': 'datetime64[ns]',
-    'date': 'datetime64[ns]',
-    'boolean': 'bool',
-    'double precision': 'float64',
-    'timestamp with time zone': 'datetime64[ns]',
-    'smallint': 'Int64',
-    'bytea': 'object',
-    'text': 'str',
-    'uuid': 'object' # uuid not directly a pandas dtype, handle separately
-}
+stg_engine = create_engine(stg_connect)
 
-# --- Utility Functions ---
+dwh_connect = f"postgresql://{ods_username}:{ods_password}@{ods_host}:{ods_port}/{ods_database_name}"
+
+dwh_engine = create_engine(dwh_connect)
 
 def convert_value(x):
+    """Convert numpy and unsupported types to native Python types."""
     if isinstance(x, (np.integer, np.int64, np.int32)):
         return int(x)
     elif isinstance(x, (np.floating, np.float64, np.float32)):
@@ -105,62 +86,37 @@ def convert_value(x):
 def store_ods_df(df, table_name, constraints, dtype=None):
     ods_table = 'ods_' + table_name
     temp_table = 'temp_' + ods_table
+    #print('Storing on temp table started')
 
     try:
-        # Pre-process JSONB columns to ensure they are valid JSON strings
-        if dtype:
-            jsonb_columns = [
-                col for col, sql_dtype in dtype.items()
-                if isinstance(sql_dtype, JSON) or isinstance(sql_dtype, JSONB)
-            ]
-
-            for col in jsonb_columns:
-                if col in df.columns:
-                    def clean_jsonb(x):
-                        if pd.isna(x) or x is None:
-                            return None
-                        try:
-                            # Unwrap if structured like {'type': 'jsonb', 'value': '{...}'}
-                            if isinstance(x, dict) and 'value' in x:
-                                inner = x['value']
-                                if isinstance(inner, str):
-                                    return json.dumps(json.loads(inner))
-                                return json.dumps(inner)
-                            # If already dict or list
-                            if isinstance(x, (dict, list)):
-                                return json.dumps(x)
-                            # If string containing JSON
-                            if isinstance(x, str):
-                                return json.dumps(json.loads(x))
-                        except Exception:
-                            return None  # fallback if parsing fails
-                        return None
-
-                    df[col] = df[col].apply(clean_jsonb)
-
-        # Drop and recreate temp table
         cur2.execute(f"DROP TABLE IF EXISTS {temp_table}")
         cur2.execute(f"CREATE TABLE {temp_table} (LIKE {ods_table} INCLUDING ALL)")
 
-        # Use StringIO to create a buffer and copy in bulk
-        buffer = StringIO()
-        df.to_csv(buffer, sep='\t', header=False, index=False, na_rep='\\N')
-        buffer.seek(0)
+        if dtype is not None:
+            for col in dtype.keys():
+                if col in df.columns:
+                    df[col] = df[col].apply(lambda x: json.dumps(x) if isinstance(x, (dict, list)) else x)
 
-        with dwh_conn.cursor() as temp_cur:
-            temp_cur.copy_from(buffer, temp_table, sep='\t', null='\\N', columns=df.columns)
-        dwh_conn.commit()
-        print(f'Inserted {len(df)} rows into temp table using COPY FROM.')
+        values = [tuple(map(convert_value, row)) for row in df.itertuples(index=False)]
+        cols = list(df.columns)
+        insert_query = f"INSERT INTO {temp_table} ({', '.join(cols)}) VALUES %s"
+        execute_values(cur2, insert_query, values)
+        #print(f'Inserted {len(values)} rows into temp table.')
 
-        # Build UPSERT query
-        update_cols = ', '.join([f"{col} = excluded.{col}" for col in df.columns])
-        select_expr = ', '.join([
-            f"{col}::timestamp without time zone AS {col}" if col == 'ods_load_time' else col
-            for col in df.columns
-        ])
+        update_cols = ', '.join([f"{col} = excluded.{col}" for col in cols])
+
+        # Cast timestamp columns here
+        timestamp_cols = ['ods_load_time']  # add any other timestamp cols here
+        select_cols = []
+        for col in cols:
+            if col in timestamp_cols:
+                select_cols.append(f"{col}::timestamp without time zone AS {col}")
+            else:
+                select_cols.append(col)
+        select_expr = ', '.join(select_cols)
 
         upsert_query = f"""
-            INSERT INTO {ods_table} ({', '.join(df.columns)})
+            INSERT INTO {ods_table} ({', '.join(cols)})
             SELECT {select_expr} FROM {temp_table}
             ON CONFLICT ({constraints})
             DO UPDATE SET {update_cols}
@@ -171,161 +127,149 @@ def store_ods_df(df, table_name, constraints, dtype=None):
 
     except Exception as e:
         dwh_conn.rollback()
-        print(f'❌ Error during upsert for {ods_table}: {e}')
+        print(f'❌ Error during upsert: {e}')
         raise
 
 
-def transform_ods_df(df, table_name, dtype=None):
-    df = df.replace(r'^\s*$', np.nan, regex=True)
-    
-    # Get column data types from the pre-loaded CSV
-    df_dtype_table = df_data_types_csv[df_data_types_csv['table_name']==table_name][['column_name', 'data_type']]
-    
-    dict_dtypes = {}
-    for _, row in df_dtype_table.iterrows():
-        col_name, col_dtype = row['column_name'], row['data_type']
-        if col_name in df.columns:
-            if col_dtype in dtype_mapping:
-                dict_dtypes[col_name] = dtype_mapping[col_dtype]
-    
-    # --- UPDATED JSONB PROCESSING LOGIC ---
-    # Convert JSONB string data into Python objects, handling nested structures
+
+dtype_mapping = {
+    'bigint': 'int64',
+    'integer': 'int64',
+    'timestamp without time zone': 'datetime64[ns]',
+    'date': 'datetime64[ns]',
+    'boolean': 'bool',
+    'double precision': 'float64',
+    'timestamp with time zone': 'datetime64[ns]',
+    'smallint': 'int64',
+    'bytea': 'object',
+    'text': 'str',
+    'uuid': 'uuid.UUID'
+
+}
+
+
+def transform_ods_df(df, table_name,  dtype=None):  
     if dtype is not None:
-        jsonb_columns = [
-            col for col, sql_dtype in dtype.items() 
-            if isinstance(sql_dtype, JSON) or isinstance(sql_dtype, JSONB)
-        ]
-        for col in jsonb_columns:
-            if col in df.columns:
-                def parse_json(x):
-                    if isinstance(x, str) and x.strip():
-                        try:
-                            # First, try to load the outer object
-                            outer_obj = json.loads(x)
-                            
-                            # Check for the nested structure we identified
-                            if isinstance(outer_obj, dict) and 'value' in outer_obj and isinstance(outer_obj['value'], str):
-                                # If present, parse the inner value as the actual JSON
-                                # We replace escaped double quotes with single quotes for proper parsing
-                                inner_str = outer_obj['value'].replace('""', '"')
-                                return json.loads(inner_str)
-                            
-                            # If it's a simple JSON, return the parsed object
-                            return outer_obj
-                        except (json.JSONDecodeError, TypeError):
-                            # If any parsing fails, return the original value
-                            return x
-                    return x
-                
-                df[col] = df[col].apply(parse_json)
-
-    # Convert types in a vectorized way
-    for col, target_dtype in dict_dtypes.items():
-        if target_dtype == 'datetime64[ns]':
-            df[col] = pd.to_datetime(df[col], errors='coerce')
-        elif target_dtype in ['Int64', 'float64']:
-            df[col] = pd.to_numeric(df[col], errors='coerce').astype(target_dtype)
-        else:
-            df[col] = df[col].astype(target_dtype, errors='ignore')
+        cols = list(dtype.keys())
+        for col in cols:
+            df[col] = df[col].apply(lambda x: dict(x).get('value') if x!= None else None)
+            df[col] = df[col].apply(lambda x: json.loads(x) if x!= None else None)
+            
+    df = df.replace(r'^\s*$', np.nan, regex=True)
+         
+    ## Fix data types
+    df_cols = df.columns
     
-    return df
+    # df_data_types = pd.read_sql_query(data_type_query, staging_conn) ## query database
+    df_data_types = pd.read_csv('/home/lamisplus/airflow/dags/files/datatypes.csv') 
+    df_dtype_table = df_data_types[df_data_types['table_name']==table_name][['column_name', 'data_type']]
+    arr_dtype_cols = df_dtype_table[(df_dtype_table['data_type']!= 'jsonb') & (df_dtype_table['data_type']!= 'character varying')].values
+    dict_dtypes = {}
+    for item in arr_dtype_cols:
+        col_name, col_dtype = item[0], item[1]
+        if col_name in df_cols:
+            dict_dtypes[col_name] = dtype_mapping[col_dtype]
+        
+    # Pick date columns
+    date_cols = [col for (col,val) in dict_dtypes.items() if val == 'datetime64[ns]']
+    int_cols = [col for (col,val) in dict_dtypes.items() if val == 'int64']
+    bool_cols = [col for (col,val) in dict_dtypes.items() if val == 'bool']
+    float_cols = [col for (col,val) in dict_dtypes.items() if val == 'float64']
+        
+    for col in date_cols:
+        #if df[col].dtype == 'object':
+        df[col] = pd.to_datetime(df[col], errors='coerce')
+        
+    for col in int_cols:
+        #if df[col].dtype == 'object':
+        df[col] = pd.to_numeric(df[col], errors='coerce')
 
-# --- Main Processing Function (Refactored) ---
+    for col in bool_cols:
+        #if df[col].dtype == 'object':
+        df[col] = df[col].astype('bool', errors='raise')
+
+    for col in float_cols:
+        #if df[col].dtype == 'object':
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+    
+    return df    
+    #df = df.astype(dict_dtypes)
 
 def process_stg_to_ods(table_name, constraints, dtype=None):
     staging_table = 'stg_' + table_name
-    ls_to_process = []
-    
-    try:
-        # Get all batches to process in one go
-        query_monitoring = text(f"""
-            SELECT datim_id, batch_id, file_name
-            FROM stg_monitoring
-            WHERE table_name = :staging_table
-            AND processed = 'N'
-            AND load_time >= '2025-04-01'
-            ORDER BY load_time ASC
-            LIMIT 5
-        """)
-        
-        with stg_engine.connect() as conn:
-            ls_to_process = conn.execute(query_monitoring, {'staging_table': staging_table}).fetchall()
-        
-        if not ls_to_process:
-            print(f"No unprocessed batches found for {table_name}. Skipping...")
-            return
+    ods_table = 'ods_' + table_name
+    record_count = 0
+    stg_conn=stg_engine.connect()
+    cur.execute("""SELECT datim_id, batch_id, file_name 
+                from stg_monitoring 
+                where table_name = '{}' 
+                AND processed = 'N' 
+                ORDER BY load_time ASC LIMIT 2000""".format(staging_table))
+    ls_to_process = cur.fetchall()
+    load_time = datetime.datetime.now()
+    ls_to_process.sort(key=lambda i: i[1])
 
-        print(f"Found {len(ls_to_process)} batches to process for {table_name}. Reading all data...")
-        
-        # Build the WHERE clause dynamically for bulk read
-        conditions = []
-        params = {}
-        for i, (datim_id, batch_id, file_name) in enumerate(ls_to_process):
-            conditions.append(
-                f"(stg_datim_id = :datim_id_{i} AND stg_batch_id = :batch_id_{i} AND stg_file_name = :file_name_{i})"
-            )
-            params[f'datim_id_{i}'] = datim_id
-            params[f'batch_id_{i}'] = batch_id
-            params[f'file_name_{i}'] = file_name
-        
-        where_clause = " OR ".join(conditions)
-        
-        # --- FIX IS HERE ---
-        # Instead of passing the TextClause to pd.read_sql, we execute it directly
-        # and then create the DataFrame from the result.
-        with stg_engine.connect() as conn:
-            read_query = text(f"SELECT * FROM {staging_table} WHERE {where_clause}")
-            result = conn.execute(read_query, params)
-            
-            # Fetch all results and column names to create the DataFrame
-            columns = result.keys()
-            df = pd.DataFrame(result.fetchall(), columns=columns)
-            
-            print(f'Successfully read {len(df)} rows for {table_name}. Starting transformation and upsert...')
+    print(f'Processing {table_name} data...')
 
-        if df.empty:
-            print(f"No data to process in {staging_table} despite having batches. Skipping...")
-            return
-
-        df = df.drop(['stg_batch_id', 'stg_load_time', 'stg_file_name'], axis=1, errors='ignore')
+    for datim_id, batch_id, file_name in ls_to_process:
+        df = pd.read_sql(f"""SELECT * FROM {staging_table} 
+                            WHERE stg_datim_id = '{datim_id}' 
+                            AND stg_batch_id = '{batch_id}' 
+                            AND stg_file_name = '{file_name}'""", con=staging_conn)
+        df = df.drop(['stg_batch_id', 'stg_load_time', 'stg_file_name'], axis=1)
         df = df.rename(columns={'stg_datim_id': 'ods_datim_id'})
-        df['ods_load_time'] = datetime.datetime.now()
-        
+        df['ods_load_time'] = load_time
+        df_count = len(df)
+        record_count += int(df_count)
+        print(f'Loading staging data for {datim_id}: {batch_id}: {file_name}...')
         ls_cons = constraints.replace(" ", "").split(',')
-        df = df.drop_duplicates(subset=ls_cons, keep='last')
-        
-        df_transformed = transform_ods_df(df, table_name, dtype=dtype)
-        
-        store_ods_df(df_transformed, table_name, constraints, dtype=dtype)
-        
-        # Update stg_monitoring table in a single transaction
-        with staging_conn.cursor() as update_cur:
-            for datim_id, batch_id, file_name in ls_to_process:
+        print(ls_cons)
+        df = df.drop_duplicates(subset=ls_cons)
+        if not df.empty:
+            print(f'Transforming data for {datim_id}: {batch_id}: {file_name}...')
+            try:
+                df_transformed = transform_ods_df(df, table_name, dtype=dtype)
+                print(f'Storing stg data on {staging_table} for {datim_id}: {file_name}...')
+                store_ods_df(df_transformed, table_name, constraints, dtype=dtype)
+                print(f'Successfully stored ods data for {datim_id}: {batch_id}: {file_name}...')
+                # Use connection for updates
                 update_query_success = """
-                UPDATE stg_monitoring SET processed='Y', stg_deleted='N', error_message='No errors'
-                WHERE table_name = %s AND datim_id = %s AND batch_id = %s AND file_name = %s
+                UPDATE stg_monitoring 
+                SET processed='Y', stg_deleted='N', error_message='No errors'
+                WHERE table_name = %s AND datim_id = %s 
+                AND batch_id = %s AND file_name = %s
                 """
-                update_cur.execute(update_query_success, (staging_table, datim_id, batch_id, file_name))
-            staging_conn.commit()
-            print(f'Updated stg_monitoring for all batches of {staging_table} successfully.')
-            
-    except Exception as e:
-        staging_conn.rollback()
-        error_message = str(e)
-        print(f'❌ Error processing {table_name}: {error_message}')
-        if ls_to_process:
-            with staging_conn.cursor() as update_cur:
-                for datim_id, batch_id, file_name in ls_to_process:
-                    update_query_failed = """
-                    UPDATE stg_monitoring SET processed='F', stg_deleted='N', error_message=%s
-                    WHERE table_name = %s AND datim_id = %s AND batch_id = %s AND file_name = %s
-                    """
-                    update_cur.execute(update_query_failed, (error_message, staging_table, datim_id, batch_id, file_name))
+                cur.execute(update_query_success,(staging_table,datim_id,batch_id,file_name))
                 staging_conn.commit()
-                print(f'Updated stg_monitoring for all failed batches of {staging_table}.')
-        raise
+                print(f'Updated stg_monitoring table for {staging_table} for successfully data migration')
+                    
+            except Exception as e:
+                error_message=str(e)
+                # Handle errors and log them in the staging database
+                update_query_failed = """
+                UPDATE stg_monitoring 
+                SET processed='F', stg_deleted='N', error_message=%s
+                WHERE table_name = %s AND datim_id = %s 
+                AND batch_id = %s AND file_name = %s
+                """
+                cur.execute(update_query_failed,(error_message, staging_table,datim_id,batch_id,file_name))
+                staging_conn.commit()
+                print(f'Updated stg_monitoring table for {staging_table} for failed data migration')
 
-
+        else:
+            print(f'Successfully stored ods data for {datim_id}: {batch_id}: {file_name}...')
+            # Use connection for updates
+            update_query_success = """
+            UPDATE stg_monitoring 
+            SET processed='Y', stg_deleted='N', error_message='No errors'
+            WHERE table_name = %s AND datim_id = %s 
+            AND batch_id = %s AND file_name = %s
+            """
+            cur.execute(update_query_success,(staging_table,datim_id,batch_id,file_name))
+            # print(f'Rows affected: {cur.rowcount}')
+            staging_conn.commit()
+            print(f'Updated stg_monitoring table for {staging_table} for successfully data migration')
+     
 def process_patient_person():  
     table_name = 'patient_person'
     constraints = 'ods_datim_id,uuid'
@@ -374,19 +318,19 @@ def process_hiv_art_clinical():
                                   'tb_screen': JSON().with_variant(JSONB, 'postgresql'), 'opportunistic_infections': JSON().with_variant(JSONB, 'postgresql'),
                                   'arvdrugs_regimen': JSON().with_variant(JSONB, 'postgresql'), 'viral_load_order': JSON().with_variant(JSONB, 'postgresql'),
                                   'extra': JSON().with_variant(JSONB, 'postgresql'),}
-    constraints = 'ods_datim_id, uuid'
+    constraints = 'uuid, person_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints, dtype=dtype)
 
 def process_hiv_enrollment():
     table_name = 'hiv_enrollment'
-    constraints = 'ods_datim_id, uuid'
+    constraints = 'uuid, person_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_hiv_observation():
     table_name = 'hiv_observation'
-    constraints = 'ods_datim_id, uuid'
+    constraints = 'uuid, person_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     dtype ={'data': JSON().with_variant(JSONB, 'postgresql')}
     process_stg_to_ods(table_name, constraints, dtype=dtype)
@@ -447,7 +391,7 @@ def process_patient_encounter():
 
 def process_prep_clinic():
     table_name = 'prep_clinic'
-    constraints = 'ods_datim_id, uuid'
+    constraints = 'uuid, person_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     dtype = {'hepatitis': JSON().with_variant(JSONB, 'postgresql'), 'syphilis': JSON().with_variant(JSONB, 'postgresql'),
                                          'syndromic_sti_screening': JSON().with_variant(JSONB, 'postgresql'), 'other_tests_done': JSON().with_variant(JSONB, 'postgresql'),
@@ -539,7 +483,7 @@ def process_hiv_regimen_type():
 
 def process_laboratory_sample():
     table_name = 'laboratory_sample'
-    constraints = 'ods_datim_id, id'
+    constraints = 'id, uuid, patient_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
@@ -551,13 +495,13 @@ def process_laboratory_sample_type():
     
 def process_laboratory_test():
     table_name = 'laboratory_test'
-    constraints = 'ods_datim_id, id'
+    constraints = 'id, uuid, patient_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
 def process_laboratory_result():
     table_name = 'laboratory_result'
-    constraints = 'ods_datim_id, id'
+    constraints = 'id, uuid, patient_uuid, ods_datim_id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
 
@@ -730,6 +674,18 @@ def process_mhpss_screening():
     constraints = 'ods_datim_id, person_uuid, id'
     #ods_setup_new(table_name, constraints)
     process_stg_to_ods(table_name, constraints)
+
+def process_pmtct_hts():
+    table_name = 'pmtct_hts'
+    constraints = 'id, uuid, ods_datim_id'
+    #ods_setup_new(table_name, constraints)
+    process_stg_to_ods(table_name, constraints)
+
+def process_pmtct_pregnancy_cycle():
+    table_name = 'pmtct_pregnancy_cycle'
+    constraints = 'id, uuid, person_uuid, ods_datim_id'
+    #ods_setup_new(table_name, constraints)
+    process_stg_to_ods(table_name, constraints)
     
 if __name__ == '__main__':
     process_patient_person()
@@ -790,3 +746,5 @@ if __name__ == '__main__':
     process_hts_client_referral()
     process_hivst()
     process_mhpss_screening()
+    process_pmtct_hts()
+    process_pmtct_pregnancy_cycle()

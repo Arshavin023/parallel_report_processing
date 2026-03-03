@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from airflow.utils.task_group import TaskGroup
 import sys
 import os
-from lamisplus_funcs import stg_to_ods_20251224 as lamisplus_funcs
+from lamisplus_funcs import stg_to_ods_20260301 as lamisplus_funcs
 from lamisplus_funcs.airflow_api import trigger_dag
 # sys.path.append('/home/lamisplus/airflow/lamisplus_funcs')
 
@@ -24,7 +24,7 @@ default_args = {
 }
 
 
-with DAG("lamisplus_stg_to_ods_20251224", start_date=datetime(2025, 5, 26), 
+with DAG("lamisplus_stg_to_ods_20260301", start_date=datetime(2025, 5, 26), 
          schedule_interval=timedelta(hours=1), default_args=default_args, 
          catchup=False, max_active_runs=1) as dag:
 
@@ -261,6 +261,10 @@ with DAG("lamisplus_stg_to_ods_20251224", start_date=datetime(2025, 5, 26),
         pmtct_hts = PythonOperator(
             task_id="pmtct_hts",
             python_callable=lamisplus_funcs.process_pmtct_hts)
+        
+        pmtct_pregnancy_cycle = PythonOperator(
+            task_id="pmtct_pregnancy_cycle",
+            python_callable=lamisplus_funcs.process_pmtct_pregnancy_cycle)
         
     with TaskGroup(group_id='delete_archived_records') as delete_archived_records:
         ods_base_organisation_unit = PostgresOperator(
@@ -501,6 +505,12 @@ with DAG("lamisplus_stg_to_ods_20251224", start_date=datetime(2025, 5, 26),
             task_id="ods_pmtct_hts",
             postgres_conn_id="lamisplus_conn",
             sql="call public.proc_delete_archived_records_updated_v2('pmtct_hts')",
+            autocommit=True)
+        
+        ods_pmtct_pregnancy_cycle = PostgresOperator(
+            task_id="ods_pmtct_pregnancy_cycle",
+            postgres_conn_id="lamisplus_conn",
+            sql="call public.proc_delete_archived_records_updated_v2('pmtct_pregnancy_cycle')",
             autocommit=True)
         
     
