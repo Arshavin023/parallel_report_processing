@@ -1,4 +1,7 @@
 # Airflow ETL/ELT DAGs
+
+![System Architecture](images/warehouse_architecture.png)
+
 ## Overview
 This project automates high-volume data movement between production staging (Postgres) and the Data Warehouse (ODS). It focuses on idempotent ETL processes, utilizing Python-based multithreading to reduce latency and ensuring strict PII masking during the transfer protocol.
 
@@ -10,9 +13,11 @@ This project automates high-volume data movement between production staging (Pos
 
 
 ## Introduction <a name="introduction"></a>
-This following are Airflow DAGs and there respective functions
-- lamisplus_stg_to_ods: Schedules and executes periodic ETL on different tables between staging database (lamisplus_staging_dwh on PRODUCTION FILE SERVER) and data warehouse (lamisplus_ods_dwh on PRODUCTION DATA WAREHOUSE SERVER)
-- generate_weekly_reports_v2: Schedules and executes periodic report generation for different reports; RADET, HTS, PreP, PrEP_longitudinal, Family_Partner_Index, TB, AHD, PMTCT_HTS and Maternal_Cohort
+#### This following are Airflow DAGs and there respective functions
+- Orchestrated ETL (Airflow): A robust DAG (Directed Acyclic Graph) structure manages the hourly batch windows, ensuring tasks execute in the correct order with built-in retry logic and monitoring.
+- Cross-Server Data Synchronization: Extracted records from the FileServer (PostgreSQL) are transformed and upserted into the Data Warehouse. This ensures patient records are updated if they exist or inserted if they are new, maintaining a single source of truth.
+- Concurrent Partitioned Processing: To maximize throughput, the pipeline performs concurrent upserts across warehouse tables. These tables utilize List Partitioning by facility ID, allowing for high-speed writes and isolated data management.
+- Automated Stakeholder Reporting: Post-persistence, the system triggers Parameterized Stored Procedures. These procedures aggregate data from the partitioned tables to generate periodic reports for clinical and administrative decision-making.
 
 
 ## Installation <a name="installation"></a>
