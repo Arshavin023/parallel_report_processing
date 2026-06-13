@@ -20,7 +20,7 @@ from lamisplus_report_funcs.tb_report import tb
 from lamisplus_report_funcs.familypartnerindex_report  import familypartnerindex
 from lamisplus_report_funcs.ahd_report import ahd_v2
 from lamisplus_report_funcs.biometric_report import biometric
-from lamisplus_report_funcs.eac_report import eac
+from lamisplus_report_funcs.eac_report import eac_v2
 
 
 def run_maternalcohort_report(**kwargs):
@@ -101,7 +101,7 @@ def run_eac_report(**kwargs):
         raise ValueError("No 'periods' provided in DAG params.")
     if isinstance(periods, str):
         periods = [periods]
-    eac.generate_eac_report(periods=periods)
+    eac_v2.generate_eac_report(periods=periods)
 
 def run_ahd_report(**kwargs):
     periods = kwargs.get('params', {}).get('periods')
@@ -189,11 +189,6 @@ with DAG("generate_periodic_reports_v2", start_date=datetime(2025, 5, 18),
             python_callable=run_hts_report,
             provide_context=True,
         )
-        prep_task = PythonOperator(
-            task_id="prep_v2",
-            python_callable=run_prep_report,
-            provide_context=True,
-        )
     
     with TaskGroup(group_id='generate_third_report_batch') as generate_third_report_batch:
         ahd_task = PythonOperator(
@@ -202,7 +197,7 @@ with DAG("generate_periodic_reports_v2", start_date=datetime(2025, 5, 18),
             provide_context=True,
         )
         eac_task = PythonOperator(
-            task_id="eac",
+            task_id="eac_v2",
             python_callable=run_eac_report,
             provide_context=True,
         )
@@ -213,9 +208,9 @@ with DAG("generate_periodic_reports_v2", start_date=datetime(2025, 5, 18),
         )
 
     with TaskGroup(group_id='generate_fourth_report_batch') as generate_fourth_report_batch:
-        tb_task = PythonOperator(
-            task_id="tb",
-            python_callable=run_tb_report,
+        prep_task = PythonOperator(
+            task_id="prep_v2",
+            python_callable=run_prep_report,
             provide_context=True,
         )
     

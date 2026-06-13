@@ -14,7 +14,7 @@ default_args = {
     "retry_delay": datetime.timedelta(minutes=5)
 }
 
-with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),schedule_interval=None,
+with DAG("lamisplus_refresh_reports_v2",start_date=datetime.datetime(2026, 3, 7),schedule_interval=None,
             default_args=default_args,catchup=True,max_active_runs=1,tags=["refresh_tables", "lamisplus","daily"]) as dag:
 
     start = BashOperator(
@@ -25,9 +25,9 @@ with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),sc
     with TaskGroup(group_id='upstream_tasks') as upstream_tasks:
         
         upsert_pharmacy_details_regimen_v3 = PostgresOperator(
-            task_id="upsert_pharmacy_details_regimen_v3",
+            task_id="upsert_pharmacy_details_regimen_v4",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_pharmacy_details_regimen_v3()',
+            sql='call expanded_radet.proc_upsert_pharmacy_details_regimen_v4()',
             autocommit=True
         )
 
@@ -58,14 +58,7 @@ with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),sc
             sql='call expanded_radet.proc_upsert_baseappcodeset()',
             autocommit=True
         )
-        
-        upsert_laboratoryorder_hivenrollment = PostgresOperator(
-            task_id="upsert_laboratoryorder_hivenrollment",
-            postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_laboratoryorder_hivenrollment()',
-            autocommit=True
-        )
-        
+
         upsert_temp_laboratorytestresults = PostgresOperator(
             task_id="upsert_temp_laboratorytestresults",
             postgres_conn_id="radet_conn",
@@ -74,14 +67,6 @@ with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),sc
         )
 
     with TaskGroup(group_id='midstream_tasks') as midstream_tasks:
-        
-        upsert_hivclinicalenrollment_baseappcode = PostgresOperator(
-            task_id="upsert_hivclinicalenrollment_baseappcode",
-            postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_hivclinicalenrollment_baseappcode()',
-            autocommit=True
-        )
-        
         upsert_laboratorytestresults_v2 = PostgresOperator(
             task_id="upsert_laboratorytestresults_v2",
             postgres_conn_id="radet_conn",
@@ -97,25 +82,16 @@ with DAG("lamisplus_refresh_reports",start_date=datetime.datetime(2024, 7, 1),sc
         )
         
     with TaskGroup(group_id='downstream_tasks') as downstream_tasks:
-        
-        upsert_sub_laboratory_details = PostgresOperator(
-            task_id="upsert_sub_laboratory_details",
+        upsert_tblongitudinal_v3 = PostgresOperator(
+            task_id="upsert_tblongitudinal_v3",
             postgres_conn_id="radet_conn",
-            sql='call expanded_radet.proc_upsert_sub_laboratory_details()',
+            sql='call expanded_radet.proc_upsert_tblongitudinal_v3()',
             autocommit=True
         )
 
-    upsert_laboratory_details = PostgresOperator(
-        task_id="upsert_laboratory_details",
-        postgres_conn_id="radet_conn",
-        sql='call expanded_radet.proc_upsert_laboratory_details()',
-        autocommit=True
-    )
-        
-		
     end = BashOperator(
         task_id="end",
         bash_command="echo end"
     )
     # Define the task dependencies
-    start >> upstream_tasks >> midstream_tasks >> downstream_tasks >> upsert_laboratory_details >> end
+    start >> upstream_tasks >> midstream_tasks >> downstream_tasks >> end

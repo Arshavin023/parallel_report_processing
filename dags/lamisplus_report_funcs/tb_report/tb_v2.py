@@ -15,13 +15,12 @@ import threading
 import schedule
 from database_connection.db_connect import connect_to_db
 from src import logger
-from concurrent.futures import ThreadPoolExecutor
-
-pd.set_option('display.max_columns', None)
 
 dwh_conn = connect_to_db.connect('lamisplus_ods_dwh')[0]
 cur2 = dwh_conn.cursor()
 dwh_engine = connect_to_db.connect('lamisplus_ods_dwh')[1]
+print(dwh_conn)
+pd.set_option('display.max_columns', None)
 
 # Function to fetch datim_ids from the database
 def fetch_datim_ids(ip_name):
@@ -32,21 +31,31 @@ def fetch_datim_ids(ip_name):
     datim_ids = [record[0] for record in datims]  # Extract datim_id from the records
     return datim_ids
 
-def update_ahd_period_table(periodcode):
+def update_prep_period_table(periodcode):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
-                cur.execute("CALL ahd.proc_update_ahd_period_table(%s)",(periodcode,))
+                cur.execute("CALL prep.proc_update_prep_period_table(%s)",(periodcode,))
                 conn.commit()
                 logger.info(f"Period {periodcode} updated successfully.")
-    except Exception as e:
+    except psycopg2.OperationalError as e:
         logger.error(f"Operational error occurred while updating period {periodcode}: {e}")
 
 def truncate_table(table_name):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
-                cur.execute(f"TRUNCATE ahd.{table_name}")
+                cur.execute(f"TRUNCATE tb.{table_name}")
+                conn.commit()
+                logger.info(f"Table {table_name} truncated successfully.")
+    except Exception as e:
+        logger.error(f"Operational error occurred while truncating {table_name}: {e}")
+
+def truncate_generic_table(table_name):
+    try:
+        with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
+            with conn.cursor() as cur:
+                cur.execute(f"TRUNCATE {table_name}")
                 conn.commit()
                 logger.info(f"Table {table_name} truncated successfully.")
     except Exception as e:
@@ -62,7 +71,7 @@ def run_single_procedure(procedure, datim):
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
                 # cur.execute("CALL %s(%s)", (procedure, datim))
-                cur.execute(f"CALL ahd.{procedure}('{datim}')")
+                cur.execute(f"CALL tb.{procedure}('{datim}')")
                 conn.commit()
                 logger.info(f"Successfully executed {procedure} for {datim}")
     except Exception as e:
@@ -78,71 +87,60 @@ def run_procedures_for_datim(datim, procedures):
         # Wait for all futures to complete and handle exceptions if necessary
         for future in concurrent.futures.as_completed(futures):
             future.result()  # This will raise any exceptions that were caught during the procedure execution
-  
+
 # Function to run `proc_radet_joined_insert` for a single `datim_id`
-def run_proc_lastcd4(datim):
+def run_proc_tb_joined(datim):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
-                cur.execute("CALL ahd.proc_lastcd4(%s)",(datim,))
+                cur.execute("CALL tb.proc_tb_joined(%s)",(datim,))
                 conn.commit()
-                logger.info(f"Successfully executed lastcd4 for {datim}")
+                logger.info(f"Successfully executed tb_joined for {datim}")
     except Exception as e:
-        print(f"Error occurred while running proc_lastcd4 for {datim}: {e}")
-        
-# Function to run `proc_radet_joined_insert` for a single `datim_id`
-def run_proc_ahd_joined_insert(datim):
-    try:
-        with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
-            with conn.cursor() as cur:
-                cur.execute("CALL ahd.proc_ahd_joined_insert_v2(%s)",(datim,))
-                conn.commit()
-    except Exception as e:
-        print(f"Error occurred while running proc_ahd_joined_insert_v2 for {datim}: {e}")
+        logger.error(f"Error occurred executing tb_joined for {datim}: {e}")
 
 def generate_cte_concurrently(datim_ids: list, procedures: list, max_workers:int):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:  # Use a single thread pool for all tasks
-        logger.info(f"Starting to generate CTEs for {len(datim_ids)} facilities.")
         # Step 1: Run procedures for each DATIM ID
+        logger.info(f"Starting to generate CTEs for {len(datim_ids)} facilities.")
         tasks_cte = [(datim_id, procedures) for datim_id in datim_ids]
         executor.map(lambda args: run_procedures_for_datim(*args), tasks_cte)
-
+        
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Step 2: Run the final insert procedures
         logger.info(f"Starting final joined insert for {len(datim_ids)} facilities.")
-        executor.map(run_proc_ahd_joined_insert, datim_ids)
+        executor.map(run_proc_tb_joined, datim_ids)
 
-def run_final_ahd(ip_name:str,periodcode:str):
+def run_final_tb(ip_name:str, periodcode:str):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
             with conn.cursor() as cur:
-                cur.execute(f"CALL ahd.proc_final_ahd('{ip_name}')")
-                logger.info(f"Successfully executed final_ahd for {periodcode} for {ip_name}")
+                cur.execute(f"CALL tb.proc_final_tb('{ip_name}')")
+                conn.commit()
+                logger.info(f"Successfully executed final_tb for {periodcode} for {ip_name}")
     except Exception as e:
-        logger.error(f"Error occurred executing final_ahd for {ip_name}: {e}")
+        logger.error(f"Error occurred executing final_tb for {ip_name}: {e}")
 
-def run_final_ahd_for_ips(ip_names:list, periodcode:str):
-    [run_final_ahd(ip_name,periodcode) for ip_name in ip_names]
+def run_final_tb_for_ips(ip_names:list, periodcode:str):
+    [run_final_tb(ip_name,periodcode) for ip_name in ip_names]
 
-def generate_ahd_report(**kwargs):
+def generate_tb_report(**kwargs):
     periods = kwargs.get('periods', [])
     if not periods:
         raise ValueError("No periods provided for the report generation.")
     
     table_names = [
-        "cte_ahd","cte_lastcrytococalantigen","cte_lastcsfcrag","cte_lastlflam","cte_lastserumcrag","cte_lastvisitect",
-        "cte_cd4type","cte_eac","cte_lastoneyear_vl_result","cte_lastcd4",
-        "ahd_monitoring","ahd_joined"
+        "tptclients","iptcompletionfrompharmacy","tblabsample","negativeresult"
         ]
     
     procedures = [
-        "proc_ahd","proc_lastcrytococalantigen","proc_lastcsfcrag","proc_lastlflam","proc_lastserumcrag",
-        "proc_cd4type", "proc_lastoneyear_vl_result","proc_lastvisitect","proc_lastcd4"
+        "proc_clientobservation","proc_tptclients","proc_iptcompletionfrompharmacy",
+        "proc_tblabsample","proc_negativeresult"
                   ]
 
     ip_names = [
-        'ACE-1','ACE-2','ACE-3','ACE-4','ACE-5',
-        'CARE 1', 'CARE 2'
+        'ACE-1','ACE-2','ACE-3','ACE-4',
+        'CARE 1', 'CARE 2', 'ACE-5'
                 ]
     
     group_ip_datims = [fetch_datim_ids(ip) for ip in ip_names]
@@ -151,7 +149,7 @@ def generate_ahd_report(**kwargs):
         run_truncate_for_ctes(table_names)
         for datim_ids in group_ip_datims:
             generate_cte_concurrently(datim_ids, procedures, 10)
-        run_final_ahd_for_ips(ip_names,periodcode)
+        run_final_tb_for_ips(ip_names,periodcode)
 
 if __name__ == '__main__':
-    generate_ahd_report()
+    generate_tb_report()

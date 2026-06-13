@@ -98,7 +98,7 @@ def run_proc_radet_joined_insert(datim, periodcode):
     try:
         with engine.connect() as conn:
             conn = conn.execution_options(isolation_level="AUTOCOMMIT")
-            conn.execute(text("CALL expanded_radet_client.proc_radet_joined_insert(:datim_id)"), {"datim_id": datim})
+            conn.execute(text("CALL expanded_radet_client.proc_radet_joined_insert_v2(:datim_id)"), {"datim_id": datim})
             logger.info(f"Successfully executed radet_joined_insert for {datim} for {periodcode}")
     except Exception as e:
         logger.error(f"Error occurred executing radet_joined_insert for {datim} for {periodcode}: {e}")
@@ -151,8 +151,8 @@ def generate_radet_report(**kwargs):
         "proc_bio_data","proc_biometric","proc_carecardcd4",
         "proc_case_manager","proc_cervical_cancer","proc_client_verification",
         "proc_crytococal_antigen","proc_tbstatus","proc_current_clinical",
-        "proc_current_regimen", "proc_current_status","proc_eac",
-        "proc_current_tb_result", "proc_current_vl_result","proc_dsd1",
+        "proc_current_regimen", "proc_current_status","proc_eac","proc_previous_v2",
+        "proc_current_tb_result", "proc_current_vl_result","proc_dsd1","proc_previous_previous_v2",
         "proc_dsd2","proc_ipt", "proc_ipt_s", "proc_iptnew", "proc_labcd4",
         "proc_naive_vl_data", "proc_ovc", "proc_patient_lga","proc_negativetbdiagnosticresults",
         "proc_pharmacy_details_regimen","proc_sample_collection_date", "proc_tb_sample_collection",

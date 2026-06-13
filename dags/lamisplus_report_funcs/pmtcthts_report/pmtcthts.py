@@ -22,6 +22,7 @@ dwh_engine = connect_to_db.connect('lamisplus_ods_dwh')[1]
 print(dwh_conn)
 pd.set_option('display.max_columns', None)
 
+
 # Function to fetch datim_ids from the database
 def fetch_datim_ids(ip_name):
     fetch_datims_query = """SELECT datim_id FROM central_partner_mapping 
@@ -30,6 +31,7 @@ def fetch_datim_ids(ip_name):
     datims = cur2.fetchall()
     datim_ids = [record[0] for record in datims]  # Extract datim_id from the records
     return datim_ids
+
 
 def update_prep_period_table(periodcode):
     try:
@@ -41,6 +43,7 @@ def update_prep_period_table(periodcode):
     except psycopg2.OperationalError as e:
         logger.error(f"Operational error occurred while updating period {periodcode}: {e}")
 
+
 def truncate_table(table_name):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
@@ -51,6 +54,7 @@ def truncate_table(table_name):
     except Exception as e:
         logger.error(f"Operational error occurred while truncating {table_name}: {e}")
 
+
 def truncate_generic_table(table_name):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
@@ -60,6 +64,7 @@ def truncate_generic_table(table_name):
                 logger.info(f"Table {table_name} truncated successfully.")
     except Exception as e:
         logger.error(f"Operational error occurred while truncating {table_name}: {e}")
+
 
 def run_truncate_for_ctes(table_names):
     with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -77,6 +82,7 @@ def run_single_procedure(procedure, datim):
     except Exception as e:
         logger.error(f"Error occurred executing {procedure} for {datim}: {e}")
 
+
 def run_procedures_for_datim(datim, procedures):
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [
@@ -87,6 +93,7 @@ def run_procedures_for_datim(datim, procedures):
         # Wait for all futures to complete and handle exceptions if necessary
         for future in concurrent.futures.as_completed(futures):
             future.result()  # This will raise any exceptions that were caught during the procedure execution
+
 
 # Function to run `proc_radet_joined_insert` for a single `datim_id`
 def run_proc_pmtcthts_joined(datim):
@@ -99,25 +106,6 @@ def run_proc_pmtcthts_joined(datim):
     except Exception as e:
         logger.error(f"Error occurred executing pmtcthts_joined for {datim}: {e}")
 
-#def generate_cte_concurrently(datim_ids: list, procedures: list, batch_size=15):
-#    def process_datim(datim_id):
-#        # Run all 32 procedures for a single facility
-#        run_procedures_for_datim(datim_id, procedures)
-    # Split datim_ids into batches of size batch_size
-#    batches = [datim_ids[i:i + batch_size] for i in range(0, len(datim_ids), batch_size)]
-
-    # Process each batch sequentially
-#    for batch in batches:
-        # process_batch(batch)
-#        with ThreadPoolExecutor(max_workers=batch_size) as executor:
-#            executor.map(process_datim, batch)
-#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
-
-#    for i in range(0, len(datim_ids), 25):
-#        batch = datim_ids[i:i + 25]
-#        with concurrent.futures.ThreadPoolExecutor(max_workers=batch_size) as executor:
-#            executor.map(run_proc_pmtcthts_joined, batch)
-#        logger.info(f"Batch of {len(batch)} procedures executed successfully for datim_ids: {batch}")
 
 def generate_cte_concurrently(datim_ids: list, procedures: list, max_workers:int):
     with ThreadPoolExecutor(max_workers=max_workers) as executor:  # Use a single thread pool for all tasks
@@ -133,6 +121,7 @@ def generate_cte_concurrently(datim_ids: list, procedures: list, max_workers:int
 
     logger.info(f"All procedures for CTE generation and final insert completed for {datim_ids}")
 
+
 def run_final_pmtcthts(ip_name:str, period):
     try:
         with connect_to_db.connect('lamisplus_ods_dwh')[0] as conn:
@@ -146,6 +135,7 @@ def run_final_pmtcthts(ip_name:str, period):
 def run_expanded_radet_weekly_for_ips(ip_names:list, period):
     [run_final_pmtcthts(ip_name,period) for ip_name in ip_names]
 
+
 def generate_pmtcthts_report(**kwargs):
     periods = kwargs.get('periods', [])
     if not periods:
@@ -155,14 +145,14 @@ def generate_pmtcthts_report(**kwargs):
             "pmtcthts_monitoring",
             "hts_client",
             "anc_client",
-            "delivery",
-            "pmtct_hts", "hts_pmtct"
+            "delivery","firsthts",
+            "pmtct_hts", "hts_pmtct","firstpmtcthts"
             ]
     
     procedures = [
         "proc_anc_client",
-        "proc_delivery",
-        "proc_hts_client", 
+        "proc_delivery","proc_firstpmtcthts",
+        "proc_hts_client", "proc_firsthts",
         "proc_pmtct_hts","proc_hts_pmtct"
                 ]
 

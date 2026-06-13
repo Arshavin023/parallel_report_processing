@@ -204,7 +204,7 @@ def process_stg_to_ods(table_name, constraints, dtype=None):
                 from stg_monitoring 
                 where table_name = '{}' 
                 AND processed = 'N' 
-                ORDER BY load_time ASC LIMIT 2000""".format(staging_table))
+                LIMIT 5000""".format(staging_table))
     ls_to_process = cur.fetchall()
     load_time = datetime.datetime.now()
     ls_to_process.sort(key=lambda i: i[1])
