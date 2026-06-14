@@ -206,7 +206,7 @@ def process_stg_to_ods(staging_conn, dwh_conn, table_name, constraints, dtype=No
                FROM stg_monitoring
                WHERE table_name = %s
                AND processed = 'N'
-               LIMIT 5000""",
+               LIMIT 10000""",
             (staging_table,),
         )
         ls_to_process = cur.fetchall()

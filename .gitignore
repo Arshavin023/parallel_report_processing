@@ -25,5 +25,6 @@ airflow_env
 airflow-webserver.pid  
 dags/build
 dags/data_transformation_and_report_generation.egg-info
+dags/lamisplus_report_funcs.egg-info
 logs
 webserver_config.py

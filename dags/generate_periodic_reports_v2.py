@@ -7,20 +7,19 @@ from datetime import datetime, timedelta
 from airflow.utils.task_group import TaskGroup
 import sys
 import os
-from lamisplus_funcs import stg_to_ods as lamisplus_funcs
 from lamisplus_funcs.airflow_api import trigger_dag
 # sys.path.append('/home/lamisplus/airflow/lamisplus_funcs')
-from lamisplus_report_funcs.maternalcohort_report import maternalcohort
-from lamisplus_report_funcs.pmtcthts_report import pmtcthts
-from lamisplus_report_funcs.preplongitudinal_report import preplongitudinal
-from lamisplus_report_funcs.radet_report import pre_prepre, radet
-from lamisplus_report_funcs.prep_report import prep_v2
-from lamisplus_report_funcs.hts_report import hts
-from lamisplus_report_funcs.tb_report import tb
-from lamisplus_report_funcs.familypartnerindex_report  import familypartnerindex
-from lamisplus_report_funcs.ahd_report import ahd_v2
-from lamisplus_report_funcs.biometric_report import biometric
-from lamisplus_report_funcs.eac_report import eac_v2
+from lamisplus_report_funcs.maternalcohort_report import maternalcohort_optimized as maternalcohort
+from lamisplus_report_funcs.pmtcthts_report import pmtcthts_optimized as pmtcthts
+from lamisplus_report_funcs.preplongitudinal_report import preplongitudinal_optimized as preplongitudinal
+from lamisplus_report_funcs.radet_report import pre_prepre, radet_optimized as radet
+from lamisplus_report_funcs.prep_report import prep_optimized as prep_v2
+from lamisplus_report_funcs.hts_report import hts_optimized as hts
+from lamisplus_report_funcs.tb_report import tb_optimized as tb
+from lamisplus_report_funcs.familypartnerindex_report import familypartnerindex_optimized as familypartnerindex
+from lamisplus_report_funcs.ahd_report import ahd_optimized as ahd_v2
+from lamisplus_report_funcs.biometric_report import biometric_optimized as biometric
+from lamisplus_report_funcs.eac_report import eac_optimized as eac_v2
 
 
 def run_maternalcohort_report(**kwargs):

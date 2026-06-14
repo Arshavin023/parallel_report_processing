@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from airflow.utils.task_group import TaskGroup
 import sys
 import os
-from lamisplus_funcs import stg_to_ods as lamisplus_funcs
 from lamisplus_funcs.airflow_api import trigger_dag
 # sys.path.append('/home/lamisplus/airflow/lamisplus_funcs')
 from lamisplus_report_funcs.maternalcohort_report import maternalcohort

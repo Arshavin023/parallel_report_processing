@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from airflow.utils.task_group import TaskGroup
 import sys
 import os
-from lamisplus_funcs import stg_to_ods_20260301 as lamisplus_funcs
+from lamisplus_funcs import stg_to_ods_20260613 as lamisplus_funcs
 from lamisplus_funcs.airflow_api import trigger_dag
 # sys.path.append('/home/lamisplus/airflow/lamisplus_funcs')
 
@@ -24,7 +24,7 @@ default_args = {
 }
 
 
-with DAG("lamisplus_stg_to_ods_20260301", start_date=datetime(2025, 5, 26), 
+with DAG("lamisplus_stg_to_ods_20260613", start_date=datetime(2025, 5, 26), 
          schedule_interval=timedelta(hours=1), default_args=default_args, 
          catchup=False, max_active_runs=1) as dag:
 
