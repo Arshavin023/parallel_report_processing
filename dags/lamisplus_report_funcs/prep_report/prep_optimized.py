@@ -190,7 +190,7 @@ def generate_prep_report(**kwargs):
                 datim_ids = fetch_datim_ids(conn, ip)
                 if datim_ids:
                     logger.info(f"Processing IP: {ip} with {len(datim_ids)} facilities.")
-                    generate_cte_concurrently(datim_ids, procedures, max_workers=20)
+                    generate_cte_concurrently(datim_ids, procedures, max_workers=10)
 
         # 4. Final rollup 
         run_final_prep_for_ips(ip_names, periodcode)

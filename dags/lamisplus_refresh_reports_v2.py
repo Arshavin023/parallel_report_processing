@@ -15,7 +15,7 @@ default_args = {
 }
 
 with DAG("lamisplus_refresh_reports_v2",start_date=datetime.datetime(2026, 3, 7),schedule_interval=None,
-            default_args=default_args,catchup=True,max_active_runs=1,tags=["refresh_tables", "lamisplus","daily"]) as dag:
+            default_args=default_args,catchup=True,max_active_runs=1,tags=["AWS", "Refresh_Tables", "Lamisplus","Daily"]) as dag:
 
     start = BashOperator(
         task_id="start",

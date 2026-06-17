@@ -26,7 +26,7 @@ default_args = {
 
 with DAG("lamisplus_stg_to_ods_20260613", start_date=datetime(2025, 5, 26), 
          schedule_interval=timedelta(hours=1), default_args=default_args, 
-         catchup=False, max_active_runs=1) as dag:
+         catchup=False, max_active_runs=1, tags=["AWS", "LamisPlus", "Staging_To_DataWarehouse", "Hourly"]) as dag:
 
     start = BashOperator(
         task_id="start",
