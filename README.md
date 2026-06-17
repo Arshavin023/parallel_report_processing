@@ -196,7 +196,3 @@ MIT License
 ## Authors & Acknowledgements
 
 - [Uche Nnodim](https://github.com/Arshavin023)
-- [Emmanuel Nnajiofor](https://github.com/emmannajichi)
-- [ChukwuEmeka Ilozie](https://github.com/Asquarep)
-- [Peter Abiodun](https://github.com/drjavanew)
-- [Barnabas Tyav](https://github.com/tyavbarnabas)
